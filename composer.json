@@ -1,11 +1,14 @@
 {
     "name": "kakaprodo/system-analytic",
-    "description": "A package that simplifies the development of the analytic of your system based on the data the system has in database",
+    "description": "A package that simplifies the development of the analytic of a laravel system based on the data the system has in database",
     "license": "MIT",
     "autoload": {
         "psr-4": {
             "Kakaprodo\\SystemAnalytic\\": "src/"
-        }
+        },
+        "files": [
+            "src/Utilities/system-analytic-helper.php"
+        ]
     },
     "authors": [
         {

@@ -2,7 +2,6 @@
 
 namespace Kakaprodo\SystemAnalytic\Data;
 
-use App\Wallet;
 use Kakaprodo\SystemAnalytic\Data\DataType;
 use Kakaprodo\SystemAnalytic\Lib\FilterHub\AnalyticFilterHub;
 
@@ -18,7 +17,6 @@ class AnalyticData extends DataType
     protected function expectedProperties(): array
     {
         return [
-            'wallet_id?' => $this->dataType()->numeric(),
             'analytic_type' => $this->dataType()->string(),
             'scope_type?' => $this->dataType()->string(),
             'scope_value?',
@@ -29,7 +27,7 @@ class AnalyticData extends DataType
             'should_export?',
             'file_type?',
             'selected_option?',
-            'should_clear_cache?' => $this->dataType()->bool(false)
+            'should_clear_cache?' => $this->dataType()->bool()
         ];
     }
 
@@ -46,13 +44,6 @@ class AnalyticData extends DataType
         $this->scopeColumn = $column;
 
         return $this;
-    }
-
-    public function wallet(): Wallet
-    {
-        if ($this->wallet) return $this->wallet;
-
-        return $this->wallet = Wallet::findOrFail($this->wallet_id);
     }
 
     public function analyticType()

@@ -47,7 +47,7 @@ trait HasAnalyticInterfaceValidationTrait
     private function validateUserIsAdmin()
     {
         whenNot(
-            user()->isAdmin(),
+            $this->userIsAdmin(),
             'Only admin user can access on this analytic:' . $this->data->analytic_type
         );
     }

@@ -10,7 +10,9 @@ class AnalyticGate extends AnalyticGateBase
 
     protected static function registeredHandlers(): array
     {
-        return [];
+        $handlerRegisterClass = config('system-analytic.handler_register');
+
+        return $handlerRegisterClass::make([])->register();
     }
 
     public function handle(AnalyticData $data)
