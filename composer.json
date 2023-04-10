@@ -1,0 +1,25 @@
+{
+    "name": "kakaprodo/system-analytic",
+    "description": "A package that simplifies the development of the analytic of your system based on the data the system has in database",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Kakaprodo\\SystemAnalytic\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "kakaprodo",
+            "email": "promskakaprodo45@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {},
+     "extra": {
+        "laravel": {
+            "providers": [
+                "Kakaprodo\\SystemAnalytic\\SystemAnalyticServiceProvider"
+            ]
+        }
+    }
+}
