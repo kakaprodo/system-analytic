@@ -3,9 +3,9 @@
 namespace Kakaprodo\SystemAnalytic\Lib\ChartBase;
 
 use Illuminate\Support\LazyCollection;
-use App\Utilities\Analytics\Lib\AnalyticHandler;
-use App\Utilities\Analytics\Lib\AnalyticResponse;
-use App\Utilities\Analytics\Lib\FilterHub\AnalyticFilterHub;
+use Kakaprodo\SystemAnalytic\Lib\AnalyticHandler;
+use Kakaprodo\SystemAnalytic\Lib\AnalyticResponse;
+use Kakaprodo\SystemAnalytic\Lib\FilterHub\AnalyticFilterHub;
 
 abstract class BlockChart extends AnalyticHandler
 {

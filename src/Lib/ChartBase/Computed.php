@@ -2,8 +2,8 @@
 
 namespace Kakaprodo\SystemAnalytic\Lib\ChartBase;
 
-use App\Utilities\Analytics\Lib\AnalyticHandler;
-use App\Utilities\Analytics\Lib\AnalyticResponse;
+use Kakaprodo\SystemAnalytic\Lib\AnalyticHandler;
+use Kakaprodo\SystemAnalytic\Lib\AnalyticResponse;
 
 /**
  * This analytic type doesn't need a main query to

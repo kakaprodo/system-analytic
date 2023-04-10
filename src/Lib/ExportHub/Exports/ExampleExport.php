@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Utilities\Analytics\Lib\ExportHub\Exports;
+namespace Kakaprodo\SystemAnalytic\Lib\ExportHub\Exports;
 
 use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\Exportable;

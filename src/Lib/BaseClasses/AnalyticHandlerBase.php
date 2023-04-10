@@ -4,13 +4,10 @@ namespace Kakaprodo\SystemAnalytic\Lib\BaseClasses;
 
 use ReflectionClass;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Cache;
 use Kakaprodo\SystemAnalytic\Data\AnalyticData;
-use App\Utilities\Analytics\Lib\AnalyticResponse;
-use App\Utilities\Analytics\Lib\FilterHub\AnalyticFilterHub;
-use App\Utilities\Analytics\Lib\FilterHub\AnalyticBoolFilterHub;
-use App\Utilities\Analytics\Lib\Validation\HasAnalyticInterfaceValidationTrait;
+use Kakaprodo\SystemAnalytic\Lib\FilterHub\AnalyticFilterHub;
+use Kakaprodo\SystemAnalytic\Lib\FilterHub\AnalyticBoolFilterHub;
+use Kakaprodo\SystemAnalytic\Lib\Validation\HasAnalyticInterfaceValidationTrait;
 
 abstract class AnalyticHandlerBase
 {
@@ -22,7 +19,7 @@ abstract class AnalyticHandlerBase
     protected $query = null;
 
     /**
-     * @var AnalyticData
+     * @var \Kakaprodo\SystemAnalytic\Data\AnalyticData
      */
     protected $data;
 
@@ -64,7 +61,7 @@ abstract class AnalyticHandlerBase
     /**
      * The class that will format the data before the export.
      * For more info consider reviewing the file: 
-     * App\Utility\Analytics\Lib\ExportHub\Exports\Example
+     * \Lib\ExportHub\Exports\Example
      */
     public $exportClass = null;
 
@@ -134,7 +131,7 @@ abstract class AnalyticHandlerBase
         return null;
     }
 
-    public function wallet(): Wallet
+    public function wallet(): \App\Wallet
     {
         return $this->data->wallet();
     }

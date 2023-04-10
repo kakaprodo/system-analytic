@@ -2,8 +2,8 @@
 
 namespace Kakaprodo\SystemAnalytic\Lib\ChartBase;
 
-use App\Utilities\Analytics\Lib\AnalyticHandler;
-use App\Utilities\Analytics\Lib\AnalyticResponse;
+use Kakaprodo\SystemAnalytic\Lib\AnalyticHandler;
+use Kakaprodo\SystemAnalytic\Lib\AnalyticResponse;
 
 abstract class CardCount extends AnalyticHandler
 {

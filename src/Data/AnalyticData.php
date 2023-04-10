@@ -4,7 +4,7 @@ namespace Kakaprodo\SystemAnalytic\Data;
 
 use App\Wallet;
 use Kakaprodo\SystemAnalytic\Data\DataType;
-use App\Utilities\Analytics\Lib\FilterHub\AnalyticFilterHub;
+use Kakaprodo\SystemAnalytic\Lib\FilterHub\AnalyticFilterHub;
 
 class AnalyticData extends DataType
 {

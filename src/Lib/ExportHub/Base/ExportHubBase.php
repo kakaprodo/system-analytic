@@ -2,7 +2,7 @@
 
 namespace Kakaprodo\SystemAnalytic\Lib\ExportHub\Base;
 
-use App\Utilities\Analytics\Lib\AnalyticResponse;
+use Kakaprodo\SystemAnalytic\Lib\AnalyticResponse;
 
 
 abstract class ExportHubBase

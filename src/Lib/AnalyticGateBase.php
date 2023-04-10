@@ -2,17 +2,11 @@
 
 namespace Kakaprodo\SystemAnalytic\Lib;
 
-use Stringable;
 use Illuminate\Support\Str;
 use Kakaprodo\SystemAnalytic\Data\AnalyticData;
-use App\Utilities\Analytics\Lib\AnalyticResponse;
+use Kakaprodo\SystemAnalytic\Lib\AnalyticResponse;
 use Kakaprodo\CustomData\Helpers\CustomActionBuilder;
-use App\Utilities\Analytics\Handlers\System\SystemFundCard;
 use Kakaprodo\SystemAnalytic\Lib\FilterHub\AnalyticFilterHub;
-use App\Utilities\Analytics\Handlers\Setting\AnalyticOptionSetting;
-use App\Utilities\Analytics\Handlers\User\SearchSpecificUserHandler;
-use App\Utilities\Analytics\Handlers\System\SystemFundByWalletTypeCard;
-use App\Utilities\Analytics\Handlers\System\SystemTransactionAmountByTypeCard;
 
 abstract class AnalyticGateBase extends CustomActionBuilder
 {
@@ -118,20 +112,5 @@ abstract class AnalyticGateBase extends CustomActionBuilder
     public static function isPeriodicTypes($scopeType)
     {
         return self::isFixedScopeType($scopeType) || self::isRangeScopeType($scopeType);
-    }
-
-    /**
-     * Check if the request should have a scope type
-     */
-    public static function  isScopeTypeRequired($analyticTypes)
-    {
-        // when request is not search analytic
-        return Str::contains($analyticTypes, 'search') == false
-            // list of analytics handler that don't support scope type
-            && (in_array($analyticTypes, [
-                SystemFundByWalletTypeCard::type(),
-                SystemFundCard::type(),
-                AnalyticOptionSetting::type()
-            ]) == false);
     }
 }

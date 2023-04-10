@@ -2,11 +2,12 @@
 
 namespace Kakaprodo\SystemAnalytic\Http\Request;
 
+use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Kakaprodo\SystemAnalytic\AnalyticGate;
 use Illuminate\Foundation\Http\FormRequest;
-use App\Utilities\Analytics\Lib\FilterHub\AnalyticFilterHub;
-use App\Utilities\Analytics\Lib\ExportHub\Base\ExportHubBase;
+use Kakaprodo\SystemAnalytic\Lib\FilterHub\AnalyticFilterHub;
+use Kakaprodo\SystemAnalytic\Lib\ExportHub\Base\ExportHubBase;
 
 class SystemAnalyticRequest extends FormRequest
 {
@@ -35,7 +36,7 @@ class SystemAnalyticRequest extends FormRequest
             'analytic_type' => ['bail', 'required', 'string'],
             'scope_type' => [
                 'bail',
-                Rule::requiredIf(AnalyticGate::isScopeTypeRequired($this->analytic_type)),
+                Rule::requiredIf($this->isScopeTypeRequired($this->analytic_type)),
                 'string',
                 Rule::in(AnalyticGate::detectScopeTypes($this->analytic_type))
             ],
@@ -115,5 +116,11 @@ class SystemAnalyticRequest extends FormRequest
         ][$this->scope_type] ?? 'Y-m-d';
 
         return 'date_format:' . $format;
+    }
+
+    protected function  isScopeTypeRequired($analyticTypes)
+    {
+        // when request is not search analytic
+        return Str::contains($analyticTypes, 'search') == false;
     }
 }

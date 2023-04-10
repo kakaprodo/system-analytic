@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Utilities\Analytics\Lib;
+namespace Kakaprodo\SystemAnalytic\Lib;
 
 use Illuminate\Support\Facades\Cache;
-use App\Utilities\Analytics\Data\AnalyticData;
-use App\Utilities\Analytics\Lib\BaseClasses\AnalyticHandlerBase;
+use Kakaprodo\SystemAnalytic\Data\AnalyticData;
+use Kakaprodo\SystemAnalytic\Lib\BaseClasses\AnalyticHandlerBase;
 
 abstract class AnalyticHandler extends AnalyticHandlerBase
 {

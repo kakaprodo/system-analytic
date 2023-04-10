@@ -2,8 +2,8 @@
 
 namespace Kakaprodo\SystemAnalytic;
 
-use App\Utilities\Analytics\Data\AnalyticData;
-use App\Utilities\Analytics\Lib\AnalyticGateBase;
+use Kakaprodo\SystemAnalytic\Data\AnalyticData;
+use Kakaprodo\SystemAnalytic\Lib\AnalyticGateBase;
 
 class AnalyticGate extends AnalyticGateBase
 {

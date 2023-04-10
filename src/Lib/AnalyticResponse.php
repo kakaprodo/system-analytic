@@ -1,18 +1,18 @@
 <?php
 
-namespace App\Utilities\Analytics\Lib;
+namespace Kakaprodo\SystemAnalytic\Lib;
 
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Database\Eloquent\Model;
-use App\Utilities\Analytics\Lib\AnalyticHandler;
-use App\Utilities\Analytics\Lib\ChartBase\Search;
-use App\Utilities\Analytics\Lib\ExportHub\ExportHub;
+use Kakaprodo\SystemAnalytic\Lib\AnalyticHandler;
+use Kakaprodo\SystemAnalytic\Lib\ChartBase\Search;
+use Kakaprodo\SystemAnalytic\Lib\ExportHub\ExportHub;
 
 class AnalyticResponse
 {
 
     /**
-     * @var \App\Utilities\Analytics\Lib\AnalyticHandler
+     * @var \Kakaprodo\SystemAnalytic\Lib\AnalyticHandler
      */
     public $handler;
     public $result;
