@@ -2,6 +2,7 @@
 
 namespace Kakaprodo\SystemAnalytic\Lib\ExportHub\Base;
 
+use Exception;
 use Kakaprodo\SystemAnalytic\Lib\AnalyticResponse;
 
 
@@ -35,6 +36,10 @@ abstract class ExportHubBase
 
     public function __construct(AnalyticResponse $response)
     {
+        if (!class_exists('Maatwebsite\Excel\Excel')) {
+            throw new Exception('The system analytic package requires the latest version of maatwebsite/excel, please install this package first');
+        }
+
         $this->response = $response;
         $fileName = className($this->response->handler);
         $this->fileExtension = $this->response->handler->exportFile;
