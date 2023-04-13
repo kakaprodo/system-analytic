@@ -4,6 +4,7 @@ namespace Kakaprodo\SystemAnalytic;
 
 use Exception;
 use Illuminate\Support\ServiceProvider;
+use Kakaprodo\SystemAnalytic\Console\CreateAnalyticSkeleton;
 use Kakaprodo\SystemAnalytic\Console\InstallAnalyticPackage;
 
 class SystemAnalyticServiceProvider extends ServiceProvider
@@ -41,6 +42,7 @@ class SystemAnalyticServiceProvider extends ServiceProvider
 
         $this->commands([
             InstallAnalyticPackage::class,
+            CreateAnalyticSkeleton::class
         ]);
     }
 
@@ -56,5 +58,9 @@ class SystemAnalyticServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__ . '/config/system-analytic.php' => config_path('system-analytic.php'),
         ], 'config');
+
+        $this->publishes([
+            __DIR__ . '/Skeleton' => config('system-analytic.analytic_path'),
+        ], 'analytic-skeleton');
     }
 }

@@ -2,10 +2,9 @@
 
 namespace Kakaprodo\SystemAnalytic\Data;
 
-use Kakaprodo\SystemAnalytic\Data\DataType;
-use Kakaprodo\SystemAnalytic\Lib\FilterHub\AnalyticFilterHub;
+use Kakaprodo\SystemAnalytic\Data\Base\AnalyticDataBase;
 
-class AnalyticData extends DataType
+class AnalyticData extends AnalyticDataBase
 {
 
     /**
@@ -16,7 +15,7 @@ class AnalyticData extends DataType
 
     protected function expectedProperties(): array
     {
-        return [
+        return array_merge([
             'analytic_type' => $this->dataType()->string(),
             'scope_type?' => $this->dataType()->string(),
             'scope_value?',
@@ -28,82 +27,25 @@ class AnalyticData extends DataType
             'file_type?',
             'selected_option?',
             'should_clear_cache?' => $this->dataType()->bool()
-        ];
+        ], $this->handlerRegisterClass()->expectedData());
     }
 
-    protected function ignoreForKeyGenerator(): array
+    public function ignoreForKeyGenerator(): array
     {
-        return ['should_clear_cache', 'file_type', 'should_export'];
-    }
-
-    /**
-     * set a date column on which the filter scope will be applied to
-     */
-    public function setScopeColumn($column)
-    {
-        $this->scopeColumn = $column;
-
-        return $this;
-    }
-
-    public function analyticType()
-    {
-        return $this->analytic_type;
+        return array_merge([
+            'should_clear_cache',
+            'file_type',
+            'should_export'
+        ], $this->handlerRegisterClass()->ignoreForKeyGenerator());
     }
 
     /**
-     * get the scope value for fixed scope type
+     * all registerd handlers
      */
-    public function scopeValue()
+    public static function handlers(): array
     {
-        return e($this->scope_value);
-    }
+        $handlerRegisterClass = config('system-analytic.handler_register');
 
-    /**
-     * Used forr range scoope type
-     */
-    public function scopeFromDate()
-    {
-        return e($this->scope_from_date);
-    }
-
-    /**
-     * Used forr range scoope type
-     */
-    public function scopeToDate()
-    {
-        return e($this->scope_to_date);
-    }
-
-    /**
-     * check if the scope type target per year filtering
-     */
-    public function scopeIsYear()
-    {
-        return in_array($this->scope_type, [
-            AnalyticFilterHub::TYPE_YEAR_AGO,
-            AnalyticFilterHub::TYPE_THIS_YEAR,
-            AnalyticFilterHub::TYPE_FIXED_YEAR,
-            AnalyticFilterHub::TYPE_LAST_YEAR,
-            AnalyticFilterHub::TYPE_RANGE_MONTH,
-            AnalyticFilterHub::TYPE_RANGE_YEAR,
-        ]);
-    }
-
-    /**
-     * Format the scope date column for database query
-     */
-    public function scopeValueFormatForDb()
-    {
-        return $this->scopeIsYear() ? '%Y-%m' : '%Y-%m-%d';
-    }
-
-    /**
-     * Define whether the cached analytics need to be
-     * cleared
-     */
-    public function needsToClearCache(): bool
-    {
-        return (bool) $this->should_clear_cache;
+        return $handlerRegisterClass::handlers();
     }
 }

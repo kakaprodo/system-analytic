@@ -31,7 +31,7 @@ class InstallAnalyticPackage extends Command
             }
         }
 
-        $this->info('Installation Completed');
+        $this->call('system-analytic:skeleton');
     }
 
     private function configExists($fileName)
