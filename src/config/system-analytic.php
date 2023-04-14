@@ -20,4 +20,19 @@ return [
      * but you should only resolve the namespacing
      */
     'analytic_path' => app_path('Http'),
+
+    /**
+     * The folder name of the analytic hub, this folder
+     * contain all the analytic handlers and the handler 
+     * register. When you change the name, then you should
+     * resolve the namespacing
+     */
+    'folder_name' => 'SystemAnalytic',
+
+
+    /**
+     * Define if the response about the analytic should be cached.
+     * Note that, this is not applied on the "List" analytic type
+     */
+    'should_cache_result' => false
 ];

@@ -52,7 +52,7 @@ class SystemAnalyticRequest extends FormRequest
                 Rule::requiredIf(AnalyticGate::isRangeScopeType($this->scope_type)),
                 $this->detectDateFormat()
             ],
-            'search_value' => ['nullable', 'string'],
+            'search_value' => ['nullable'],
             'boolean_scope_type' => [
                 'nullable',
                 'string',

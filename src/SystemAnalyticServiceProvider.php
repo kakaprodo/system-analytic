@@ -6,6 +6,7 @@ use Exception;
 use Illuminate\Support\ServiceProvider;
 use Kakaprodo\SystemAnalytic\Console\CreateAnalyticSkeleton;
 use Kakaprodo\SystemAnalytic\Console\InstallAnalyticPackage;
+use Kakaprodo\SystemAnalytic\Console\AnalyticHandlerGenerator;
 
 class SystemAnalyticServiceProvider extends ServiceProvider
 {
@@ -42,7 +43,8 @@ class SystemAnalyticServiceProvider extends ServiceProvider
 
         $this->commands([
             InstallAnalyticPackage::class,
-            CreateAnalyticSkeleton::class
+            CreateAnalyticSkeleton::class,
+            AnalyticHandlerGenerator::class
         ]);
     }
 
@@ -60,7 +62,7 @@ class SystemAnalyticServiceProvider extends ServiceProvider
         ], 'config');
 
         $this->publishes([
-            __DIR__ . '/Skeleton' => config('system-analytic.analytic_path'),
+            __DIR__ . '/Skeleton' => config('system-analytic.analytic_path') . '/' . config('system-analytic.folder_name'),
         ], 'analytic-skeleton');
     }
 }
