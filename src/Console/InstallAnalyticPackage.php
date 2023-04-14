@@ -36,7 +36,7 @@ class InstallAnalyticPackage extends Command
 
     private function configExists($fileName)
     {
-        return File::exists(config_path($fileName));
+        return file_exists(config_path($fileName));
     }
 
     private function shouldOverwriteConfig()

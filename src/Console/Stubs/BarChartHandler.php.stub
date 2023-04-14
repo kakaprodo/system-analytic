@@ -1,0 +1,35 @@
+<?php
+
+namespace {name_space};
+
+use Illuminate\Support\LazyCollection;
+use Kakaprodo\SystemAnalytic\Lib\AnalyticResponse;
+use Kakaprodo\SystemAnalytic\Lib\ChartBase\BlockChart;
+
+class {class_name} extends BlockChart
+{
+    /**
+     * any task you want to be executed before any other
+     * task in your handler
+     */
+    protected function boot()
+    {
+    }
+
+    /**
+     * The query that define the data that the package
+     * is going to process
+     */
+    protected function query()
+    {
+        return DB::table('example');
+    }
+
+    /**
+     * Result after processing your data
+     */
+    protected function result(LazyCollection $groupedResult): AnalyticResponse
+    {
+        return $this->response($groupedResult->all());
+    }
+}

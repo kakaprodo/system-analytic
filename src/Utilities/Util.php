@@ -1,26 +1,26 @@
 <?php
 
-use Kakaprodo\SystemAnalytic\Exception\SystemAnalyticException;
+namespace Kakaprodo\SystemAnalytic\Utilities;
 
 use Carbon\Carbon;
 use Illuminate\Support\Str;
+use Kakaprodo\SystemAnalytic\Exception\SystemAnalyticException;
 
-if (!function_exists('fireErr')) {
+class Util
+{
     /**
      * build execption instance based on a given message and status
      */
-    function fireErr($errorMsg, $status = 400)
+    public static function fireErr($errorMsg, $status = 400)
     {
         return new SystemAnalyticException($errorMsg, $status);
     }
-}
 
-if (!function_exists('whenNot')) {
     /**
      * return error message when the passed statement is false,
-     * This function overide status to receive error reason or status
+     * This public static function overide status to receive error reason or status
      */
-    function whenNot($statement, $message, $status = 400, $reason = null)
+    public static function whenNot($statement, $message, $status = 400, $reason = null)
     {
         $newStatus = is_numeric($status) ? $status : 400;
 
@@ -30,13 +30,11 @@ if (!function_exists('whenNot')) {
             ->reason($reason)
             ->die();
     }
-}
 
-if (!function_exists('whenYes')) {
     /**
      * return error message when the passed statement is true
      */
-    function whenYes($statement, $message, $status = 400, $reason = null)
+    public static function whenYes($statement, $message, $status = 400, $reason = null)
     {
 
         $newStatus = is_numeric($status) ? $status : 400;
@@ -47,26 +45,20 @@ if (!function_exists('whenYes')) {
             ->reason($reason)
             ->die();
     }
-}
-
-
-if (!function_exists('classToKebak')) {
 
     /**
      * convert a class name to kebak case
      */
-    function classToKebak($className)
+    public static function classToKebak($className)
     {
         return Str::kebab(className($className));
     }
-}
 
-if (!function_exists('className')) {
     /**
      * Get the class name  without namespace of a given object
      * @return string
      */
-    function className($myClass)
+    public static function className($myClass)
     {
         if (!$myClass) return null;
 
@@ -76,15 +68,12 @@ if (!function_exists('className')) {
 
         return collect($splitedClass)->last();
     }
-}
-
-if (!function_exists('parseDate')) {
 
     /**
      * Parse a string to date with carbon, and catch
      * error when the string is parsable
      */
-    function parseDate($date, $inputField = null)
+    public static function parseDate($date, $inputField = null)
     {
         try {
             return Carbon::parse($date);
@@ -93,39 +82,30 @@ if (!function_exists('parseDate')) {
             fireErr($e->getMessage())->die();
         }
     }
-}
 
-if (!function_exists('strTitle')) {
-
-    function strTitle($value, $shouldTitle = true)
+    public static function strTitle($value, $shouldTitle = true)
     {
         if (!$shouldTitle) return $value;
 
         return (string) Str::title(removeTrait($value), '');
     }
-}
-
-if (!function_exists('removeTrait')) {
 
     /**
      * remove character like : _, -
      */
-    function removeTrait($myStr, $replace = "")
+    public static function removeTrait($myStr, $replace = "")
     {
         $myStr = Str::replace("_", $replace, $myStr);
         $myStr = Str::replace("-", $replace, $myStr);
 
         return $myStr;
     }
-}
-
-if (!function_exists('callFunction')) {
 
     /**
-     * call a given function if it's callable otherwise return it
+     * call a given public static function if it's callable otherwise return it
      * as a noormal variable
      */
-    function callFunction($myFunction, $throwableMsg = null)
+    public static function callFunction($myFunction, $throwableMsg = null)
     {
         if (is_callable($myFunction)) return $myFunction();
 
@@ -133,28 +113,22 @@ if (!function_exists('callFunction')) {
 
         return $myFunction;
     }
-}
-
-if (!function_exists('formatDate')) {
 
     /**
      * Format a given date with a given format
      */
-    function formatDate($date, $format = 'Y-m-d H:i:s')
+    public static function formatDate($date, $format = 'Y-m-d H:i:s')
     {
         return Carbon::parse($date)->format($format);
     }
-}
-
-if (!function_exists('folderFromPath')) {
 
     /**
      * Grab folder from a given path string
      */
-    function folderFromPath($path)
+    public static function folderFromPath($path)
     {
-        [$path, $folderPath] = explode('app\\', $path);
+        $folderPath = explode('app/', $path);
 
-        return $folderPath;
+        return $folderPath[1] ?? '';
     }
 }
