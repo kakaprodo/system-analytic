@@ -2,7 +2,6 @@
 
 namespace Kakaprodo\SystemAnalytic\Console;
 
-use Illuminate\Support\Str;
 use Illuminate\Support\Arr;
 use Illuminate\Console\GeneratorCommand;
 use Kakaprodo\SystemAnalytic\Utilities\Util;
@@ -17,11 +16,6 @@ class AnalyticHandlerGenerator extends GeneratorCommand
     protected $signature = 'system-analytic:handler {name} {--type=} {--bar-chart} {--list} {--card-count} {--computed} {--pie-chart}';
 
     protected $description = 'Create the System Analytic Skeleton';
-
-    /**
-     * the folder in which all the analytic skeleton are stored
-     */
-    protected $hubLocation = null;
 
     protected static $expectedOptions = [
         'bar-chart' => 'BarChart',
