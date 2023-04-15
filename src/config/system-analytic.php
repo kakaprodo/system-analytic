@@ -31,8 +31,17 @@ return [
 
 
     /**
+     * The location where the package will publish a form 
+     * request class. Just to help you validating your 
+     * analytic input in a good way.If you change the
+     * default configuration, you should resolve the 
+     * namespace
+     */
+    'form_validation_path' => app_path('Http/Requests'),
+
+    /**
      * Define if the response about the analytic should be cached.
-     * Note that, this is not applied on the "List" analytic type
+     * Note that, this is not applied on the "List" analytic type.
      */
     'should_cache_result' => false
 ];

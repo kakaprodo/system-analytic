@@ -3,7 +3,7 @@
 namespace Kakaprodo\SystemAnalytic\Lib\FilterHub;
 
 use Kakaprodo\SystemAnalytic\Utilities\Util;
-use Kakaprodo\SystemAnalytic\Data\AnalyticData;
+use Kakaprodo\SystemAnalytic\Lib\Data\AnalyticData;
 
 class AnalyticFilterHub
 {

@@ -1,8 +1,9 @@
 <?php
 
-namespace Kakaprodo\SystemAnalytic\Data;
+namespace Kakaprodo\SystemAnalytic\Lib\Data;
 
-use Kakaprodo\SystemAnalytic\Data\Base\AnalyticDataBase;
+use Kakaprodo\SystemAnalytic\Lib\Data\Base\AnalyticDataBase;
+use Kakaprodo\SystemAnalytic\Utilities\Util;
 
 class AnalyticData extends AnalyticDataBase
 {
@@ -36,7 +37,7 @@ class AnalyticData extends AnalyticDataBase
             'should_clear_cache',
             'file_type',
             'should_export'
-        ], $this->handlerRegisterClass()->ignoreForKeyGenerator());
+        ], $this->handlerRegisterClass()->ignorePropertyForKeyGenerator());
     }
 
     /**
@@ -46,6 +47,10 @@ class AnalyticData extends AnalyticDataBase
     {
         $handlerRegisterClass = config('system-analytic.handler_register');
 
-        return $handlerRegisterClass::handlers();
+        $handlers =  $handlerRegisterClass::handlers();
+
+        Util::whenYes($handlers == [], 'You need first to register a handler before calling it');
+
+        return $handlers;
     }
 }

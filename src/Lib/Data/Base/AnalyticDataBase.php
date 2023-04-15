@@ -1,8 +1,8 @@
 <?php
 
-namespace Kakaprodo\SystemAnalytic\Data\Base;
+namespace Kakaprodo\SystemAnalytic\Lib\Data\Base;
 
-use Kakaprodo\SystemAnalytic\Data\Base\DataType;
+use Kakaprodo\SystemAnalytic\Lib\Data\Base\DataType;
 use Kakaprodo\SystemAnalytic\Lib\FilterHub\AnalyticFilterHub;
 
 abstract class AnalyticDataBase extends DataType

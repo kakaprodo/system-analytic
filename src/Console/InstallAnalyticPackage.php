@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\File;
 
 class InstallAnalyticPackage extends Command
 {
-    protected $signature = 'system-analytic:install';
+    protected $signature = 'system-analytic:config';
 
     protected $description = 'Install the System Analytic package';
 
@@ -15,11 +15,12 @@ class InstallAnalyticPackage extends Command
 
     public function handle()
     {
+        $this->checkForRequiredPackages();
+
         $this->info('START Installing System Analytic Package...');
 
-        $this->info('Publishing configuration...');
-
         if (!$this->configExists($this->configFileName)) {
+            $this->info('Publishing configuration...');
             $this->publishConfiguration();
             $this->info('Published configuration');
         } else {
@@ -30,8 +31,14 @@ class InstallAnalyticPackage extends Command
                 $this->info('Existing configuration was not overwritten');
             }
         }
+    }
 
-        $this->call('system-analytic:skeleton');
+    protected function checkForRequiredPackages()
+    {
+        if (!class_exists('Kakaprodo\CustomData\CustomData')) {
+            $this->error('The system analytic package requires the latest version of kakaprodo/custom-data');
+            exit();
+        }
     }
 
     private function configExists($fileName)

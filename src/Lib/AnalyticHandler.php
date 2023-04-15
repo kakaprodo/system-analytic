@@ -3,7 +3,7 @@
 namespace Kakaprodo\SystemAnalytic\Lib;
 
 use Illuminate\Support\Facades\Cache;
-use Kakaprodo\SystemAnalytic\Data\AnalyticData;
+use Kakaprodo\SystemAnalytic\Lib\Data\AnalyticData;
 use Kakaprodo\SystemAnalytic\Lib\BaseClasses\AnalyticHandlerBase;
 
 abstract class AnalyticHandler extends AnalyticHandlerBase
