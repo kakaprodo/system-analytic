@@ -2,6 +2,7 @@
 
 namespace Kakaprodo\SystemAnalytic\Lib\Validation;
 
+use Kakaprodo\SystemAnalytic\Utilities\Util;
 use Kakaprodo\SystemAnalytic\Lib\Interfaces\AdminInterface;
 use Kakaprodo\SystemAnalytic\Lib\Interfaces\OptionAnalyticInterface;
 
@@ -30,7 +31,7 @@ trait HasAnalyticInterfaceValidationTrait
         // check if the provided options matches with the one registered on handler
         $selectedOptions = explode(',', $this->data->selected_option);
         foreach ($selectedOptions as $option) {
-            whenNot(
+            Util::whenNot(
                 in_array($option, $supportedOptions),
                 "The selected option {$option} should be one of : " . implode(',', $supportedOptions)
             );
@@ -46,7 +47,7 @@ trait HasAnalyticInterfaceValidationTrait
 
     private function validateUserIsAdmin()
     {
-        whenNot(
+        Util::whenNot(
             $this->userIsAdmin(),
             'Only admin user can access on this analytic:' . $this->data->analytic_type
         );

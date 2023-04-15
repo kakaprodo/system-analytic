@@ -6,6 +6,7 @@ use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Kakaprodo\SystemAnalytic\AnalyticGate;
 use Illuminate\Foundation\Http\FormRequest;
+use Kakaprodo\SystemAnalytic\Utilities\Util;
 use Kakaprodo\SystemAnalytic\Lib\FilterHub\AnalyticFilterHub;
 use Kakaprodo\SystemAnalytic\Lib\ExportHub\Base\ExportHubBase;
 
@@ -71,13 +72,13 @@ class SystemAnalyticRequest extends FormRequest
     private function validateAnalyticType(array $analyticTypes)
     {
         if (!app()->environment('local')) {
-            return whenNot(
+            return Util::whenNot(
                 in_array($this->analytic_type, $analyticTypes),
                 "The analytic type is supposed to be one of: " .  implode(',', $analyticTypes)
             );
         }
 
-        fireErr(
+        Util::fireErr(
             "The analytic type is supposed to be one of: " .  implode(',', $analyticTypes)
         )->when(in_array($this->analytic_type, $analyticTypes) == false)
             ->withData([

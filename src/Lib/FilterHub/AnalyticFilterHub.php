@@ -2,6 +2,7 @@
 
 namespace Kakaprodo\SystemAnalytic\Lib\FilterHub;
 
+use Kakaprodo\SystemAnalytic\Utilities\Util;
 use Kakaprodo\SystemAnalytic\Data\AnalyticData;
 
 class AnalyticFilterHub
@@ -73,7 +74,7 @@ class AnalyticFilterHub
             self::TYPE_ALL => fn () => $query,
         ][$this->data->scope_type] ?? null;
 
-        return callFunction(
+        return Util::callFunction(
             $filterHandlers,
             'Un-supported filter type: ' . $this->data->scope_type
         );
@@ -118,8 +119,8 @@ class AnalyticFilterHub
     {
         $previousWeek = today()->subWeek();
 
-        $this->data->scope_from_date =  formatDate($previousWeek->startOfWeek(), 'Y-m-d');
-        $this->data->scope_to_date =  formatDate($previousWeek->endOfWeek(), 'Y-m-d');
+        $this->data->scope_from_date =  Util::formatDate($previousWeek->startOfWeek(), 'Y-m-d');
+        $this->data->scope_to_date =  Util::formatDate($previousWeek->endOfWeek(), 'Y-m-d');
 
         return $this->filterByRangeDate($query);
     }
@@ -133,21 +134,21 @@ class AnalyticFilterHub
 
     protected function filterByLastYear($query)
     {
-        $this->data->scope_value = formatDate(today()->subYear(), 'Y');
+        $this->data->scope_value = Util::formatDate(today()->subYear(), 'Y');
 
         return $this->filterByFixedYear($query);
     }
 
     protected function filterByFixedDate($query)
     {
-        $date = formatDate($this->data->scopeValue(), 'Y-m-d');
+        $date = Util::formatDate($this->data->scopeValue(), 'Y-m-d');
 
         return $query->whereDate($this->data->scopeColumn, $date);
     }
 
     protected function filterByFixedMonth($query)
     {
-        $monthYear = formatDate($this->data->scopeValue(), 'm-Y');
+        $monthYear = Util::formatDate($this->data->scopeValue(), 'm-Y');
         [$month, $year] = explode('-', $monthYear);
 
         return $query->whereMonth($this->data->scopeColumn, $month)
@@ -172,8 +173,8 @@ class AnalyticFilterHub
 
     protected function filterByRangeMonth($query)
     {
-        $fromMonthYear = formatDate($this->data->scopeFromDate(), 'm-Y');
-        $toMonthYear = formatDate($this->data->scopeToDate(), 'm-Y');
+        $fromMonthYear = Util::formatDate($this->data->scopeFromDate(), 'm-Y');
+        $toMonthYear = Util::formatDate($this->data->scopeToDate(), 'm-Y');
 
         return $query->where(function ($q)  use ($fromMonthYear) {
 

@@ -5,10 +5,7 @@
     "autoload": {
         "psr-4": {
             "Kakaprodo\\SystemAnalytic\\": "src/"
-        },
-        "files": [
-            "src/Utilities/system-analytic-helper.php"
-        ]
+        }
     },
     "authors": [
         {

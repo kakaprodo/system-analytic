@@ -2,6 +2,7 @@
 
 namespace Kakaprodo\SystemAnalytic\Lib\FilterHub;
 
+use Kakaprodo\SystemAnalytic\Utilities\Util;
 use Kakaprodo\SystemAnalytic\Data\AnalyticData;
 
 class AnalyticBoolFilterHub
@@ -33,7 +34,7 @@ class AnalyticBoolFilterHub
             self::ONLY_TRASHED => fn () => $this->filterOnlyTrashed($query),
         ][$this->data->boolean_scope_type] ?? null;
 
-        return callFunction(
+        return Util::callFunction(
             $filterHandlers,
             'Un-supported boolean filter type: ' . $this->data->boolean_scope_type
         );

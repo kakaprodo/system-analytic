@@ -4,6 +4,7 @@ namespace Kakaprodo\SystemAnalytic\Lib;
 
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Database\Eloquent\Model;
+use Kakaprodo\SystemAnalytic\Utilities\Util;
 use Kakaprodo\SystemAnalytic\Lib\AnalyticHandler;
 use Kakaprodo\SystemAnalytic\Lib\ChartBase\Search;
 use Kakaprodo\SystemAnalytic\Lib\ExportHub\ExportHub;
@@ -68,7 +69,7 @@ class AnalyticResponse
      */
     protected function export()
     {
-        whenNot(
+        Util::whenNot(
             $this->handler->supportExport,
             'The analytic type does not support the export feature'
         );

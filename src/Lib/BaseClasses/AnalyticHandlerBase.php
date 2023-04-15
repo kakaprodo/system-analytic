@@ -4,6 +4,7 @@ namespace Kakaprodo\SystemAnalytic\Lib\BaseClasses;
 
 use ReflectionClass;
 use Illuminate\Support\Arr;
+use Kakaprodo\SystemAnalytic\Utilities\Util;
 use Kakaprodo\SystemAnalytic\Data\AnalyticData;
 use Kakaprodo\SystemAnalytic\Lib\FilterHub\AnalyticFilterHub;
 use Kakaprodo\SystemAnalytic\Lib\FilterHub\AnalyticBoolFilterHub;
@@ -111,7 +112,7 @@ abstract class AnalyticHandlerBase
      */
     public static function type()
     {
-        return classToKebak(static::class);
+        return Util::classToKebak(static::class);
     }
 
 
@@ -129,11 +130,6 @@ abstract class AnalyticHandlerBase
     protected function shouldCacheFor()
     {
         return null;
-    }
-
-    public function wallet(): \App\Wallet
-    {
-        return $this->data->wallet();
     }
 
     /**

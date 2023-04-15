@@ -37,7 +37,7 @@ class Util
      */
     public static function classToKebak($className)
     {
-        return Str::kebab(className($className));
+        return Str::kebab(self::className($className));
     }
 
     /**
@@ -73,7 +73,7 @@ class Util
     {
         if (!$shouldTitle) return $value;
 
-        return (string) Str::title(removeTrait($value), '');
+        return (string) Str::title(self::removeTrait($value), '');
     }
 
     /**

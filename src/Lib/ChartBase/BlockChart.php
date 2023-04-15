@@ -3,6 +3,7 @@
 namespace Kakaprodo\SystemAnalytic\Lib\ChartBase;
 
 use Illuminate\Support\LazyCollection;
+use Kakaprodo\SystemAnalytic\Utilities\Util;
 use Kakaprodo\SystemAnalytic\Lib\AnalyticHandler;
 use Kakaprodo\SystemAnalytic\Lib\AnalyticResponse;
 use Kakaprodo\SystemAnalytic\Lib\FilterHub\AnalyticFilterHub;
@@ -58,8 +59,8 @@ abstract class BlockChart extends AnalyticHandler
     {
         return $query->lazy()->groupBy(function ($item) {
             return !$this->data->scopeIsYear()
-                ? parseDate($item->{$this->groupBy})->format('d M Y')
-                : parseDate($item->{$this->groupBy})->format('M Y');
+                ? Util::parseDate($item->{$this->groupBy})->format('d M Y')
+                : Util::parseDate($item->{$this->groupBy})->format('M Y');
         });
     }
 
@@ -68,7 +69,7 @@ abstract class BlockChart extends AnalyticHandler
         return $result->sort(function ($currentItem, $nextItem) {
             $currentDate = $currentItem->{$this->groupBy};
             $nextDate = $nextItem->{$this->groupBy};
-            return parseDate($currentDate)->gt(parseDate($nextDate));
+            return Util::parseDate($currentDate)->gt(Util::parseDate($nextDate));
         });
     }
 
