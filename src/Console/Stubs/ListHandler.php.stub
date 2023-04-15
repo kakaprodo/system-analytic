@@ -1,0 +1,41 @@
+<?php
+
+namespace {name_space};
+
+use Illuminate\Support\Facades\DB;
+use Kakaprodo\SystemAnalytic\Lib\AnalyticResponse;
+use Kakaprodo\SystemAnalytic\Lib\ChartBase\Search;
+
+class  {class_name} extends Search
+{
+     /**
+     * The column on which the scope will be applied to
+     */
+    protected $scopeColumn = "table.created_at";
+
+    /**
+     * any task you want to be executed before any other
+     * task in your handler
+     */
+    protected function boot()
+    {
+        $searchValue = $this->data->search_value;
+    }
+
+    /**
+     * The query that define the data that the package
+     * is going to process
+     */
+    protected function query()
+    {
+        return  DB::table('example');
+    }
+
+     /**
+     * Result after applying the scope to your base query
+     */
+    protected function result($query): AnalyticResponse
+    {
+        return $this->response($query->paginate());
+    }
+}
