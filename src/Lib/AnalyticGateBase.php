@@ -3,6 +3,7 @@
 namespace Kakaprodo\SystemAnalytic\Lib;
 
 use Illuminate\Support\Str;
+use Kakaprodo\SystemAnalytic\Utilities\Util;
 use Kakaprodo\SystemAnalytic\Data\AnalyticData;
 use Kakaprodo\SystemAnalytic\Lib\AnalyticResponse;
 use Kakaprodo\CustomData\Helpers\CustomActionBuilder;
@@ -24,7 +25,7 @@ abstract class AnalyticGateBase extends CustomActionBuilder
     {
         $handlerClass = static::registeredHandlers()[$data->analyticType()] ?? null;
 
-        whenNot($handlerClass, "Invalid analytic type: {$data->analyticType()}");
+        Util::whenNot($handlerClass, "Invalid analytic type: {$data->analyticType()}");
 
         return  $handlerClass::handler($data);
     }
@@ -46,7 +47,7 @@ abstract class AnalyticGateBase extends CustomActionBuilder
 
         $handlerClass = static::registeredHandlers()[$handlerType] ?? null;
 
-        whenNot($handlerClass, 'Invalid analalytic type:' . $handlerType);
+        Util::whenNot($handlerClass, 'Invalid analalytic type:' . $handlerType);
 
         return $handlerClass::supportedFilterScopeTypes();
     }
@@ -60,7 +61,7 @@ abstract class AnalyticGateBase extends CustomActionBuilder
 
         $handlerClass = static::registeredHandlers()[$handlerType] ?? null;
 
-        whenNot($handlerClass, 'Invalid analalytic type:' . $handlerType);
+        Util::whenNot($handlerClass, 'Invalid analalytic type:' . $handlerType);
 
         return $handlerClass::supportedBooleanFilterScopeTypes();
     }

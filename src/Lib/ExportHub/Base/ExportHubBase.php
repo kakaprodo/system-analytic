@@ -3,6 +3,7 @@
 namespace Kakaprodo\SystemAnalytic\Lib\ExportHub\Base;
 
 use Exception;
+use Kakaprodo\SystemAnalytic\Utilities\Util;
 use Kakaprodo\SystemAnalytic\Lib\AnalyticResponse;
 
 
@@ -41,9 +42,9 @@ abstract class ExportHubBase
         }
 
         $this->response = $response;
-        $fileName = className($this->response->handler);
+        $fileName = Util::className($this->response->handler);
         $this->fileExtension = $this->response->handler->exportFile;
-        $this->fileName = strTitle($fileName) . '.' . $this->fileExtension;
+        $this->fileName = Util::strTitle($fileName) . '.' . $this->fileExtension;
         $this->viewTemplate = $this->response->handler->exportView;
 
         $this->exportType = $this->viewTemplate
@@ -74,7 +75,7 @@ abstract class ExportHubBase
             self::EXCEL_FRROM_VIEW => fn () =>  $this->toExcelFromView(),
         ][$this->exportType] ?? null;
 
-        return callFunction(
+        return Util::callFunction(
             $exportHandler,
             "The export type: {$this->exportType} is not supported"
         );

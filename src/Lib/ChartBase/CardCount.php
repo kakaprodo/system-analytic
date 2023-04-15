@@ -2,6 +2,7 @@
 
 namespace Kakaprodo\SystemAnalytic\Lib\ChartBase;
 
+use Kakaprodo\SystemAnalytic\Utilities\Util;
 use Kakaprodo\SystemAnalytic\Lib\AnalyticHandler;
 use Kakaprodo\SystemAnalytic\Lib\AnalyticResponse;
 
@@ -48,7 +49,7 @@ abstract class CardCount extends AnalyticHandler
 
         $isSupportedAggregate = in_array($this->aggregate, static::$supportedAggregates);
 
-        whenNot(
+        Util::whenNot(
             $isSupportedAggregate,
             'The aggregate function should be one of: ' . implode(',', static::$supportedAggregates)
         );
@@ -64,7 +65,7 @@ abstract class CardCount extends AnalyticHandler
      */
     protected function aggregator($query)
     {
-        whenNot($this->aggregate, 'Please define an aggregator on your handler');
+        Util::whenNot($this->aggregate, 'Please define an aggregator on your handler');
 
         $method = $this->aggregate;
 
