@@ -5,7 +5,7 @@ namespace Kakaprodo\SystemAnalytic\Lib\BaseClasses;
 use ReflectionClass;
 use Illuminate\Support\Arr;
 use Kakaprodo\SystemAnalytic\Utilities\Util;
-use Kakaprodo\SystemAnalytic\Data\AnalyticData;
+use Kakaprodo\SystemAnalytic\Lib\Data\AnalyticData;
 use Kakaprodo\SystemAnalytic\Lib\FilterHub\AnalyticFilterHub;
 use Kakaprodo\SystemAnalytic\Lib\FilterHub\AnalyticBoolFilterHub;
 use Kakaprodo\SystemAnalytic\Lib\Validation\HasAnalyticInterfaceValidationTrait;
@@ -20,7 +20,7 @@ abstract class AnalyticHandlerBase
     protected $query = null;
 
     /**
-     * @var \Kakaprodo\SystemAnalytic\Data\AnalyticData
+     * @var \Kakaprodo\SystemAnalytic\Lib\Data\AnalyticData
      */
     protected $data;
 

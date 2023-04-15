@@ -117,4 +117,21 @@ class Util
 
         return $folderPath[1] ?? '';
     }
+
+    /**
+     * the folder path where the analytic handler are located
+     * in the project in which the package is installed
+     */
+    public static function hubFolder()
+    {
+        return config('system-analytic.analytic_path') . '/' . config('system-analytic.folder_name');
+    }
+
+    /**
+     * path Where the from validation class will be created
+     */
+    public static function validationFolder()
+    {
+        return config('system-analytic.form_validation_path') . '/' . config('system-analytic.folder_name');
+    }
 }

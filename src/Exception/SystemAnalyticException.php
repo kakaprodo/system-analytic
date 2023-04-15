@@ -24,7 +24,7 @@ class SystemAnalyticException extends Exception
     public function __construct($message, $status = 400)
     {
         parent::__construct($message);
-        $this->status = $this->status;
+        $this->status = $status;
     }
 
     /**

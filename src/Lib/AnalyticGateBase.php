@@ -4,8 +4,8 @@ namespace Kakaprodo\SystemAnalytic\Lib;
 
 use Illuminate\Support\Str;
 use Kakaprodo\SystemAnalytic\Utilities\Util;
-use Kakaprodo\SystemAnalytic\Data\AnalyticData;
 use Kakaprodo\SystemAnalytic\Lib\AnalyticResponse;
+use Kakaprodo\SystemAnalytic\Lib\Data\AnalyticData;
 use Kakaprodo\CustomData\Helpers\CustomActionBuilder;
 use Kakaprodo\SystemAnalytic\Lib\FilterHub\AnalyticFilterHub;
 

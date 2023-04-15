@@ -33,5 +33,5 @@ interface AnalyticHandlerRegisterInterface
      * 
      * This is useful when you want to cash the analytic response
      */
-    public function ignoreForKeyGenerator(): array;
+    public function ignorePropertyForKeyGenerator(): array;
 }

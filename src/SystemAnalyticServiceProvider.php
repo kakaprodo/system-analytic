@@ -4,6 +4,7 @@ namespace Kakaprodo\SystemAnalytic;
 
 use Exception;
 use Illuminate\Support\ServiceProvider;
+use Kakaprodo\SystemAnalytic\Utilities\Util;
 use Kakaprodo\SystemAnalytic\Console\CreateAnalyticSkeleton;
 use Kakaprodo\SystemAnalytic\Console\InstallAnalyticPackage;
 use Kakaprodo\SystemAnalytic\Console\MakeExportFileGenerator;
@@ -30,8 +31,6 @@ class SystemAnalyticServiceProvider extends ServiceProvider
     {
         $this->registerCommands();
 
-        $this->checkForRequiredPackages();
-
         $this->stackToPublish();
     }
 
@@ -50,13 +49,6 @@ class SystemAnalyticServiceProvider extends ServiceProvider
         ]);
     }
 
-    protected function checkForRequiredPackages()
-    {
-        if (!class_exists('Kakaprodo\CustomData\CustomData')) {
-            throw new Exception('The system analytic package requires the latest version of kakaprodo/custom-data');
-        }
-    }
-
     public function stackToPublish()
     {
         $this->publishes([
@@ -64,7 +56,11 @@ class SystemAnalyticServiceProvider extends ServiceProvider
         ], 'config');
 
         $this->publishes([
-            __DIR__ . '/Skeleton' => config('system-analytic.analytic_path') . '/' . config('system-analytic.folder_name'),
+            __DIR__ . '/Skeleton' => Util::hubFolder(),
+        ], 'analytic-skeleton');
+
+        $this->publishes([
+            __DIR__ . '/Http/Requests' => Util::validationFolder(),
         ], 'analytic-skeleton');
     }
 }
