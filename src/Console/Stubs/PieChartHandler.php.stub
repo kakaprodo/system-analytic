@@ -1,0 +1,47 @@
+<?php
+
+namespace {name_space};
+
+use Illuminate\Support\Facades\DB;
+use Kakaprodo\SystemAnalytic\Lib\AnalyticResponse;
+use Kakaprodo\SystemAnalytic\Lib\ChartBase\PieChart;
+
+class {class_name} extends PieChart
+{
+
+    /**
+     * The column on which the scope will be applied to
+     */
+    protected $scopeColumn = "table.created_at";
+
+    /**
+     * The column that will be used to group the result
+     * of your query
+     */
+    protected $groupBy = 'created_at';
+
+    /**
+     * any task you want to be executed before any other
+     * task in your handler
+     */
+    protected function boot()
+    {
+    }
+
+    /**
+     * The query that define the data that the package
+     * is going to process
+     */
+    protected function query()
+    {
+        return DB::table('example');
+    }
+
+    /**
+     * Result after processing your data
+     */
+    protected function result(array $pieChartData): AnalyticResponse
+    {
+        return $this->response($pieChartData);
+    }
+}

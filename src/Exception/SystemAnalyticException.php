@@ -17,19 +17,14 @@ class SystemAnalyticException extends Exception
      * default = 400
      * @var int
      */
-    protected $status = 400;
-
-    protected $guard;
-
-    protected $reason = null;
+    protected $status = null;
 
     protected $shouldThrow = true;
 
-    public function __construct($message, $status = null, $guard = 'api')
+    public function __construct($message, $status = 400)
     {
         parent::__construct($message);
-        $this->status = !$status ? $this->status : $status;
-        $this->guard = $guard;
+        $this->status = $this->status;
     }
 
     /**

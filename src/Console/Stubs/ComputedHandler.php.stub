@@ -1,0 +1,21 @@
+<?php
+
+namespace {name_space};
+
+use Kakaprodo\SystemAnalytic\Lib\AnalyticResponse;
+use Kakaprodo\SystemAnalytic\Lib\ChartBase\Computed;
+
+
+class {class_name} extends Computed
+{
+
+    /**
+     * Implement the logic of handler
+     */
+    protected function result(): AnalyticResponse
+    {
+        $result = $makeYourOwnLogicHere = [];
+
+        return $this->response($result);
+    }
+}

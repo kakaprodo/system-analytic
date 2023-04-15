@@ -17,33 +17,19 @@ class Util
     }
 
     /**
-     * return error message when the passed statement is false,
-     * This public static function overide status to receive error reason or status
+     * return error message when the passed statement is false
      */
-    public static function whenNot($statement, $message, $status = 400, $reason = null)
+    public static function whenNot($statement, $message, $status = 400)
     {
-        $newStatus = is_numeric($status) ? $status : 400;
-
-        $reason = $reason ?? (is_array($status) ? $status : null);
-
-        if (!$statement) fireErr($message, $newStatus)
-            ->reason($reason)
-            ->die();
+        if (!$statement) self::fireErr($message, $status)->die();
     }
 
     /**
      * return error message when the passed statement is true
      */
-    public static function whenYes($statement, $message, $status = 400, $reason = null)
+    public static function whenYes($statement, $message, $status = 400)
     {
-
-        $newStatus = is_numeric($status) ? $status : 400;
-
-        $reason = $reason ?? (is_array($status) ? $status : null);
-
-        if ($statement) fireErr($message, $newStatus)
-            ->reason($reason)
-            ->die();
+        if ($statement) self::fireErr($message, $status)->die();
     }
 
     /**
@@ -79,7 +65,7 @@ class Util
             return Carbon::parse($date);
         } catch (\Exception $e) {
 
-            fireErr($e->getMessage())->die();
+            self::fireErr($e->getMessage())->die();
         }
     }
 
@@ -109,7 +95,7 @@ class Util
     {
         if (is_callable($myFunction)) return $myFunction();
 
-        if ($throwableMsg) fireErr($throwableMsg)->die();
+        if ($throwableMsg) self::fireErr($throwableMsg)->die();
 
         return $myFunction;
     }
