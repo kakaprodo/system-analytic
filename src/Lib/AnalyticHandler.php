@@ -55,8 +55,11 @@ abstract class AnalyticHandler extends AnalyticHandlerBase
      */
     public function response($result, $forCache = false): AnalyticResponse
     {
-        if (($cachePeriode = $this->shouldCacheFor()) && !$forCache) {
-            Cache::put($this->resultCacheKey, $result, $cachePeriode);
+        if ($this->supportCaching) {
+
+            if (($cachePeriode = $this->shouldCacheFor()) && !$forCache) {
+                Cache::put($this->resultCacheKey, $result, $cachePeriode);
+            }
         }
 
         return AnalyticResponse::make($result, $this);

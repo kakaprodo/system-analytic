@@ -13,7 +13,7 @@ class AnalyticHandlerGenerator extends GeneratorCommand
     /**
      * type can be: BarChart, CardCoun, List, PieChart
      */
-    protected $signature = 'system-analytic:handler {name} {--type=} {--bar-chart} {--list} {--card-count} {--computed} {--pie-chart}';
+    protected $signature = 'system-analytic:handler {name} {--type=} {--bar-chart} {--list} {--card-count} {--card} {--computed} {--pie-chart}';
 
     protected $description = 'Create the System Analytic Skeleton';
 
@@ -21,6 +21,7 @@ class AnalyticHandlerGenerator extends GeneratorCommand
         'bar-chart' => 'BarChart',
         'list' => 'List',
         'card-count' => 'CardCount',
+        'card' => 'CardCount',
         'computed' => 'Computed',
         'pie-chart' => 'PieChart',
     ];
