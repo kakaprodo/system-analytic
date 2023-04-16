@@ -85,12 +85,25 @@ abstract class AnalyticHandlerBase
      */
     public $resultCacheKey = null;
 
+    /**
+     * when this is called to a handler, it means, the handler
+     * does not have to expect a scope type
+     */
+    public static $scopeIsRequired = true;
+
+    /**
+     * check if the project support analytic response
+     * caching
+     */
+    protected $supportCaching = null;
+
     public function __construct(AnalyticData $data)
     {
         $this->data = $data;
         $this->shouldExport = $data->should_export;
         $this->exportFile = $data->file_type;
         $this->resultCacheKey = $this->data->dataKey();
+        $this->supportCaching = config('system-analytic.should_cache_result');
     }
 
     /**
@@ -246,6 +259,8 @@ abstract class AnalyticHandlerBase
      */
     protected function shouldRenderCaches()
     {
+        if (!$this->supportCaching) return false;
+
         if ($this->data->needsToClearCache()) {
 
             cache()->forget($this->data->dataKey());

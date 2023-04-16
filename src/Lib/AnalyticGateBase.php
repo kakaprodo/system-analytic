@@ -39,6 +39,18 @@ abstract class AnalyticGateBase extends CustomActionBuilder
     }
 
     /**
+     * get the handler class based on it type
+     */
+    public static function handlerClass($handlerType)
+    {
+        $handlerClass =  static::registeredHandlers()[$handlerType] ?? null;
+
+        Util::whenNot($handlerClass, 'Invalid analalytic type, you should register first the handler of type:' . $handlerType);
+
+        return $handlerClass;
+    }
+
+    /**
      * all the scope types supported by a given handler
      */
     public static function detectScopeTypes($handlerType)

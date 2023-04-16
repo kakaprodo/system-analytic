@@ -15,12 +15,6 @@ class {class_name} extends CardCount
     protected $scopeColumn = "table.created_at";
 
     /**
-     * The column that will be used to group the result
-     * of your query
-     */
-    protected $groupBy = 'created_at';
-
-    /**
      * the aggregate function to apply to the data
      */
     protected $aggregate = 'sum';
