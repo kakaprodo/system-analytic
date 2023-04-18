@@ -2,6 +2,8 @@
 
 namespace Kakaprodo\SystemAnalytic\Lib\Interfaces;
 
+use Kakaprodo\SystemAnalytic\Lib\AnalyticHandler;
+
 
 interface AnalyticHandlerRegisterInterface
 {
@@ -34,4 +36,11 @@ interface AnalyticHandlerRegisterInterface
      * This is useful when you want to cash the analytic response
      */
     public function ignorePropertyForKeyGenerator(): array;
+
+
+    /**
+     * a function that define whether the current authenticated user 
+     * is an admin user
+     */
+    public function scopeUserIsAdmin(AnalyticHandler $handler);
 }
