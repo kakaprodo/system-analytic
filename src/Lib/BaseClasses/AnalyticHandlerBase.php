@@ -8,11 +8,13 @@ use Kakaprodo\SystemAnalytic\Utilities\Util;
 use Kakaprodo\SystemAnalytic\Lib\Data\AnalyticData;
 use Kakaprodo\SystemAnalytic\Lib\FilterHub\AnalyticFilterHub;
 use Kakaprodo\SystemAnalytic\Lib\FilterHub\AnalyticBoolFilterHub;
+use Kakaprodo\SystemAnalytic\Lib\BaseClasses\Traits\HasMethodCallingTrait;
 use Kakaprodo\SystemAnalytic\Lib\Validation\HasAnalyticInterfaceValidationTrait;
 
 abstract class AnalyticHandlerBase
 {
-    use HasAnalyticInterfaceValidationTrait;
+    use HasMethodCallingTrait,
+        HasAnalyticInterfaceValidationTrait;
 
     /**
      * the analytic query
@@ -118,6 +120,14 @@ abstract class AnalyticHandlerBase
     public function getQuery()
     {
         return $this->query();
+    }
+
+    /**
+     * get the analytic data
+     */
+    public function getData(): AnalyticData
+    {
+        return $this->data;
     }
 
     /**
@@ -271,5 +281,14 @@ abstract class AnalyticHandlerBase
         if (!$this->shouldCacheFor()) return false;
 
         return cache()->has($this->resultCacheKey);
+    }
+
+    /**
+     * data to return with the response result
+     * if the handler support api resource class
+     */
+    public function withResponse(): array
+    {
+        return [];
     }
 }

@@ -2,7 +2,6 @@
 
 namespace Kakaprodo\SystemAnalytic\Lib;
 
-use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Database\Eloquent\Model;
 use Kakaprodo\SystemAnalytic\Utilities\Util;
 use Kakaprodo\SystemAnalytic\Lib\AnalyticHandler;
@@ -48,7 +47,7 @@ class AnalyticResponse
     {
         if ($this->handler->shouldExport) return $this->export();
 
-        $resource = $this->handler->resource;
+        if (!$resource = $this->handler->resource) return $this->result;
 
         return  $resource ?  $this->formatResourceData($resource) : $this->result;
     }
@@ -59,9 +58,11 @@ class AnalyticResponse
      */
     private function formatResourceData(string $resource)
     {
-        return $this->result instanceof Model ?
-            new $resource($this->result)
-            : $resource::collection($this->result);
+        if ($this->result instanceof Model) return new $resource($this->result);
+
+        return $resource::collection($this->result)->additional([
+            'additional' => $this->handler->withResponse()
+        ]);
     }
 
     /**
