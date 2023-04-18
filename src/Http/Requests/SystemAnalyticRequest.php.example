@@ -4,12 +4,13 @@ namespace App\Http\Requests;
 
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
-use Kakaprodo\SystemAnalytic\AnalyticGate;
 use Illuminate\Foundation\Http\FormRequest;
 use Kakaprodo\SystemAnalytic\Utilities\Util;
-use Kakaprodo\SystemAnalytic\Lib\FilterHub\AnalyticFilterHub;
-use Kakaprodo\SystemAnalytic\Lib\ExportHub\Base\ExportHubBase;
 
+/**
+ * This class gives you an example on how you can validate your 
+ * request before you can pass it to the AnalyticGate class
+ */
 class SystemAnalyticRequest extends FormRequest
 {
     /**
