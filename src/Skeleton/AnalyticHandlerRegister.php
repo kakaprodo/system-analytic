@@ -2,6 +2,7 @@
 
 namespace App\Http\SystemAnalytic;
 
+use Kakaprodo\SystemAnalytic\Lib\AnalyticHandler;
 use Kakaprodo\SystemAnalytic\Lib\Data\Base\AnalyticHandlerRegisterBase;
 
 class AnalyticHandlerRegister extends AnalyticHandlerRegisterBase
@@ -33,5 +34,14 @@ class AnalyticHandlerRegister extends AnalyticHandlerRegisterBase
     public function ignorePropertyForKeyGenerator(): array
     {
         return [];
+    }
+
+    /**
+     * a function that define whether the current authenticated user 
+     * is an admin user
+     */
+    public function scopeUserIsAdmin(AnalyticHandler $handler)
+    {
+        return null;
     }
 }
