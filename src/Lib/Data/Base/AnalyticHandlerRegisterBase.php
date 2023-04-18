@@ -4,11 +4,26 @@ namespace Kakaprodo\SystemAnalytic\Lib\Data\Base;
 
 use Kakaprodo\SystemAnalytic\Lib\Data\Base\DataType;
 use Kakaprodo\SystemAnalytic\Lib\Interfaces\AnalyticHandlerRegisterInterface;
+use Kakaprodo\SystemAnalytic\Utilities\Util;
 
 abstract class AnalyticHandlerRegisterBase extends DataType implements AnalyticHandlerRegisterInterface
 {
     protected function expectedProperties(): array
     {
         return [];
+    }
+
+    /**
+     * Handle the scope method calling
+     */
+    public function __call($name, $arguments)
+    {
+        $appropriateMethod = "scope" . (Util::strTitle($name));
+
+        if (!method_exists($this, $appropriateMethod)) {
+            throw Util::fireErr("Method {$name} does not exists");
+        }
+
+        return $this->$appropriateMethod(...$arguments);
     }
 }
