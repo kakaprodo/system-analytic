@@ -4,6 +4,9 @@ namespace Kakaprodo\SystemAnalytic\Utilities;
 
 use Carbon\Carbon;
 use Illuminate\Support\Str;
+use Kakaprodo\SystemAnalytic\AnalyticGate;
+use Kakaprodo\SystemAnalytic\Lib\FilterHub\AnalyticFilterHub;
+use Kakaprodo\SystemAnalytic\Lib\ExportHub\Base\ExportHubBase;
 use Kakaprodo\SystemAnalytic\Exception\SystemAnalyticException;
 
 class Util
@@ -133,5 +136,83 @@ class Util
     public static function validationFolder()
     {
         return config('system-analytic.form_validation_path') . '/' . config('system-analytic.folder_name');
+    }
+
+    /**
+     * all the registered analytic handlers
+     */
+    public static function allHandlers()
+    {
+        return AnalyticGate::allHandlers();
+    }
+
+    /**
+     * Check if the scope should be required 
+     */
+    public static function  shouldRequireScope($analyticType)
+    {
+        $handlerClass = AnalyticGate::handlerClass($analyticType);
+
+        return $handlerClass::$scopeIsRequired === true;
+    }
+
+    /**
+     * provide date validation rule based on scope type 
+     */
+    public static function detectDateFormat($scopeType)
+    {
+        if (!AnalyticGate::isPeriodicTypes($scopeType)) return;
+
+        $format =  [
+            AnalyticFilterHub::TYPE_FIXED_MONTH => 'Y-m',
+            AnalyticFilterHub::TYPE_FIXED_YEAR => 'Y',
+            AnalyticFilterHub::TYPE_RANGE_DATE => 'Y-m-d',
+            AnalyticFilterHub::TYPE_RANGE_MONTH => 'Y-m',
+            AnalyticFilterHub::TYPE_RANGE_YEAR => 'Y',
+        ][$scopeType] ?? 'Y-m-d';
+
+        return 'date_format:' . $format;
+    }
+
+    /**
+     * Grab supported scope type of a given handler
+     */
+    public static function handlerScopeTypes($analyticType)
+    {
+        return AnalyticGate::detectScopeTypes($analyticType);
+    }
+
+    /**
+     * check if the scope type is in the group of fixed
+     * scope type(like fixed_month,...)
+     */
+    public static function isFixedScopeType($scopeType)
+    {
+        return  AnalyticGate::isFixedScopeType($scopeType);
+    }
+
+    /**
+     * check if the provided scope is of range type
+     * like(range_year, range_month,...)
+     */
+    public static function isRangeScopeType($scopeType)
+    {
+        return  AnalyticGate::isRangeScopeType($scopeType);
+    }
+
+    /**
+     * get all the scope types supported by boolean filtering
+     */
+    public static function getBooleanScopeTypes($analyticType)
+    {
+        return  AnalyticGate::detectBooleanScopeTypes($analyticType);
+    }
+
+    /**
+     * get all the files extension that can be exported
+     */
+    public static function exportSupportedFiles()
+    {
+        return  ExportHubBase::$supporteFiles;
     }
 }
