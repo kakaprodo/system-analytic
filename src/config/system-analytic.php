@@ -43,5 +43,18 @@ return [
      * Define if the response about the analytic should be cached.
      * Note that, this is not applied on the "List" analytic type.
      */
-    'should_cache_result' => false
+    'should_cache_result' => false,
+
+
+    /**
+     * By default the package support data export using  csv, xlsx and 
+     * view template. But when the value of this key true, that means, 
+     * the package will use only csv to export data.
+     */
+    'export_to_csv_only' => false,
+
+    /**
+     * The chunk number to be used when exporting with csv
+     */
+    'chunk_number_for_export' => 1000,
 ];

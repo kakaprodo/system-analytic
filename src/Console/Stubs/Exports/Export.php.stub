@@ -16,7 +16,7 @@ class {class_name} implements FromQuery, WithMapping, WithHeadings
      */
     protected $query;
 
-    public function __construct($query)
+    public function __construct($query = null)
     {
         $this->query = $query;
     }

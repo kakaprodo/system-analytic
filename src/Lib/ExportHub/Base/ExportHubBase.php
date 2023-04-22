@@ -35,6 +35,22 @@ abstract class ExportHubBase
         self::EXCEL_FRROM_VIEW
     ];
 
+    /**
+     * excel exporting formatter
+     */
+    abstract public function toExcel();
+
+    /**
+     * csv exporting formatter
+     */
+    abstract public function toCsv();
+
+    /**
+     * template to excel exporting
+     */
+    abstract public function toExcelFromView();
+
+
     public function __construct(AnalyticResponse $response)
     {
         if (!class_exists('Maatwebsite\Excel\Excel')) {
@@ -70,8 +86,8 @@ abstract class ExportHubBase
     protected function detectExportType()
     {
         $exportHandler =  [
-            self::EXCEL => fn () => $this->toExcel(),
-            self::CSV => fn () =>  $this->toExcel(),
+            self::EXCEL => fn () => config('system-analytic.export_to_csv_only') ? $this->toCsv() : $this->toExcel(),
+            self::CSV => fn () =>  $this->toCsv(),
             self::EXCEL_FRROM_VIEW => fn () =>  $this->toExcelFromView(),
         ][$this->exportType] ?? null;
 
