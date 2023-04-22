@@ -5,7 +5,6 @@ namespace Kakaprodo\SystemAnalytic\Utilities;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
 use Kakaprodo\SystemAnalytic\AnalyticGate;
-use Kakaprodo\SystemAnalytic\Lib\FilterHub\AnalyticFilterHub;
 use Kakaprodo\SystemAnalytic\Lib\ExportHub\Base\ExportHubBase;
 use Kakaprodo\SystemAnalytic\Exception\SystemAnalyticException;
 use Kakaprodo\SystemAnalytic\Http\Requests\Rules\AnalyticDateTimeFormat;
@@ -205,5 +204,13 @@ class Util
     public static function exportSupportedFiles()
     {
         return  ExportHubBase::$supporteFiles;
+    }
+
+    /**
+     * generate a uuid
+     */
+    public static function uuid()
+    {
+        return (string) Str::uuid();
     }
 }

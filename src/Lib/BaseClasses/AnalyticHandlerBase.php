@@ -59,9 +59,9 @@ abstract class AnalyticHandlerBase
     public $supportExport = false;
 
     /**
-     * The export file, can be: xlsx, pdf, csv
+     * The export file, can be: xlsx, csv
      */
-    public $exportFile = 'xlsx';
+    public $exportFile = 'csv';
 
     /**
      * The class that will format the data before the export.
@@ -100,6 +100,11 @@ abstract class AnalyticHandlerBase
      * caching
      */
     protected $supportCaching = null;
+
+    /**
+     * is true when the base query is being refiltered
+     */
+    public $isRefiltering = false;
 
     public function __construct(AnalyticData $data)
     {
@@ -173,13 +178,20 @@ abstract class AnalyticHandlerBase
     }
 
     /**
-     * reapply all the supported filter on a given query
+     * Call again the query from the handler
+     * and apply all the filters on it
+     * 
+     * @return query
      */
-    public function reFilterQuery($query)
+    public function reFilterQuery()
     {
-        $this->query = $query;
+        $this->isRefiltering = true;
 
-        $this->filter();
+        $this->query = $this->query();
+
+        $this->applyBoolFilter()->applyFilter();
+
+        $this->isRefiltering = false;
 
         return $this->query;
     }
