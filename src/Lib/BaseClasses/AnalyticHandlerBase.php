@@ -10,10 +10,12 @@ use Kakaprodo\SystemAnalytic\Lib\FilterHub\AnalyticFilterHub;
 use Kakaprodo\SystemAnalytic\Lib\FilterHub\AnalyticBoolFilterHub;
 use Kakaprodo\SystemAnalytic\Lib\BaseClasses\Traits\HasMethodCallingTrait;
 use Kakaprodo\SystemAnalytic\Lib\Validation\HasAnalyticInterfaceValidationTrait;
+use Kakaprodo\SystemAnalytic\Lib\BaseClasses\Traits\HasGeneralHandlerHelperTrait;
 
 abstract class AnalyticHandlerBase
 {
     use HasMethodCallingTrait,
+        HasGeneralHandlerHelperTrait,
         HasAnalyticInterfaceValidationTrait;
 
     /**

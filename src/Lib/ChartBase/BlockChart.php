@@ -55,12 +55,11 @@ abstract class BlockChart extends AnalyticHandler
      * where the query will be injected after get filtered to 
      * Group result foreach block of the bar-chart
      */
-    protected function groupBlockResult($query)
+    protected function groupBlockResult()
     {
-        return $query->lazy()->groupBy(function ($item) {
-            return !$this->data->scopeIsYear()
-                ? Util::parseDate($item->{$this->groupBy})->format('d M Y')
-                : Util::parseDate($item->{$this->groupBy})->format('M Y');
+        return $this->query->lazy()->groupBy(function ($item) {
+
+            return Util::parseDate($item->{$this->groupBy})->format($this->data->scopeValueFormatForCarbon());
         });
     }
 

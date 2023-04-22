@@ -86,6 +86,7 @@ abstract class AnalyticGateBase extends CustomActionBuilder
     public static function supportedFixedScopeTypes()
     {
         return [
+            AnalyticFilterHub::TYPE_FIXED_HOUR,
             AnalyticFilterHub::TYPE_FIXED_DATE,
             AnalyticFilterHub::TYPE_FIXED_MONTH,
             AnalyticFilterHub::TYPE_FIXED_YEAR,
@@ -95,6 +96,7 @@ abstract class AnalyticGateBase extends CustomActionBuilder
     public static function supportedRangeScopeTypes()
     {
         return [
+            AnalyticFilterHub::TYPE_RANGE_HOUR,
             AnalyticFilterHub::TYPE_RANGE_DATE,
             AnalyticFilterHub::TYPE_RANGE_MONTH,
             AnalyticFilterHub::TYPE_RANGE_YEAR,
