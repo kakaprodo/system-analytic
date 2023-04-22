@@ -8,6 +8,7 @@ use Kakaprodo\SystemAnalytic\AnalyticGate;
 use Kakaprodo\SystemAnalytic\Lib\FilterHub\AnalyticFilterHub;
 use Kakaprodo\SystemAnalytic\Lib\ExportHub\Base\ExportHubBase;
 use Kakaprodo\SystemAnalytic\Exception\SystemAnalyticException;
+use Kakaprodo\SystemAnalytic\Http\Requests\Rules\AnalyticDateTimeFormat;
 
 class Util
 {
@@ -161,17 +162,7 @@ class Util
      */
     public static function detectDateFormat($scopeType)
     {
-        if (!AnalyticGate::isPeriodicTypes($scopeType)) return;
-
-        $format =  [
-            AnalyticFilterHub::TYPE_FIXED_MONTH => 'Y-m',
-            AnalyticFilterHub::TYPE_FIXED_YEAR => 'Y',
-            AnalyticFilterHub::TYPE_RANGE_DATE => 'Y-m-d',
-            AnalyticFilterHub::TYPE_RANGE_MONTH => 'Y-m',
-            AnalyticFilterHub::TYPE_RANGE_YEAR => 'Y',
-        ][$scopeType] ?? 'Y-m-d';
-
-        return 'date_format:' . $format;
+        return new AnalyticDateTimeFormat($scopeType);
     }
 
     /**

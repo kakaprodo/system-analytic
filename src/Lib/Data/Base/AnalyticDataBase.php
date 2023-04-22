@@ -46,6 +46,59 @@ abstract class AnalyticDataBase extends DataType
         return e($this->scope_to_date);
     }
 
+
+    /**
+     * Format the scope date column for database query
+     */
+    public function scopeValueFormatForDb()
+    {
+        return [
+            self::SCOPE_CATEGORY_HOUR => value(fn () => [
+                AnalyticFilterHub::TYPE_FIXED_HOUR => '%Y-%m-%d %H:%i',
+                AnalyticFilterHub::TYPE_RANGE_HOUR => '%Y-%m-%d %H:00'
+            ][$this->scope_type] ?? null),
+            self::SCOPE_CATEGORY_MONTH => '%Y-%m-%d',
+            self::SCOPE_CATEGORY_YEAR => '%Y-%m'
+        ][$this->scopeCategory()];
+    }
+
+    /**
+     * Format the scope date column for carbon date
+     */
+    public function scopeValueFormatForCarbon()
+    {
+        return [
+            self::SCOPE_CATEGORY_HOUR =>  value(fn () => [
+                AnalyticFilterHub::TYPE_FIXED_HOUR => 'd M h:i A',
+                AnalyticFilterHub::TYPE_RANGE_HOUR => 'd M h A'
+            ][$this->scope_type] ?? null),
+            self::SCOPE_CATEGORY_MONTH => 'd M Y',
+            self::SCOPE_CATEGORY_YEAR => 'M Y'
+        ][$this->scopeCategory()];
+    }
+
+    /**
+     * detect the scope category
+     */
+    public function scopeCategory()
+    {
+        if ($this->scopeIsHour()) return self::SCOPE_CATEGORY_HOUR;
+
+        return $this->scopeIsYear() ? self::SCOPE_CATEGORY_YEAR : self::SCOPE_CATEGORY_MONTH;
+    }
+
+    /**
+     * check if the analytic type is of hour
+     * category
+     */
+    public function scopeIsHour()
+    {
+        return in_array($this->scope_type, [
+            AnalyticFilterHub::TYPE_FIXED_HOUR,
+            AnalyticFilterHub::TYPE_RANGE_HOUR,
+        ]);
+    }
+
     /**
      * check if the scope type target per year filtering
      */
@@ -59,14 +112,6 @@ abstract class AnalyticDataBase extends DataType
             AnalyticFilterHub::TYPE_RANGE_MONTH,
             AnalyticFilterHub::TYPE_RANGE_YEAR,
         ]);
-    }
-
-    /**
-     * Format the scope date column for database query
-     */
-    public function scopeValueFormatForDb()
-    {
-        return $this->scopeIsYear() ? '%Y-%m' : '%Y-%m-%d';
     }
 
     /**

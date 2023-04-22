@@ -8,6 +8,10 @@ use Kakaprodo\SystemAnalytic\Utilities\Util;
 class AnalyticData extends AnalyticDataBase
 {
 
+    const SCOPE_CATEGORY_HOUR = 'hour';
+    const SCOPE_CATEGORY_MONTH = 'month';
+    const SCOPE_CATEGORY_YEAR = 'year';
+
     /**
      * The date column on which we can reference 
      * the scope

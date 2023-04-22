@@ -25,10 +25,12 @@ class AnalyticFilterHub
     const TYPE_LAST_MONTH = "last_month";
     const TYPE_LAST_YEAR = "last_year";
 
+    const TYPE_FIXED_HOUR = "fixed_hour";
     const TYPE_FIXED_DATE = "fixed_date";
     const TYPE_FIXED_MONTH = "fixed_month";
     const TYPE_FIXED_YEAR = "fixed_year";
 
+    const TYPE_RANGE_HOUR = "range_hour";
     const TYPE_RANGE_DATE = "range_date";
     const TYPE_RANGE_MONTH = "range_month";
     const TYPE_RANGE_YEAR = "range_year";
@@ -63,10 +65,12 @@ class AnalyticFilterHub
             self::TYPE_LAST_MONTH => fn () => $this->filterByLastMonth($query),
             self::TYPE_LAST_YEAR => fn () => $this->filterByLastYear($query),
 
+            self::TYPE_FIXED_HOUR => fn () => $this->filterByFixedHour($query),
             self::TYPE_FIXED_DATE => fn () => $this->filterByFixedDate($query),
             self::TYPE_FIXED_MONTH => fn () => $this->filterByFixedMonth($query),
             self::TYPE_FIXED_YEAR => fn () => $this->filterByFixedYear($query),
 
+            self::TYPE_RANGE_HOUR => fn () => $this->filterByRangeHour($query),
             self::TYPE_RANGE_DATE => fn () => $this->filterByRangeDate($query),
             self::TYPE_RANGE_MONTH => fn () => $this->filterByRangeMonth($query),
             self::TYPE_RANGE_YEAR => fn () => $this->filterByRangeYear($query),
@@ -139,6 +143,14 @@ class AnalyticFilterHub
         return $this->filterByFixedYear($query);
     }
 
+    protected function filterByFixedHour($query)
+    {
+        $this->data->scope_from_date =  Util::formatDate($this->data->scopeValue(), 'Y-m-d H:i:s');
+        $this->data->scope_to_date =  Util::parseDate($this->data->scope_from_date)->endOfHour();
+
+        return $this->filterByRangeHour($query);
+    }
+
     protected function filterByFixedDate($query)
     {
         $date = Util::formatDate($this->data->scopeValue(), 'Y-m-d');
@@ -161,6 +173,17 @@ class AnalyticFilterHub
             $this->data->scopeColumn,
             $this->data->scopeValue()
         );
+    }
+
+    protected function filterByRangeHour($query)
+    {
+        return $query->where(function ($q) {
+            $startHour = Util::formatDate($this->data->scopeFromDate(), 'Y-m-d H:i:s');
+            $endHour = Util::formatDate($this->data->scopeToDate(), 'Y-m-d H:i:s');
+
+            $q->where($this->data->scopeColumn, '>=', $startHour)
+                ->where($this->data->scopeColumn, '<=', $endHour);
+        });
     }
 
     protected function filterByRangeDate($query)
