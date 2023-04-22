@@ -2,11 +2,16 @@
 
 namespace Kakaprodo\SystemAnalytic\Lib\Data\Base;
 
+use Kakaprodo\SystemAnalytic\Utilities\Util;
 use Kakaprodo\SystemAnalytic\Lib\Data\Base\DataType;
 use Kakaprodo\SystemAnalytic\Lib\FilterHub\AnalyticFilterHub;
 
 abstract class AnalyticDataBase extends DataType
 {
+    const SCOPE_CATEGORY_HOUR = 'hour';
+    const SCOPE_CATEGORY_MONTH = 'month';
+    const SCOPE_CATEGORY_YEAR = 'year';
+
     /**
      * set a date column on which the filter scope will be applied to
      */
@@ -121,5 +126,28 @@ abstract class AnalyticDataBase extends DataType
     public function needsToClearCache(): bool
     {
         return (bool) $this->should_clear_cache;
+    }
+
+    /**
+     * Get the value of the scope based on the scope_type
+     * 
+     * this will return the first_date in case the 
+     * scope_type will involve a range date filtering
+     * 
+     * eg: if the scope_type is this_week, then the return value will be the
+     * one of monday
+     */
+    public function getFilterScopeValue()
+    {
+        if ($this->filterScopeValue) return $this->filterScopeValue;
+
+        $this->filterScopeValue = AnalyticFilterHub::apply($this, null, true);
+
+
+        $this->filterScopeValue = count(explode('-', $this->filterScopeValue)) == 1
+            ?  ($this->filterScopeValue . '-01') // when only a given year is given, then add january to the year
+            : $this->filterScopeValue;
+
+        return  Util::formatDate($this->filterScopeValue, $this->scopeIsHour() ? 'Y-m-d H:i:s' : 'Y-m-d');
     }
 }

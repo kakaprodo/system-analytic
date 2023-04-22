@@ -37,16 +37,45 @@ class AnalyticFilterHub
 
     const TYPE_ALL = "all";
 
+    /**
+     * define wether a request to this class needs to know
+     * only the first date of the scope value
+     */
+    protected $shouldReturnScopeValue = false;
+
+    /**
+     * the start date of the scope
+     */
+    protected $startFromDate = null;
+
     public function __construct(AnalyticData $data)
     {
         $this->data = $data;
     }
 
-    public static function apply(AnalyticData $data, $query)
-    {
+    /**
+     * create the instance and filter the analytic query
+     * 
+     * Note: the query is null only when when need to find
+     *  the value of the scope
+     */
+    public static function apply(
+        AnalyticData $data,
+        $query = null,
+        $onlyScopeValue = false
+    ) {
         if (!$data->scope_type) return $query;
 
-        return (new self($data))->applyFilter($query);
+        return (new self($data))
+            ->getOnlyScopeValue($onlyScopeValue)
+            ->applyFilter($query);
+    }
+
+    public function getOnlyScopeValue($onlyScopeValue)
+    {
+        $this->shouldReturnScopeValue = $onlyScopeValue;
+
+        return $this;
     }
 
     public function applyFilter($query)
@@ -106,46 +135,71 @@ class AnalyticFilterHub
 
     protected function filterByThisWeek($query)
     {
-        return $query->whereDate($this->data->scopeColumn, '>=', today()->startOfWeek());
+        $this->startFromDate =  today()->startOfWeek();
+
+        if ($this->shouldReturnScopeValue) return  $this->startFromDate;
+
+        return $query->whereDate($this->data->scopeColumn, '>=', $this->startFromDate);
     }
 
     protected function filterByThisMonth($query)
     {
-        return $query->whereDate($this->data->scopeColumn, '>=', today()->startOfMonth());
+        $this->startFromDate =  today()->startOfMonth();
+
+        if ($this->shouldReturnScopeValue) return  $this->startFromDate;
+
+        return $query->whereDate($this->data->scopeColumn, '>=', $this->startFromDate);
     }
 
     protected function filterByThisYear($query)
     {
-        return $query->whereDate($this->data->scopeColumn, '>=', today()->startOfYear());
+        $this->startFromDate =  today()->startOfYear();
+
+        if ($this->shouldReturnScopeValue) return  $this->startFromDate;
+
+        return $query->whereDate($this->data->scopeColumn, '>=', $this->startFromDate);
     }
 
     protected function filterByLastWeek($query)
     {
         $previousWeek = today()->subWeek();
 
-        $this->data->scope_from_date =  Util::formatDate($previousWeek->startOfWeek(), 'Y-m-d');
+        $this->startFromDate = $previousWeek->startOfWeek();
+        $this->data->scope_from_date =  Util::formatDate($this->startFromDate, 'Y-m-d');
         $this->data->scope_to_date =  Util::formatDate($previousWeek->endOfWeek(), 'Y-m-d');
+
+        if ($this->shouldReturnScopeValue) return  $this->startFromDate;
 
         return $this->filterByRangeDate($query);
     }
 
     protected function filterByLastMonth($query)
     {
-        $this->data->scope_value = today()->subDays(31);
+        $this->startFromDate =  today()->subDays(31)->startOfMonth();
+        $this->data->scope_value =   $this->startFromDate;
+
+        if ($this->shouldReturnScopeValue) return  $this->startFromDate;
 
         return $this->filterByFixedMonth($query);
     }
 
     protected function filterByLastYear($query)
     {
-        $this->data->scope_value = Util::formatDate(today()->subYear(), 'Y');
+        $this->startFromDate = today()->subYear()->startOfYear();
+        $this->data->scope_value = Util::formatDate($this->startFromDate, 'Y');
+
+        if ($this->shouldReturnScopeValue) return  $this->startFromDate;
 
         return $this->filterByFixedYear($query);
     }
 
     protected function filterByFixedHour($query)
     {
-        $this->data->scope_from_date =  Util::formatDate($this->data->scopeValue(), 'Y-m-d H:i:s');
+        $this->startFromDate = Util::formatDate($this->data->scopeValue(), 'Y-m-d H:i:s');
+
+        if ($this->shouldReturnScopeValue) return  $this->startFromDate;
+
+        $this->data->scope_from_date = $this->startFromDate;
         $this->data->scope_to_date =  Util::parseDate($this->data->scope_from_date)->endOfHour();
 
         return $this->filterByRangeHour($query);
@@ -153,15 +207,22 @@ class AnalyticFilterHub
 
     protected function filterByFixedDate($query)
     {
-        $date = Util::formatDate($this->data->scopeValue(), 'Y-m-d');
+        $this->startFromDate = $this->data->scopeValue();
+        $date = Util::formatDate($this->startFromDate, 'Y-m-d');
+
+        if ($this->shouldReturnScopeValue) return  $this->startFromDate;
 
         return $query->whereDate($this->data->scopeColumn, $date);
     }
 
     protected function filterByFixedMonth($query)
     {
-        $monthYear = Util::formatDate($this->data->scopeValue(), 'm-Y');
+        $this->startFromDate = $this->data->scopeValue();
+
+        $monthYear = Util::formatDate($this->startFromDate, 'm-Y');
         [$month, $year] = explode('-', $monthYear);
+
+        if ($this->shouldReturnScopeValue) return  $this->startFromDate;
 
         return $query->whereMonth($this->data->scopeColumn, $month)
             ->whereYear($this->data->scopeColumn, $year);
@@ -169,55 +230,65 @@ class AnalyticFilterHub
 
     protected function filterByFixedYear($query)
     {
+        $this->startFromDate = $this->data->scopeValue();
+
+        if ($this->shouldReturnScopeValue) return  $this->startFromDate;
+
         return $query->whereYear(
             $this->data->scopeColumn,
-            $this->data->scopeValue()
+            $this->startFromDate
         );
     }
 
     protected function filterByRangeHour($query)
     {
+        $this->startFromDate = Util::formatDate($this->data->scopeFromDate(), 'Y-m-d H:i:s');
+
+        if ($this->shouldReturnScopeValue) return  $this->startFromDate;
+
         return $query->where(function ($q) {
-            $startHour = Util::formatDate($this->data->scopeFromDate(), 'Y-m-d H:i:s');
             $endHour = Util::formatDate($this->data->scopeToDate(), 'Y-m-d H:i:s');
 
-            $q->where($this->data->scopeColumn, '>=', $startHour)
+            $q->where($this->data->scopeColumn, '>=', $this->startFromDate)
                 ->where($this->data->scopeColumn, '<=', $endHour);
         });
     }
 
     protected function filterByRangeDate($query)
     {
+        $this->startFromDate = $this->data->scopeFromDate();
+
+        if ($this->shouldReturnScopeValue) return  $this->startFromDate;
+
         return $query->where(function ($q) {
-            $q->whereDate($this->data->scopeColumn, '>=', $this->data->scopeFromDate())
+            $q->whereDate($this->data->scopeColumn, '>=', $this->startFromDate)
                 ->whereDate($this->data->scopeColumn, '<=', $this->data->scopeToDate());
         });
     }
 
     protected function filterByRangeMonth($query)
     {
-        $fromMonthYear = Util::formatDate($this->data->scopeFromDate(), 'm-Y');
-        $toMonthYear = Util::formatDate($this->data->scopeToDate(), 'm-Y');
+        $this->startFromDate = $this->data->scopeFromDate();
 
-        return $query->where(function ($q)  use ($fromMonthYear) {
+        if ($this->shouldReturnScopeValue) return  $this->startFromDate;
 
-            [$month, $year] = explode('-', $fromMonthYear);
+        $fromMonthYear = Util::parseDate(Util::formatDate($this->startFromDate, 'Y-m-d'));
+        $toMonthYear = Util::parseDate(Util::formatDate($this->data->scopeToDate(), 'Y-m-d'));
 
-            $q->whereMonth($this->data->scopeColumn, '>=', $month)
-                ->whereYear($this->data->scopeColumn, '>=', $year);
-        })->where(function ($q) use ($toMonthYear) {
+        $this->data->scope_from_date =  $fromMonthYear->startOfMonth();
+        $this->data->scope_to_date =  $toMonthYear->endOfMonth();
 
-            [$month, $year] = explode('-', $toMonthYear);
-
-            $q->whereMonth($this->data->scopeColumn, '<=', $month)
-                ->whereYear($this->data->scopeColumn, '<=', $year);
-        });
+        return $this->filterByRangeDate($query);
     }
 
     protected function filterByRangeYear($query)
     {
+        $this->startFromDate = $this->data->scopeFromDate();
+
+        if ($this->shouldReturnScopeValue) return  $this->startFromDate;
+
         return $query->where(function ($q) {
-            $q->whereYear($this->data->scopeColumn, '>=', $this->data->scopeFromDate())
+            $q->whereYear($this->data->scopeColumn, '>=', $this->startFromDate)
                 ->whereYear($this->data->scopeColumn, '<=', $this->data->scopeToDate());
         });
     }
