@@ -35,6 +35,8 @@ abstract class ExportHubBase
         self::EXCEL_FRROM_VIEW
     ];
 
+    protected $supportOnlyCsv = false;
+
     /**
      * excel exporting formatter
      */
@@ -53,19 +55,21 @@ abstract class ExportHubBase
 
     public function __construct(AnalyticResponse $response)
     {
-        if (!class_exists('Maatwebsite\Excel\Excel')) {
-            throw new Exception('The system analytic package requires the latest version of maatwebsite/excel, please install this package first');
-        }
-
         $this->response = $response;
+        $this->supportOnlyCsv =  config('system-analytic.export_to_csv_only');
         $fileName = Util::className($this->response->handler);
-        $this->fileExtension = $this->response->handler->exportFile;
+        $this->fileExtension = $this->supportOnlyCsv ? self::CSV : $this->response->handler->exportFile;
+
         $this->fileName = Util::strTitle($fileName) . '.' . $this->fileExtension;
         $this->viewTemplate = $this->response->handler->exportView;
 
         $this->exportType = $this->viewTemplate
             ? self::EXCEL_FRROM_VIEW
             : $this->response->handler->exportFile;
+
+        if (!class_exists('Maatwebsite\Excel\Excel') && $this->exportType == self::EXCEL) {
+            throw new Exception('The system analytic package requires the latest version of maatwebsite/excel, please install this package first');
+        }
     }
 
     /**
