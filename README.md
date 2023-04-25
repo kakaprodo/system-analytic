@@ -23,20 +23,22 @@ AnalyticGate::process([
  composer require kakaprodo/system-analytic
 ```
 
-## 3. Publish Skeleton
+## 3. Publishing Skeleton
 
 -   ### Config file
 
     ```sh
-    php artisan vendor:publish --provider=Kakaprodo\SystemAnalytic\SystemAnalyticServiceProvider --tag=config
+    php artisan system-analytic:config
     ```
+
+    The above command will create the configuration file with name `system-analytic.php` in the config folder.
 
 -   ### Skeleton files
 
-    At this point you can open the `system-analytic.php` file in the config folder. From there you can review all the settings, and customise them according to your desire. Then run the bellow command:
+    At this point you can open the `system-analytic.php` file in the config folder. From there you can review all the settings, and customize them according to your desire. Then run the bellow command to create the analytic `Hub`:
 
     ```sh
-    php artisan vendor:publish --provider=Kakaprodo\SystemAnalytic\SystemAnalyticServiceProvider --tag=analytic-skeleton
+    php artisan system-analytic:install
     ```
 
 After running the above command, a new folder will be created in your app/Http folder(by default) and in the app/Http/Requests folder. in the next section you are going to discover the magic that will be happening in these files. Put your shoes on 🤪
