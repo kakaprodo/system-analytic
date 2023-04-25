@@ -1,6 +1,6 @@
 <?php
 
-namespace Kakaprodo\SystemAnalytic\Http\Requests\Rules;
+namespace Kakaprodo\SystemAnalytic\Http\Rules;
 
 use Illuminate\Contracts\Validation\Rule;
 use Kakaprodo\SystemAnalytic\AnalyticGate;

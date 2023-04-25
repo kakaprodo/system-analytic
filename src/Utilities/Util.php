@@ -7,7 +7,7 @@ use Illuminate\Support\Str;
 use Kakaprodo\SystemAnalytic\AnalyticGate;
 use Kakaprodo\SystemAnalytic\Lib\ExportHub\Base\ExportHubBase;
 use Kakaprodo\SystemAnalytic\Exception\SystemAnalyticException;
-use Kakaprodo\SystemAnalytic\Http\Requests\Rules\AnalyticDateTimeFormat;
+use Kakaprodo\SystemAnalytic\Http\Rules\AnalyticDateTimeFormat;
 
 class Util
 {
