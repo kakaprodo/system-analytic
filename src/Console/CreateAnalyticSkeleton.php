@@ -19,6 +19,8 @@ class CreateAnalyticSkeleton extends Command
             $this->info('START Creating Analytics Hub...');
             $this->publishAnalyticHub();
             $this->info('Analytic Skeleton Successfully created');
+        } else {
+            if ($this->shouldForceInstallation()) $this->publishAnalyticHub();
         }
     }
 
@@ -27,12 +29,24 @@ class CreateAnalyticSkeleton extends Command
         return file_exists(Util::hubFolder());
     }
 
-    private function publishAnalyticHub()
+    private function shouldForceInstallation()
+    {
+        return $this->confirm(
+            'Skeleton files already exist. Do you want to create skeleton anyway?',
+            false
+        );
+    }
+
+    private function publishAnalyticHub($forcePublish = false)
     {
         $params = [
             '--provider' => "Kakaprodo\SystemAnalytic\SystemAnalyticServiceProvider",
             '--tag' => "analytic-skeleton"
         ];
+
+        if ($forcePublish === true) {
+            $params['--force'] = true;
+        }
 
         $this->call('vendor:publish', $params);
     }
