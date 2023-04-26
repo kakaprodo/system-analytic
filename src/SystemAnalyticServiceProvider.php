@@ -5,10 +5,10 @@ namespace Kakaprodo\SystemAnalytic;
 use Exception;
 use Illuminate\Support\ServiceProvider;
 use Kakaprodo\SystemAnalytic\Utilities\Util;
-use Kakaprodo\SystemAnalytic\Console\CreateAnalyticSkeleton;
-use Kakaprodo\SystemAnalytic\Console\InstallAnalyticPackage;
+use Kakaprodo\SystemAnalytic\Console\InstallAnalyticHub;
 use Kakaprodo\SystemAnalytic\Console\MakeExportFileGenerator;
 use Kakaprodo\SystemAnalytic\Console\AnalyticHandlerGenerator;
+use Kakaprodo\SystemAnalytic\Console\InstallAnalyticConfigFile;
 
 class SystemAnalyticServiceProvider extends ServiceProvider
 {
@@ -42,8 +42,8 @@ class SystemAnalyticServiceProvider extends ServiceProvider
         if (!$this->app->runningInConsole()) return;
 
         $this->commands([
-            InstallAnalyticPackage::class,
-            CreateAnalyticSkeleton::class,
+            InstallAnalyticConfigFile::class,
+            InstallAnalyticHub::class,
             AnalyticHandlerGenerator::class,
             MakeExportFileGenerator::class
         ]);

@@ -3,9 +3,8 @@
 namespace Kakaprodo\SystemAnalytic\Console;
 
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\File;
 
-class InstallAnalyticPackage extends Command
+class InstallAnalyticConfigFile extends Command
 {
     protected $signature = 'system-analytic:config';
 

@@ -5,7 +5,7 @@ namespace Kakaprodo\SystemAnalytic\Console;
 use Illuminate\Console\Command;
 use Kakaprodo\SystemAnalytic\Utilities\Util;
 
-class CreateAnalyticSkeleton extends Command
+class InstallAnalyticHub extends Command
 {
     protected $hidden = true;
 

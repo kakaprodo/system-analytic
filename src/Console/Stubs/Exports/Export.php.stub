@@ -2,14 +2,14 @@
 
 namespace {name_space};
 
-use Maatwebsite\Excel\Concerns\FromQuery;
-use Maatwebsite\Excel\Concerns\Exportable;
-use Maatwebsite\Excel\Concerns\WithMapping;
-use Maatwebsite\Excel\Concerns\WithHeadings;
+// use Maatwebsite\Excel\Concerns\FromQuery;
+// use Maatwebsite\Excel\Concerns\Exportable;
+// use Maatwebsite\Excel\Concerns\WithMapping;
+// use Maatwebsite\Excel\Concerns\WithHeadings;
 
-class {class_name} implements FromQuery, WithMapping, WithHeadings
+class {class_name} //implements FromQuery, WithMapping, WithHeadings
 {
-    use Exportable;
+    // use Exportable;
 
     /**
      * the processed query from the analytic handler
