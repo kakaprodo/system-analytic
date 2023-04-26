@@ -48,6 +48,6 @@ abstract class Search extends AnalyticHandler
 
     protected function export($query)
     {
-        return $this->response($query->reorder('transactions.created_at', 'desc'));
+        return $this->response($query);
     }
 }
