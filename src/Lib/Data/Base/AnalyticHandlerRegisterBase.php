@@ -2,17 +2,11 @@
 
 namespace Kakaprodo\SystemAnalytic\Lib\Data\Base;
 
-use Kakaprodo\SystemAnalytic\Lib\Data\Base\DataType;
 use Kakaprodo\SystemAnalytic\Lib\Interfaces\AnalyticHandlerRegisterInterface;
 use Kakaprodo\SystemAnalytic\Utilities\Util;
 
-abstract class AnalyticHandlerRegisterBase extends DataType implements AnalyticHandlerRegisterInterface
+abstract class AnalyticHandlerRegisterBase implements AnalyticHandlerRegisterInterface
 {
-    protected function expectedProperties(): array
-    {
-        return [];
-    }
-
     /**
      * Handle the scope method calling
      */
@@ -25,5 +19,10 @@ abstract class AnalyticHandlerRegisterBase extends DataType implements AnalyticH
         }
 
         return $this->$appropriateMethod(...$arguments);
+    }
+
+    public function __get($name)
+    {
+        return null;
     }
 }

@@ -2,6 +2,7 @@
 
 namespace Kakaprodo\SystemAnalytic\Lib\Data\Base;
 
+use Exception;
 use Kakaprodo\CustomData\CustomData;
 use Kakaprodo\SystemAnalytic\Utilities\Util;
 use Kakaprodo\CustomData\Exceptions\MissedRequiredPropertyException;
@@ -24,16 +25,28 @@ abstract class DataType extends CustomData
     }
 
     /**
+     * The class namespace of handlers register
+     */
+    public static function handlerRegisterClass()
+    {
+        $handlerRegisterClass = config('system-analytic.handler_register');
+
+        if (class_exists($handlerRegisterClass)) return $handlerRegisterClass;
+
+        throw new Exception($handlerRegisterClass . " not found, make sure you have resolved the namespace of the handler_register in the system-analytic.php config file");
+    }
+
+    /**
      * the class where handler, expected Data and other macroMethod 
      * will are registered
      */
-    public function handlerRegisterClass(): AnalyticHandlerRegisterBase
+    public function handlerRegisterData(): AnalyticHandlerRegisterBase
     {
         if ($this->handlerRegisterData) return $this->handlerRegisterData;
 
-        $handlerRegisterClass = config('system-analytic.handler_register');
+        $register = self::handlerRegisterClass();
 
-        return $this->handlerRegisterData = $handlerRegisterClass::make([]);
+        return $this->handlerRegisterData = new $register();
     }
 
     /**

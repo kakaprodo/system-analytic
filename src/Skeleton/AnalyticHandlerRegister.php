@@ -2,6 +2,7 @@
 
 namespace App\Http\SystemAnalytic;
 
+use Kakaprodo\CustomData\CustomData;
 use Kakaprodo\SystemAnalytic\Lib\AnalyticHandler;
 use Kakaprodo\SystemAnalytic\Lib\Data\Base\AnalyticHandlerRegisterBase;
 
@@ -21,7 +22,7 @@ class AnalyticHandlerRegister extends AnalyticHandlerRegisterBase
      * Register data that you need to use in your
      * analytic handlers
      */
-    public function expectedData(): array
+    public function expectedData(CustomData $data): array
     {
         return [];
     }

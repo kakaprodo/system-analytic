@@ -4,11 +4,8 @@ namespace App\Http\Requests;
 
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
-use Kakaprodo\SystemAnalytic\AnalyticGate;
 use Illuminate\Foundation\Http\FormRequest;
 use Kakaprodo\SystemAnalytic\Utilities\Util;
-use Kakaprodo\SystemAnalytic\Lib\FilterHub\AnalyticFilterHub;
-use Kakaprodo\SystemAnalytic\Lib\ExportHub\Base\ExportHubBase;
 
 class SystemAnalyticRequest extends FormRequest
 {

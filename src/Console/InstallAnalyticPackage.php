@@ -15,8 +15,6 @@ class InstallAnalyticPackage extends Command
 
     public function handle()
     {
-        $this->checkForRequiredPackages();
-
         $this->info('START Installing System Analytic Package...');
 
         if (!$this->configExists($this->configFileName)) {
@@ -30,14 +28,6 @@ class InstallAnalyticPackage extends Command
             } else {
                 $this->info('Existing configuration was not overwritten');
             }
-        }
-    }
-
-    protected function checkForRequiredPackages()
-    {
-        if (!class_exists('Kakaprodo\CustomData\CustomData')) {
-            $this->error('The system analytic package requires the latest version of kakaprodo/custom-data');
-            exit();
         }
     }
 

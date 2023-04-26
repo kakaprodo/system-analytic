@@ -27,7 +27,7 @@ class AnalyticData extends AnalyticDataBase
             'file_type?',
             'selected_option?',
             'should_clear_cache?' => $this->dataType()->bool()
-        ], $this->handlerRegisterClass()->expectedData());
+        ], $this->handlerRegisterData()->expectedData($this));
     }
 
     public function ignoreForKeyGenerator(): array
@@ -36,7 +36,7 @@ class AnalyticData extends AnalyticDataBase
             'should_clear_cache',
             'file_type',
             'should_export'
-        ], $this->handlerRegisterClass()->ignorePropertyForKeyGenerator());
+        ], $this->handlerRegisterData()->ignorePropertyForKeyGenerator($this));
     }
 
     /**
@@ -44,9 +44,7 @@ class AnalyticData extends AnalyticDataBase
      */
     public static function handlers(): array
     {
-        $handlerRegisterClass = config('system-analytic.handler_register');
-
-        $handlers =  $handlerRegisterClass::handlers();
+        $handlers =  self::handlerRegisterClass()::handlers();
 
         Util::whenYes($handlers == [], 'You need first to register a handler before calling it');
 

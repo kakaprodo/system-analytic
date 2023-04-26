@@ -10,6 +10,6 @@ trait HasMethodCallingTrait
      */
     public function __call($method, $arguments)
     {
-        return $this->data->handlerRegisterClass()->$method(...[$this, ...$arguments]);
+        return $this->data->handlerRegisterData()->$method(...[$this, ...$arguments]);
     }
 }
