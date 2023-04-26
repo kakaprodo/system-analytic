@@ -2,6 +2,7 @@
 
 namespace Kakaprodo\SystemAnalytic\Lib\Interfaces;
 
+use Kakaprodo\CustomData\CustomData;
 use Kakaprodo\SystemAnalytic\Lib\AnalyticHandler;
 
 
@@ -27,7 +28,7 @@ interface AnalyticHandlerRegisterInterface
      * $this->data->user_id
      * 
      */
-    public function expectedData(): array;
+    public function expectedData(CustomData $data): array;
 
     /**
      * properties to be ingnored among the expectedData  properties 
