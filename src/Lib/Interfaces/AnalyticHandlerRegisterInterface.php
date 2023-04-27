@@ -38,10 +38,9 @@ interface AnalyticHandlerRegisterInterface
      */
     public function ignorePropertyForKeyGenerator(): array;
 
-
     /**
      * a function that define whether the current authenticated user 
      * is an admin user
      */
-    public function scopeUserIsAdmin(AnalyticHandler $handler);
+    public function macroUserIsAdmin(AnalyticHandler $handler);
 }
