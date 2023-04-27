@@ -41,7 +41,7 @@ class AnalyticHandlerRegister extends AnalyticHandlerRegisterBase
      * a function that define whether the current authenticated user 
      * is an admin user
      */
-    public function scopeUserIsAdmin(AnalyticHandler $handler)
+    public function macroUserIsAdmin(AnalyticHandler $handler)
     {
         return null;
     }

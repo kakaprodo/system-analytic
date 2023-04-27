@@ -8,11 +8,11 @@ use Kakaprodo\SystemAnalytic\Utilities\Util;
 abstract class AnalyticHandlerRegisterBase implements AnalyticHandlerRegisterInterface
 {
     /**
-     * Handle the scope method calling
+     * Handle the macro method calling
      */
     public function __call($name, $arguments)
     {
-        $appropriateMethod = "scope" . (Util::strTitle($name));
+        $appropriateMethod = "macro" . (Util::strTitle($name));
 
         if (!method_exists($this, $appropriateMethod)) {
             throw Util::fireErr("Method {$name} does not exists");
