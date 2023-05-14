@@ -4,19 +4,21 @@ namespace Kakaprodo\SystemAnalytic\Lib\ChartBase;
 
 use Kakaprodo\SystemAnalytic\Lib\AnalyticHandler;
 use Kakaprodo\SystemAnalytic\Lib\AnalyticResponse;
+use Kakaprodo\SystemAnalytic\Utilities\Util;
 
 abstract class PieChart extends AnalyticHandler
 {
-
-    /**
-     * mention whether the pie chart will come in percentage format
-     */
-    protected $withParcentage = false;
-
     /**
      * The column name or a closure to group the query with
      */
     protected $groupBy = 'name';
+
+    /**
+     * the column to use when mapping data,
+     * this coulmn will have the value of 
+     * the grouped item.
+     */
+    protected $mappingColumnValue = null;
 
     /**
      * define the query to use for pie chart info,
@@ -42,7 +44,6 @@ abstract class PieChart extends AnalyticHandler
 
     protected function calculateResult()
     {
-        $this->totalItems = $this->query->count();
 
         $groupedItems = $this->getGroupedItems();
 
@@ -69,8 +70,8 @@ abstract class PieChart extends AnalyticHandler
      */
     protected function map($items, $itemName)
     {
-        return !$this->withParcentage
+        return !$this->mappingColumnValue
             ? $items->count()
-            : ((100 / $this->totalItems) * $items->count());
+            : $items->sum($this->mappingColumnValue);
     }
 }
