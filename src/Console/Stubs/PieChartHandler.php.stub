@@ -21,6 +21,13 @@ class {class_name} extends PieChart
     protected $groupBy = 'created_at';
 
     /**
+     * the column to use when mapping data,
+     * this coulmn will have the value of 
+     * the grouped item.
+     */
+    protected $mappingColumnValue = 'column';
+
+    /**
      * any task you want to be executed before any other
      * task in your handler
      */

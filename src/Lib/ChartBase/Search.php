@@ -34,16 +34,13 @@ abstract class Search extends AnalyticHandler
 
         $this->beforeFilter();
 
-        if (!$this->data->search_value) $this->filter();
+        $this->filter();
 
         return  $this->shouldExport ? $this->export($this->query) : $this->result($this->query);
     }
 
     public function beforeFilter()
     {
-        if (!$this->data->search_value) {
-            $this->data->throwWhenFieldAbsent('scope_type');
-        }
     }
 
     protected function export($query)
