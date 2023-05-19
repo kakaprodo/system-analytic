@@ -5,9 +5,12 @@ namespace {name_space};
 use Illuminate\Support\Facades\DB;
 use Kakaprodo\SystemAnalytic\Lib\AnalyticResponse;
 use Kakaprodo\SystemAnalytic\Lib\ChartBase\Search;
+use Kakaprodo\SystemAnalytic\Lib\ChartBase\Traits\ShouldIgnoreFilteringOnSearchAnalytic;
 
 class  {class_name} extends Search
 {
+    // use ShouldIgnoreFilteringOnSearchAnalytic;
+    
      /**
      * The column on which the scope will be applied to
      */
