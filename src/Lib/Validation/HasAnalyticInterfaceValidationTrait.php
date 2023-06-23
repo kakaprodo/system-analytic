@@ -11,10 +11,6 @@ use Kakaprodo\SystemAnalytic\Lib\Interfaces\OptionAnalyticInterface;
 
 trait HasAnalyticInterfaceValidationTrait
 {
-    /**
-     * the default selected value of the analytic handler that support options
-     */
-    public $defaultSelectedOption = null;
 
     /**
      * Validate request data based on the implemented interfaces
@@ -69,6 +65,10 @@ trait HasAnalyticInterfaceValidationTrait
      */
     private function validateSearchValue()
     {
+        if (!$this->data->search_value) {
+            if (!$this->shouldValidWhenSearchTermAbsent) return;
+        }
+
         $this->data->throwWhenFieldAbsent('search_value');
 
         $searchValue = $this->data->search_value;

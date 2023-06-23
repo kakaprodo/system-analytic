@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\SystemAnalytic;
 
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
