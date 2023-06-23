@@ -26,9 +26,8 @@ class SystemAnalyticRequest extends FormRequest
      */
     public function rules()
     {
-        $analyticTypes =  Util::allHandlers();
 
-        $this->validateAnalyticType($analyticTypes);
+        Util::analyticTypeExists($this->analytic_type);
 
         return [
             'analytic_type' => ['bail', 'required', 'string'],
@@ -64,23 +63,6 @@ class SystemAnalyticRequest extends FormRequest
             'selected_option' => ['nullable', 'string'],
             'should_clear_cache' => ['nullable', 'boolean']
         ];
-    }
-
-    private function validateAnalyticType(array $analyticTypes)
-    {
-        if (!app()->environment('local')) {
-            return Util::whenNot(
-                in_array($this->analytic_type, $analyticTypes),
-                "The analytic type is supposed to be one of: " .  implode(',', $analyticTypes)
-            );
-        }
-
-        Util::fireErr(
-            "The analytic type is supposed to be one of: " .  implode(',', $analyticTypes)
-        )->when(in_array($this->analytic_type, $analyticTypes) == false)
-            ->withData([
-                'analytic_type' => $analyticTypes
-            ])->die();
     }
 
     public function messages()
