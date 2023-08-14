@@ -7,6 +7,7 @@
         "system analytic",
         "analytic",
         "laravel analytic",
+        "php",
         "kakaprodo"
     ],
     "autoload": {
@@ -21,7 +22,10 @@
         }
     ],
     "minimum-stability": "dev",
-    "require": {},
+    "require": {
+        "php": ">=7.0",
+        "laravel/framework": ">=7.0"
+    },
      "extra": {
         "laravel": {
             "providers": [

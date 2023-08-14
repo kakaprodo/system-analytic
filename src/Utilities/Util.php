@@ -213,4 +213,12 @@ class Util
     {
         return (string) Str::uuid();
     }
+
+    /**
+     * the model's namespace that persist the report
+     */
+    public static function persistModel()
+    {
+        return config('system-analytic.persist_report.model');
+    }
 }
