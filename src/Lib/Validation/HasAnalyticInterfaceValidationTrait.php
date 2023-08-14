@@ -11,6 +11,7 @@ use Kakaprodo\SystemAnalytic\Lib\Interfaces\OptionAnalyticInterface;
 
 trait HasAnalyticInterfaceValidationTrait
 {
+
     /**
      * Validate request data based on the implemented interfaces
      * on analytic handler
@@ -28,9 +29,10 @@ trait HasAnalyticInterfaceValidationTrait
 
     private function validateOptionableHandlers()
     {
-        $this->data->throwWhenFieldAbsent('selected_option');
+        if (!$this->defaultSelectedOption)  $this->data->throwWhenFieldAbsent('selected_option');
 
         $supportedOptions = $this->options();
+        $this->data->selected_option = $this->data->selected_option ?? $this->defaultSelectedOption;
 
         // check if the provided options matches with the one registered on handler
         $selectedOptions = explode(',', $this->data->selected_option);
@@ -63,6 +65,10 @@ trait HasAnalyticInterfaceValidationTrait
      */
     private function validateSearchValue()
     {
+        if (!$this->data->search_value) {
+            if (!$this->shouldValidWhenSearchTermAbsent) return;
+        }
+
         $this->data->throwWhenFieldAbsent('search_value');
 
         $searchValue = $this->data->search_value;

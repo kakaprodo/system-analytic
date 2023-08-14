@@ -23,9 +23,7 @@ abstract class AnalyticGateBase extends CustomActionBuilder
      */
     protected function detectAndCreateHandler(AnalyticData $data): AnalyticResponse
     {
-        $handlerClass = static::registeredHandlers()[$data->analyticType()] ?? null;
-
-        Util::whenNot($handlerClass, "Invalid analytic type: {$data->analyticType()}");
+        $handlerClass = self::handlerClass($data->analyticType());
 
         return  $handlerClass::handler($data);
     }
@@ -39,15 +37,20 @@ abstract class AnalyticGateBase extends CustomActionBuilder
     }
 
     /**
-     * get the handler class based on it type
+     * get the handler class of a given analytic type
      */
-    public static function handlerClass($handlerType)
+    public static function handlerClass($handlerType, $shouldThrowError = true)
     {
-        $handlerClass =  static::registeredHandlers()[$handlerType] ?? null;
+        $handlerClass = static::registeredHandlers()[Util::classToKebak($handlerType)] ?? null;
 
-        Util::whenNot($handlerClass, 'Invalid analalytic type, you should register first the handler of type:' . $handlerType);
+        if ($shouldThrowError) {
+            Util::whenNot(
+                $handlerClass,
+                'Invalid analytic type, you should register first the handler of type:' . $handlerType
+            );
+        }
 
-        return $handlerClass;
+        return  $handlerClass;
     }
 
     /**
@@ -57,9 +60,7 @@ abstract class AnalyticGateBase extends CustomActionBuilder
     {
         if (!$handlerType) return [];
 
-        $handlerClass = static::registeredHandlers()[$handlerType] ?? null;
-
-        Util::whenNot($handlerClass, 'Invalid analalytic type:' . $handlerType);
+        $handlerClass = self::handlerClass($handlerType);
 
         return $handlerClass::supportedFilterScopeTypes();
     }
@@ -71,9 +72,7 @@ abstract class AnalyticGateBase extends CustomActionBuilder
     {
         if (!$handlerType) return [];
 
-        $handlerClass = static::registeredHandlers()[$handlerType] ?? null;
-
-        Util::whenNot($handlerClass, 'Invalid analalytic type:' . $handlerType);
+        $handlerClass = self::handlerClass($handlerType);
 
         return $handlerClass::supportedBooleanFilterScopeTypes();
     }

@@ -11,6 +11,8 @@ use Kakaprodo\SystemAnalytic\Lib\Cache\SystemAnalyticCache;
  */
 trait HasRegisteredPluginClass
 {
+    protected $cachingPlugin;
+
     /**
      * the caching and data persitence gate(plugin)
      */

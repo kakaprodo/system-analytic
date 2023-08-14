@@ -97,6 +97,17 @@ abstract class AnalyticHandlerBase
      */
     public $isRefiltering = false;
 
+    /**
+     * the default selected value of the analytic handler that support options
+     */
+    public $defaultSelectedOption = null;
+
+    /**
+     * for group search analytics, validate search fields
+     * even when the search_tern is not provided
+     */
+    public $shouldValidWhenSearchTermAbsent = true;
+
     public function __construct(AnalyticData $data)
     {
         $this->data = $data;

@@ -40,6 +40,8 @@ class Util
      */
     public static function classToKebak($className)
     {
+        if (!$className) return null;
+
         return Str::kebab(self::className($className));
     }
 
