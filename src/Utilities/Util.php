@@ -215,6 +215,28 @@ class Util
     }
 
     /**
+     * check if the provided analytic type exists
+     */
+    public static function analyticTypeExists($analyticType)
+    {
+        $analyticTypes = self::allHandlers();
+
+        if (!app()->environment('local')) {
+            return self::whenNot(
+                AnalyticGate::handlerClass($analyticType, false),
+                "The analytic type is supposed to be one of: " .  implode(',', $analyticTypes)
+            );
+        }
+
+        self::fireErr(
+            "The analytic type is supposed to be one of: " .  implode(',', $analyticTypes)
+        )->when(!AnalyticGate::handlerClass($analyticType, false))
+            ->withData([
+                'analytic_type' => $analyticTypes
+            ])->die();
+    }
+
+    /**
      * the model's namespace that persist the report
      */
     public static function persistModel()

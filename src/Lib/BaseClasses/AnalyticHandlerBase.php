@@ -9,6 +9,7 @@ use Kakaprodo\SystemAnalytic\Lib\Data\AnalyticData;
 use Kakaprodo\SystemAnalytic\Lib\FilterHub\AnalyticFilterHub;
 use Kakaprodo\SystemAnalytic\Lib\FilterHub\AnalyticBoolFilterHub;
 use Kakaprodo\SystemAnalytic\Lib\BaseClasses\Traits\HasMethodCallingTrait;
+use Kakaprodo\SystemAnalytic\Lib\BaseClasses\Traits\HasRegisteredPluginClass;
 use Kakaprodo\SystemAnalytic\Lib\Validation\HasAnalyticInterfaceValidationTrait;
 use Kakaprodo\SystemAnalytic\Lib\BaseClasses\Traits\HasGeneralHandlerHelperTrait;
 
@@ -16,7 +17,8 @@ abstract class AnalyticHandlerBase
 {
     use HasMethodCallingTrait,
         HasGeneralHandlerHelperTrait,
-        HasAnalyticInterfaceValidationTrait;
+        HasAnalyticInterfaceValidationTrait,
+        HasRegisteredPluginClass;
 
     /**
      * the analytic query
@@ -26,7 +28,7 @@ abstract class AnalyticHandlerBase
     /**
      * @var \Kakaprodo\SystemAnalytic\Lib\Data\AnalyticData
      */
-    protected $data;
+    public $data;
 
     /**
      * the date column on which the scope will be applied to
@@ -85,21 +87,10 @@ abstract class AnalyticHandlerBase
     protected $filterable = true;
 
     /**
-     * The key to use for caching or retrieving cached data
-     */
-    public $resultCacheKey = null;
-
-    /**
      * when this is called to a handler, it means, the handler
      * does not have to expect a scope type
      */
     public static $scopeIsRequired = true;
-
-    /**
-     * check if the project support analytic response
-     * caching
-     */
-    protected $supportCaching = null;
 
     /**
      * is true when the base query is being refiltered
@@ -111,8 +102,6 @@ abstract class AnalyticHandlerBase
         $this->data = $data;
         $this->shouldExport = $data->should_export;
         $this->exportFile = $data->file_type;
-        $this->resultCacheKey = $this->data->dataKey();
-        $this->supportCaching = config('system-analytic.should_cache_result');
     }
 
     /**
@@ -160,6 +149,22 @@ abstract class AnalyticHandlerBase
     protected function shouldCacheFor()
     {
         return null;
+    }
+
+    /**
+     * define wheter the handler support data caching
+     */
+    public function handlerSupportDataCaching()
+    {
+        return $this->getCachedPeriod() !== null;
+    }
+
+    /**
+     * get the handler cache period
+     */
+    public function getCachedPeriod()
+    {
+        return $this->shouldCacheFor();
     }
 
     /**
@@ -276,25 +281,6 @@ abstract class AnalyticHandlerBase
             $supportedScopes,
             $exceptScopesIndex
         );
-    }
-
-    /**
-     * Check if the analytic handler supports data caching
-     */
-    protected function shouldRenderCaches()
-    {
-        if (!$this->supportCaching) return false;
-
-        if ($this->data->needsToClearCache()) {
-
-            cache()->forget($this->data->dataKey());
-
-            return false;
-        }
-
-        if (!$this->shouldCacheFor()) return false;
-
-        return cache()->has($this->resultCacheKey);
     }
 
     /**

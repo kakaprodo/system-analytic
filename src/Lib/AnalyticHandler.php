@@ -4,6 +4,7 @@ namespace Kakaprodo\SystemAnalytic\Lib;
 
 use Illuminate\Support\Facades\Cache;
 use Kakaprodo\SystemAnalytic\Lib\Data\AnalyticData;
+use Kakaprodo\SystemAnalytic\Lib\Cache\SystemAnalyticCache;
 use Kakaprodo\SystemAnalytic\Lib\BaseClasses\AnalyticHandlerBase;
 
 abstract class AnalyticHandler extends AnalyticHandlerBase
@@ -22,10 +23,11 @@ abstract class AnalyticHandler extends AnalyticHandlerBase
     {
         $analytic = new static($data);
 
+        $cachedResult = $analytic->cache()->getCachedResultIfExists();
+
         // return cached response if it exists
-        if ($analytic->shouldRenderCaches()) {
-            $data = cache($analytic->resultCacheKey);
-            return $analytic->response($data, true);
+        if ($cachedResult != SystemAnalyticCache::NO_CACHE_RESULT) {
+            return $analytic->response($cachedResult, true);
         }
 
         $analytic->validateProperties()->boot();
@@ -46,22 +48,5 @@ abstract class AnalyticHandler extends AnalyticHandlerBase
 
     public function afterResult()
     {
-    }
-
-
-    /**
-     * format analytic response after checking the possibility of caching 
-     * result
-     */
-    public function response($result, $forCache = false): AnalyticResponse
-    {
-        if ($this->supportCaching) {
-
-            if (($cachePeriode = $this->shouldCacheFor()) && !$forCache) {
-                Cache::put($this->resultCacheKey, $result, $cachePeriode);
-            }
-        }
-
-        return AnalyticResponse::make($result, $this);
     }
 }
