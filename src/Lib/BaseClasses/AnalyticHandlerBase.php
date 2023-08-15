@@ -108,6 +108,17 @@ abstract class AnalyticHandlerBase
      */
     public $shouldValidWhenSearchTermAbsent = true;
 
+    /**
+     * Check if the handler result should be persisted forever
+     */
+    public $shouldPersistResult = null;
+
+    /**
+     * keep the name that identifiers persisted result
+     * that belong to a given group
+     */
+    public $persistenceGroup = null;
+
     public function __construct(AnalyticData $data)
     {
         $this->data = $data;

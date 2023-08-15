@@ -12,11 +12,12 @@ class SystemAnalyticReport extends Model
         'value',
         'analytic_type',
         'analytic_data',
-        'report_scope',
+        'scope_start_date',
+        'scope_end_date',
         'group'
     ];
 
-    public function setValueeAttribute($value)
+    public function setValueAttribute($value)
     {
         $this->attributes['value'] = serialize($value);
     }

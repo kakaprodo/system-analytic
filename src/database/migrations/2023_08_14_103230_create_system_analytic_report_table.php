@@ -19,7 +19,8 @@ class CreateSystemAnalyticReportTable extends Migration
             $table->longText('value')->nullable()->comment('the serialized result');
             $table->string('analytic_type');
             $table->text('analytic_data')->comment('the serialized request inputs for this result');
-            $table->string('report_scope')->comment('the period in which the result was provided');
+            $table->dateTime('scope_start_date')->nullable();
+            $table->dateTime('scope_end_date')->nullable();
             $table->string('group')->nullable()->comment('the group in which the analytic handler belongs to');
             $table->timestamps();
         });

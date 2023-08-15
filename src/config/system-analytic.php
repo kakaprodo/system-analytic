@@ -66,17 +66,12 @@ return [
         /**
          * When this is true, result of AnalyticHandlers that 
          * support scope will be kept in database forever if 
-         * the scope period is a past date
+         * the scope period is a past date.
+         * 
+         * Note: after enabling this, you should run the 
+         * migration
          */
         'enabled' => false,
-
-        /**
-         * The package will persist the result only if the provided 
-         * scope is behind today minus the provided number of days 
-         * set on this setting key.
-         * ==> (today()->subDays('persist_when_period_behind))
-         */
-        'persist_when_period_behind' => 30,
 
         /**
          * The model that provides crud on the persisted report
