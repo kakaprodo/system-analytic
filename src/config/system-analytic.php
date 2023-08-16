@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\SystemAnalytic\AnalyticHandlerRegister;
+use Kakaprodo\SystemAnalytic\Models\SystemAnalyticReport;
 
 
 return [
@@ -57,4 +58,29 @@ return [
      * The chunk number to be used when exporting with csv
      */
     'chunk_number_for_export' => 1000,
+
+    /**
+     * Persisting report
+     */
+    "persist_report" => [
+        /**
+         * When this is true, result of AnalyticHandlers that 
+         * support scope will be kept in database forever if 
+         * the scope period is a past date.
+         * 
+         * Note: after enabling this, you should run the 
+         * migration
+         */
+        'enabled' => false,
+
+        /**
+         * The model that provides crud on the persisted report
+         */
+        'model' => SystemAnalyticReport::class,
+
+        /**
+         * the table in which persisted result will be stored
+         */
+        'table_name' => 'system_analytic_reports'
+    ]
 ];

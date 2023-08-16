@@ -9,6 +9,7 @@ use Kakaprodo\SystemAnalytic\Console\InstallAnalyticHub;
 use Kakaprodo\SystemAnalytic\Console\MakeExportFileGenerator;
 use Kakaprodo\SystemAnalytic\Console\AnalyticHandlerGenerator;
 use Kakaprodo\SystemAnalytic\Console\InstallAnalyticConfigFile;
+use Kakaprodo\SystemAnalytic\Console\RefreshPersistedAnalyticResult;
 
 class SystemAnalyticServiceProvider extends ServiceProvider
 {
@@ -29,9 +30,13 @@ class SystemAnalyticServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        if (!$this->app->runningInConsole()) return;
+
         $this->registerCommands();
 
         $this->stackToPublish();
+
+        $this->stackToLoad();
     }
 
     /**
@@ -39,13 +44,12 @@ class SystemAnalyticServiceProvider extends ServiceProvider
      */
     protected function registerCommands()
     {
-        if (!$this->app->runningInConsole()) return;
-
         $this->commands([
             InstallAnalyticConfigFile::class,
             InstallAnalyticHub::class,
             AnalyticHandlerGenerator::class,
-            MakeExportFileGenerator::class
+            MakeExportFileGenerator::class,
+            RefreshPersistedAnalyticResult::class
         ]);
     }
 
@@ -64,6 +68,13 @@ class SystemAnalyticServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__ . '/Http/Requests' => Util::validationFolder(),
         ], 'analytic-skeleton');
+    }
+
+    protected function stackToLoad()
+    {
+        if (config('system-analytic.persist_report.enabled')) {
+            $this->loadMigrationsFrom(__DIR__ . '/database/migrations');
+        }
     }
 
     protected function checkForRequiredPackages()

@@ -16,7 +16,9 @@ class AnalyticData extends AnalyticDataBase
     protected function expectedProperties(): array
     {
         return array_merge([
-            'analytic_type' => $this->dataType()->string(),
+            'analytic_type' => $this->dataType()->string()->castForValidation(function ($value) {
+                return $this->analytic_type = Util::classToKebak($value);
+            }),
             'scope_type?' => $this->dataType()->string(),
             'scope_value?',
             'scope_from_date?',
@@ -26,8 +28,15 @@ class AnalyticData extends AnalyticDataBase
             'should_export?',
             'file_type?',
             'selected_option?',
-            'should_clear_cache?' => $this->dataType()->bool()
+            'should_clear_cache?' => $this->dataType()->bool(),
+            'refresh_persisted_result?' => $this->dataType()->bool(),
         ], $this->handlerRegisterData()->expectedData($this));
+    }
+
+    public function boot()
+    {
+        // set the inputed data before modification
+        return $this->setOriginalData();
     }
 
     public function ignoreForKeyGenerator(): array
@@ -35,7 +44,8 @@ class AnalyticData extends AnalyticDataBase
         return array_merge([
             'should_clear_cache',
             'file_type',
-            'should_export'
+            'should_export',
+            'refresh_persisted_result',
         ], $this->handlerRegisterData()->ignorePropertyForKeyGenerator($this));
     }
 

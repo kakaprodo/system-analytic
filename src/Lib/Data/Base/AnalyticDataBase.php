@@ -5,10 +5,12 @@ namespace Kakaprodo\SystemAnalytic\Lib\Data\Base;
 use Kakaprodo\SystemAnalytic\Utilities\Util;
 use Kakaprodo\SystemAnalytic\Lib\Data\Base\DataType;
 use Kakaprodo\SystemAnalytic\Lib\FilterHub\AnalyticFilterHub;
+use Kakaprodo\SystemAnalytic\Lib\FilterHub\AnalyticScopeValueHub;
 
 abstract class AnalyticDataBase extends DataType
 {
     const SCOPE_CATEGORY_HOUR = 'hour';
+    const SCOPE_CATEGORY_DAY = 'day';
     const SCOPE_CATEGORY_MONTH = 'month';
     const SCOPE_CATEGORY_YEAR = 'year';
 
@@ -62,6 +64,7 @@ abstract class AnalyticDataBase extends DataType
                 AnalyticFilterHub::TYPE_FIXED_HOUR => '%Y-%m-%d %H:%i',
                 AnalyticFilterHub::TYPE_RANGE_HOUR => '%Y-%m-%d %H:00'
             ][$this->scope_type] ?? null),
+            self::SCOPE_CATEGORY_DAY => '%Y-%m-%d',
             self::SCOPE_CATEGORY_MONTH => '%Y-%m-%d',
             self::SCOPE_CATEGORY_YEAR => '%Y-%m'
         ][$this->scopeCategory()];
@@ -77,6 +80,7 @@ abstract class AnalyticDataBase extends DataType
                 AnalyticFilterHub::TYPE_FIXED_HOUR => 'd M h:i A',
                 AnalyticFilterHub::TYPE_RANGE_HOUR => 'd M h A'
             ][$this->scope_type] ?? null),
+            self::SCOPE_CATEGORY_DAY => 'd M Y',
             self::SCOPE_CATEGORY_MONTH => 'd M Y',
             self::SCOPE_CATEGORY_YEAR => 'M Y'
         ][$this->scopeCategory()];
@@ -89,7 +93,11 @@ abstract class AnalyticDataBase extends DataType
     {
         if ($this->scopeIsHour()) return self::SCOPE_CATEGORY_HOUR;
 
-        return $this->scopeIsYear() ? self::SCOPE_CATEGORY_YEAR : self::SCOPE_CATEGORY_MONTH;
+        if ($this->scopeIsDay()) return self::SCOPE_CATEGORY_DAY;
+
+        if ($this->scopeIsMonth()) return self::SCOPE_CATEGORY_MONTH;
+
+        if ($this->scopeIsYear()) return self::SCOPE_CATEGORY_YEAR;
     }
 
     /**
@@ -101,6 +109,37 @@ abstract class AnalyticDataBase extends DataType
         return in_array($this->scope_type, [
             AnalyticFilterHub::TYPE_FIXED_HOUR,
             AnalyticFilterHub::TYPE_RANGE_HOUR,
+        ]);
+    }
+
+    /**
+     * check if scope is of category day
+     */
+    public function scopeIsDay()
+    {
+        return in_array($this->scope_type, [
+            AnalyticFilterHub::TYPE_TODAY,
+            AnalyticFilterHub::TYPE_FIXED_DATE,
+            AnalyticFilterHub::TYPE_RANGE_DATE
+        ]);
+    }
+
+    /**
+     * check if scope is of category month
+     */
+    public function scopeIsMonth()
+    {
+        return in_array($this->scope_type, [
+            AnalyticFilterHub::TYPE_THIS_MONTH,
+            AnalyticFilterHub::TYPE_MONTH_AGO,
+            AnalyticFilterHub::TYPE_LAST_MONTH,
+            AnalyticFilterHub::TYPE_FIXED_MONTH,
+            AnalyticFilterHub::TYPE_RANGE_MONTH,
+
+            AnalyticFilterHub::FIRST_QUARTER,
+            AnalyticFilterHub::SECOND_QUARTER,
+            AnalyticFilterHub::THIRD_QUARTER,
+            AnalyticFilterHub::FOURTH_QUARTER
         ]);
     }
 
@@ -129,25 +168,52 @@ abstract class AnalyticDataBase extends DataType
     }
 
     /**
+     * when the persisted data need to be refresh
+     */
+    public function needToRefreshPersistedData()
+    {
+        $shouldRefresh =  (bool) $this->refresh_persisted_result;
+
+        if ($shouldRefresh) $this->should_clear_cache = true;
+
+        return $shouldRefresh;
+    }
+
+    /**
      * Get the value of the scope based on the scope_type
      * 
      * this will return the first_date in case the 
      * scope_type will involve a range date filtering
      * 
      * eg: if the scope_type is this_week, then the return value will be the
-     * one of monday
+     * date of monday
      */
     public function getFilterScopeValue()
     {
         if ($this->filterScopeValue) return $this->filterScopeValue;
 
-        $this->filterScopeValue = AnalyticFilterHub::apply($this, null, true);
+        $filter = $this->filterValueHub();
+        $startDate = $filter->getStartDate();
 
+        $this->filterScopeValue = count(explode('-', $startDate)) == 1
+            ?  ($startDate . '-01') // when only a given year is given, then add january to the year
+            : $startDate;
 
-        $this->filterScopeValue = count(explode('-', $this->filterScopeValue)) == 1
-            ?  ($this->filterScopeValue . '-01') // when only a given year is given, then add january to the year
-            : $this->filterScopeValue;
+        return  Util::formatDate(
+            $this->filterScopeValue,
+            $this->scopeIsHour() ? 'Y-m-d H:i:s' : 'Y-m-d'
+        );
+    }
 
-        return  Util::formatDate($this->filterScopeValue, $this->scopeIsHour() ? 'Y-m-d H:i:s' : 'Y-m-d');
+    /**
+     * the gate to the class that detect the original values of provided scopes
+     */
+    public function filterValueHub(): AnalyticScopeValueHub
+    {
+        if ($this->filterValueHub) return $this->filterValueHub;
+
+        $this->filterValueHub = AnalyticScopeValueHub::apply($this);
+
+        return $this->filterValueHub;
     }
 }
