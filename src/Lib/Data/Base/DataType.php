@@ -18,6 +18,41 @@ abstract class DataType extends CustomData
      */
     protected $handlerRegisterData;
 
+    protected $originalData;
+
+    protected $customDataKey;
+
+    protected $filterValueHub;
+
+    /**
+     * Collect data unique key from the fresh provided data
+     */
+    public function dataKey()
+    {
+        if ($this->customDataKey) return $this->customDataKey;
+
+        return $this->customDataKey = parent::dataKey();
+    }
+
+    /**
+     * the original data before any modification
+     */
+    public function setOriginalData()
+    {
+        $this->originalData = $this->all();
+
+        // load the original key
+        $this->dataKey();
+    }
+
+    /**
+     * get the original inputed data that came right from 
+     * the request
+     */
+    public function getOriginalData()
+    {
+        return $this->originalData;
+    }
 
     protected function expectedProperties(): array
     {

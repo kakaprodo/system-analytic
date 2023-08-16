@@ -77,5 +77,10 @@ return [
          * The model that provides crud on the persisted report
          */
         'model' => SystemAnalyticReport::class,
+
+        /**
+         * the table in which persisted result will be stored
+         */
+        'table_name' => 'system_analytic_reports'
     ]
 ];

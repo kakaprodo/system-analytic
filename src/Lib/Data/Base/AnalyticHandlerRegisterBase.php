@@ -21,6 +21,15 @@ abstract class AnalyticHandlerRegisterBase implements AnalyticHandlerRegisterInt
         return $this->$appropriateMethod(...$arguments);
     }
 
+    /**
+     * The additional request rules to use 
+     * in the integrated RequestForm validation
+     */
+    public function requestRules(): array
+    {
+        return [];
+    }
+
     public function __get($name)
     {
         return null;

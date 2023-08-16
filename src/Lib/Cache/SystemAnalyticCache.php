@@ -94,11 +94,12 @@ class SystemAnalyticCache
     }
 
     /**
-     * check if the handler 
+     * If exist, Grab the handler cached or persisted result based on
+     * the request input
      */
     public function getCachedResultIfExists()
     {
-        // get data from cache
+        // get result from cache
         if ($this->shouldRenderCaches()) return $this->getCachedResult();
 
         //check result from persisted data
@@ -123,6 +124,6 @@ class SystemAnalyticCache
 
         Cache::put($this->getCacheKey(), $result, $cachePeriode);
 
-        $this->persistResult($result);
+        $this->persistResult($result, $this->handler->data->needToRefreshPersistedData());
     }
 }

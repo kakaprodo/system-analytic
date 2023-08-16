@@ -2,6 +2,7 @@
 
 namespace Kakaprodo\SystemAnalytic\Lib\Cache\Traits;
 
+use Illuminate\Support\Arr;
 use Kakaprodo\SystemAnalytic\Utilities\Util;
 use Kakaprodo\SystemAnalytic\Lib\AnalyticHandler;
 
@@ -20,18 +21,28 @@ trait HasDataPersistenceTrait
      * the scope end date
      */
     protected $endDate = null;
+
     /**
      * validate data persistence then store the result
+     * 
+     * @param mixed $result: the analytic handler result
+     * @param bool $$shouldRefresh define whether the result 
+     * need to be updated
      */
-    protected function persistResult($result)
+    protected function persistResult($result, $shouldRefresh = false)
     {
-        if (!$this->dataPersistenceIsSupported() || !$this->handler->shouldPersistResult) return;
+        if (
+            !$this->dataPersistenceIsSupported()
+            || !$this->handler->shouldPersistResult
+        ) return;
 
-        if ($this->persistedKeyExists($this->getCacheKey())) return;
+        if (!$shouldRefresh) {
+            if ($this->persistedKeyExists($this->getCacheKey())) return;
+        }
 
         if (!$this->reportScopeIsInPast()) return;
 
-        $this->storeResult($result);
+        $this->storeResult($result, $shouldRefresh);
     }
 
     /**
@@ -42,18 +53,22 @@ trait HasDataPersistenceTrait
      */
     private function storeResult($result, $shouldRefresh = false)
     {
+        $analyticData = Arr::except(
+            $this->handler->data->getOriginalData(),
+            $this->handler->data->ignoreForKeyGenerator()
+        );
+
         $records = [
             'name' => $this->getCacheKey(),
             'value' => $result,
-            'analytic_type' => $this->handler->data->analytic_type,
-            'analytic_data' => $this->handler->data->all(),
+            'analytic_type' => Util::classToKebak($this->handler->data->analytic_type),
+            'analytic_data' =>  $analyticData,
             'scope_start_date' => $this->startDate,
             'scope_end_date' => $this->endDate,
             'group' => $this->handler->persistenceGroup
         ];
 
         if ($shouldRefresh) {
-
             Util::persistModel()::updateOrCreate([
                 'name' => $this->getCacheKey(),
             ], $records);
@@ -97,6 +112,8 @@ trait HasDataPersistenceTrait
      */
     public function getPersistedResult()
     {
+        if ($this->handler->data->needToRefreshPersistedData()) return;
+
         if (!$this->dataPersistenceIsSupported() || !$this->handler->shouldPersistResult) return;
 
         $result = Util::persistModel()::where('name', $this->getCacheKey())->first();

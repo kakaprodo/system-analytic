@@ -5,6 +5,7 @@ namespace Kakaprodo\SystemAnalytic\Utilities;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
 use Kakaprodo\SystemAnalytic\AnalyticGate;
+use Kakaprodo\SystemAnalytic\Models\SystemAnalyticReport;
 use Kakaprodo\SystemAnalytic\Lib\ExportHub\Base\ExportHubBase;
 use Kakaprodo\SystemAnalytic\Exception\SystemAnalyticException;
 use Kakaprodo\SystemAnalytic\Http\Rules\AnalyticDateTimeFormat;
@@ -53,11 +54,7 @@ class Util
     {
         if (!$myClass) return null;
 
-        $myClass = is_string($myClass) ? $myClass : get_class($myClass);
-
-        $splitedClass = explode('/', str_replace('\\', '/', $myClass));
-
-        return collect($splitedClass)->last();
+        return class_basename($myClass);;
     }
 
     /**
@@ -96,9 +93,9 @@ class Util
      * call a given public static function if it's callable otherwise return it
      * as a noormal variable
      */
-    public static function callFunction($myFunction, $throwableMsg = null)
+    public static function callFunction($myFunction, $throwableMsg = null, ...$args)
     {
-        if (is_callable($myFunction)) return $myFunction();
+        if (is_callable($myFunction)) return $myFunction(...$args);
 
         if ($throwableMsg) self::fireErr($throwableMsg)->die();
 
@@ -243,6 +240,11 @@ class Util
      */
     public static function persistModel()
     {
-        return config('system-analytic.persist_report.model');
+        return config('system-analytic.persist_report.model') ?? SystemAnalyticReport::class;
+    }
+
+    public static function persistTable()
+    {
+        return config('system-analytic.persist_report.table_name');
     }
 }

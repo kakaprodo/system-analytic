@@ -127,4 +127,35 @@ abstract class AnalyticGateBase extends CustomActionBuilder
     {
         return self::isFixedScopeType($scopeType) || self::isRangeScopeType($scopeType);
     }
+
+    /**
+     * refresh persisted result of a given analytic handler
+     * 
+     * @param 
+     */
+    public static function refreshPersistedResult(
+        $analyticType,
+        $persistenceGroup = null,
+        $onSingleRefreshing = null
+    ) {
+        $analyticType = is_numeric($analyticType) ? $analyticType : Util::classToKebak($analyticType);
+        $columnName = is_numeric($analyticType) ? 'id' : 'analytic_type';
+
+        $persistedResults = Util::persistModel()::where($columnName, $analyticType)
+            ->tap(function ($q) use ($persistenceGroup) {
+                if (!$persistenceGroup) return $q;
+
+                $q->where('group', $persistenceGroup);
+            })->get();
+
+        foreach ($persistedResults as $analyticReport) {
+            $record = array_merge($analyticReport->analytic_data, [
+                'refresh_persisted_result' => true
+            ]);
+
+            self::process($record);
+
+            Util::callFunction($onSingleRefreshing, null, $analyticReport);
+        }
+    }
 }

@@ -26,7 +26,6 @@ class SystemAnalyticRequest extends FormRequest
      */
     public function rules()
     {
-
         Util::analyticTypeExists($this->analytic_type);
 
         return [
@@ -61,7 +60,8 @@ class SystemAnalyticRequest extends FormRequest
                 Rule::in(Util::exportSupportedFiles())
             ],
             'selected_option' => ['nullable', 'string'],
-            'should_clear_cache' => ['nullable', 'boolean']
+            'should_clear_cache' => ['nullable', 'boolean'],
+            'refresh_persisted_result' => ['nullable', 'boolean'],
         ];
     }
 

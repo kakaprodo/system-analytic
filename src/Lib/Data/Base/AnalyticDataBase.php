@@ -168,6 +168,18 @@ abstract class AnalyticDataBase extends DataType
     }
 
     /**
+     * when the persisted data need to be refresh
+     */
+    public function needToRefreshPersistedData()
+    {
+        $shouldRefresh =  (bool) $this->refresh_persisted_result;
+
+        if ($shouldRefresh) $this->should_clear_cache = true;
+
+        return $shouldRefresh;
+    }
+
+    /**
      * Get the value of the scope based on the scope_type
      * 
      * this will return the first_date in case the 
