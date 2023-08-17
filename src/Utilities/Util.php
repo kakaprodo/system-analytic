@@ -247,4 +247,13 @@ class Util
     {
         return config('system-analytic.persist_report.table_name');
     }
+
+    /**
+     * check if the package is allowed to run the migration
+     */
+    public static function shouldRunPersistenceMigration()
+    {
+        return config('system-analytic.persist_report.enabled')
+            && config('system-analytic.persist_report.should_run_migration');
+    }
 }
