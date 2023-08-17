@@ -98,6 +98,8 @@ abstract class AnalyticDataBase extends DataType
         if ($this->scopeIsMonth()) return self::SCOPE_CATEGORY_MONTH;
 
         if ($this->scopeIsYear()) return self::SCOPE_CATEGORY_YEAR;
+
+        return self::SCOPE_CATEGORY_DAY;
     }
 
     /**
@@ -120,7 +122,10 @@ abstract class AnalyticDataBase extends DataType
         return in_array($this->scope_type, [
             AnalyticFilterHub::TYPE_TODAY,
             AnalyticFilterHub::TYPE_FIXED_DATE,
-            AnalyticFilterHub::TYPE_RANGE_DATE
+            AnalyticFilterHub::TYPE_RANGE_DATE,
+            AnalyticFilterHub::TYPE_THIS_WEEK,
+            AnalyticFilterHub::TYPE_LAST_WEEK,
+            AnalyticFilterHub::TYPE_WEEK_AGO
         ]);
     }
 
