@@ -74,6 +74,12 @@ return [
         'enabled' => false,
 
         /**
+         * When it is false, then the package will not run the 
+         * migration file that create the data persistence table
+         */
+        'should_run_migration' => true,
+
+        /**
          * The model that provides crud on the persisted report
          */
         'model' => SystemAnalyticReport::class,

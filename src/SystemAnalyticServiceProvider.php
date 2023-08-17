@@ -72,7 +72,7 @@ class SystemAnalyticServiceProvider extends ServiceProvider
 
     protected function stackToLoad()
     {
-        if (config('system-analytic.persist_report.enabled')) {
+        if (Util::shouldRunPersistenceMigration()) {
             $this->loadMigrationsFrom(__DIR__ . '/database/migrations');
         }
     }

@@ -11,6 +11,8 @@ use Kakaprodo\SystemAnalytic\Lib\AnalyticResponse;
  */
 abstract class Computed extends AnalyticHandler
 {
+    static $scopeIsRequired = false;
+
     /**
      * where to return the result
      */
