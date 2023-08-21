@@ -101,9 +101,14 @@ trait HasDataPersistenceTrait
 
         if (!$this->startDate || !$this->startDate) return false;
 
-        if ($this->endDate) return Util::parseDate($this->endDate)->isPast();
+        if ($this->endDate) {
+            $this->endDate = Util::parseDate($this->endDate);
+            return $this->endDate->isPast();
+        }
 
-        return Util::parseDate($this->startDate)->isPast();
+        $this->startDate = Util::parseDate($this->startDate);
+
+        return $this->startDate->isPast();
     }
 
     /**
