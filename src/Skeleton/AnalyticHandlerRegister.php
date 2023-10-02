@@ -4,16 +4,15 @@ namespace App\Http\SystemAnalytic;
 
 use Kakaprodo\CustomData\CustomData;
 use Kakaprodo\SystemAnalytic\Lib\AnalyticHandler;
+use Kakaprodo\SystemAnalytic\Http\Requests\SystemAnalyticRequest;
 use Kakaprodo\SystemAnalytic\Lib\Data\Base\AnalyticHandlerRegisterBase;
 
 class AnalyticHandlerRegister extends AnalyticHandlerRegisterBase
 {
     /**
-     * register a key value array of your handlers,
-     * where the key is the analytic_type and the value
-     * is the actual handler
+     * The additional request rules to use in the integrated FormRequest validation
      */
-    public static function handlers(): array
+    public static function requestRules(SystemAnalyticRequest $request): array
     {
         return [];
     }
@@ -23,6 +22,16 @@ class AnalyticHandlerRegister extends AnalyticHandlerRegisterBase
      * analytic handlers
      */
     public function expectedData(CustomData $data): array
+    {
+        return [];
+    }
+
+    /**
+     * register a key value array of your handlers,
+     * where the key is the analytic_type and the value
+     * is the actual handler
+     */
+    public static function handlers(): array
     {
         return [];
     }
