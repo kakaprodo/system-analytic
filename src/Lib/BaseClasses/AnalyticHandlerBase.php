@@ -254,11 +254,17 @@ abstract class AnalyticHandlerBase
      * 
      * eg: inside the whereHas closure
      */
-    public function applyInnerFilter($query)
+    public function applyInnerFilter($query, $scopeColumn = 'created_at')
     {
         $this->filterWasApplied = true;
 
-        return  AnalyticFilterHub::apply($this->data, $query);
+        $this->data->setScopeColumn($scopeColumn);
+
+        $query =  AnalyticFilterHub::apply($this->data, $query);
+
+        $this->data->setScopeColumn($this->scopeColumn);
+
+        return $query;
     }
 
     /**

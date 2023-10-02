@@ -4,6 +4,7 @@ namespace Kakaprodo\SystemAnalytic\Lib\Interfaces;
 
 use Kakaprodo\CustomData\CustomData;
 use Kakaprodo\SystemAnalytic\Lib\AnalyticHandler;
+use Kakaprodo\SystemAnalytic\Http\Requests\SystemAnalyticRequest;
 
 
 interface AnalyticHandlerRegisterInterface
@@ -43,4 +44,10 @@ interface AnalyticHandlerRegisterInterface
      * is an admin user
      */
     public function macroUserIsAdmin(AnalyticHandler $handler);
+
+    /**
+     * Provide laravel request rules as if you were writting them
+     * in a FormRequest
+     */
+    public static function requestRules(SystemAnalyticRequest $request): array;
 }

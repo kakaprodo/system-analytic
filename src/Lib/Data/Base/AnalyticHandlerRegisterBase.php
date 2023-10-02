@@ -2,8 +2,9 @@
 
 namespace Kakaprodo\SystemAnalytic\Lib\Data\Base;
 
-use Kakaprodo\SystemAnalytic\Lib\Interfaces\AnalyticHandlerRegisterInterface;
 use Kakaprodo\SystemAnalytic\Utilities\Util;
+use Kakaprodo\SystemAnalytic\Http\Requests\SystemAnalyticRequest;
+use Kakaprodo\SystemAnalytic\Lib\Interfaces\AnalyticHandlerRegisterInterface;
 
 abstract class AnalyticHandlerRegisterBase implements AnalyticHandlerRegisterInterface
 {
@@ -25,7 +26,7 @@ abstract class AnalyticHandlerRegisterBase implements AnalyticHandlerRegisterInt
      * The additional request rules to use 
      * in the integrated RequestForm validation
      */
-    public function requestRules(): array
+    public static function requestRules(SystemAnalyticRequest $request): array
     {
         return [];
     }

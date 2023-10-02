@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\SystemAnalytic;
+namespace Kakaprodo\SystemAnalytic\Http\Requests;
 
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
@@ -37,16 +37,16 @@ class SystemAnalyticRequest extends FormRequest
                 Rule::in(Util::handlerScopeTypes($this->analytic_type))
             ],
             'scope_value' => [
-                Rule::requiredIf(Util::isFixedScopeType($this->scope_type)),
-                Util::detectDateFormat($this->scope_type)
+                Rule::requiredIf($isFixedScopeType = Util::isFixedScopeType($this->scope_type)),
+                Util::detectDateFormatWhen($isFixedScopeType, $this->scope_type)
             ],
             'scope_from_date' => [
                 Rule::requiredIf(Util::isRangeScopeType($this->scope_type)),
-                Util::detectDateFormat($this->scope_type)
+                Util::detectDateFormatWhen(!$isFixedScopeType ,$this->scope_type)
             ],
             'scope_to_date' => [
                 Rule::requiredIf(Util::isRangeScopeType($this->scope_type)),
-                Util::detectDateFormat($this->scope_type)
+                Util::detectDateFormatWhen(!$isFixedScopeType, $this->scope_type)
             ],
             'search_value' => ['nullable'],
             'boolean_scope_type' => [
@@ -62,6 +62,7 @@ class SystemAnalyticRequest extends FormRequest
             'selected_option' => ['nullable', 'string'],
             'should_clear_cache' => ['nullable', 'boolean'],
             'refresh_persisted_result' => ['nullable', 'boolean'],
+            ...(Util::handlerRegisterClass()::requestRules($this))
         ];
     }
 

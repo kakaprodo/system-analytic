@@ -67,7 +67,7 @@ class SystemAnalyticServiceProvider extends ServiceProvider
 
         $this->publishes([
             __DIR__ . '/Http/Requests' => Util::validationFolder(),
-        ], 'analytic-skeleton');
+        ], 'analytic-request');
     }
 
     protected function stackToLoad()

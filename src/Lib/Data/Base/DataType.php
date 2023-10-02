@@ -64,11 +64,7 @@ abstract class DataType extends CustomData
      */
     public static function handlerRegisterClass()
     {
-        $handlerRegisterClass = config('system-analytic.handler_register');
-
-        if (class_exists($handlerRegisterClass)) return $handlerRegisterClass;
-
-        throw new Exception($handlerRegisterClass . " not found, make sure you have resolved the namespace of the handler_register in the system-analytic.php config file");
+       return Util::handlerRegisterClass();
     }
 
     /**

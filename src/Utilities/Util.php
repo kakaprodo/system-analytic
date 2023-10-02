@@ -2,6 +2,7 @@
 
 namespace Kakaprodo\SystemAnalytic\Utilities;
 
+use Exception;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
 use Kakaprodo\SystemAnalytic\AnalyticGate;
@@ -164,6 +165,16 @@ class Util
     }
 
     /**
+     * Check date format when statement is true
+     */
+    public static function detectDateFormatWhen($statement, $value)
+    {
+        if (!$statement) return;
+
+        return  Util::detectDateFormat($value);
+    }
+
+    /**
      * Grab supported scope type of a given handler
      */
     public static function handlerScopeTypes($analyticType)
@@ -255,5 +266,19 @@ class Util
     {
         return config('system-analytic.persist_report.enabled')
             && config('system-analytic.persist_report.should_run_migration');
+    }
+
+    /**
+     * The class namespace of handlers register
+     */
+    public static function handlerRegisterClass()
+    {
+        $handlerRegisterClass = config('system-analytic.handler_register');
+
+        if (class_exists($handlerRegisterClass)) return $handlerRegisterClass;
+
+        throw new Exception(
+            $handlerRegisterClass . " not found, make sure you have resolved the namespace of the handler_register in the system-analytic.php config file"
+        );
     }
 }
