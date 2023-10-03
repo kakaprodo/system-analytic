@@ -28,7 +28,7 @@ class SystemAnalyticRequest extends FormRequest
     {
         Util::analyticTypeExists($this->analytic_type);
 
-        return [
+        return array_merge([
             'analytic_type' => ['bail', 'required', 'string'],
             'scope_type' => [
                 'bail',
@@ -42,7 +42,7 @@ class SystemAnalyticRequest extends FormRequest
             ],
             'scope_from_date' => [
                 Rule::requiredIf(Util::isRangeScopeType($this->scope_type)),
-                Util::detectDateFormatWhen(!$isFixedScopeType ,$this->scope_type)
+                Util::detectDateFormatWhen(!$isFixedScopeType, $this->scope_type)
             ],
             'scope_to_date' => [
                 Rule::requiredIf(Util::isRangeScopeType($this->scope_type)),
@@ -62,8 +62,7 @@ class SystemAnalyticRequest extends FormRequest
             'selected_option' => ['nullable', 'string'],
             'should_clear_cache' => ['nullable', 'boolean'],
             'refresh_persisted_result' => ['nullable', 'boolean'],
-            ...(Util::handlerRegisterClass()::requestRules($this))
-        ];
+        ], Util::handlerRegisterClass()::requestRules($this));
     }
 
     public function messages()
