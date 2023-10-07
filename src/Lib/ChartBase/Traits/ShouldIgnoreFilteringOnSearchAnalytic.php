@@ -6,11 +6,6 @@ use Kakaprodo\SystemAnalytic\Lib\AnalyticResponse;
 
 trait ShouldIgnoreFilteringOnSearchAnalytic
 {
-    /**
-     * force scope type when search term is not provided
-     */
-    protected $shouldForceScopeType = true;
-
     public function handle(): AnalyticResponse
     {
         $this->query = $this->query();

@@ -24,7 +24,8 @@
     "minimum-stability": "dev",
     "require": {
         "php": ">=7.0",
-        "laravel/framework": ">=7.0"
+        "laravel/framework": ">=7.0",
+        "kakaprodo/custom-data":">=1.9.2"
     },
      "extra": {
         "laravel": {

@@ -119,6 +119,11 @@ abstract class AnalyticHandlerBase
      */
     public $persistenceGroup = null;
 
+    /**
+     * force scope type when search term is not provided
+     */
+    protected $shouldForceScopeType = true;
+
     public function __construct(AnalyticData $data)
     {
         $this->data = $data;
