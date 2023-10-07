@@ -4,6 +4,7 @@ namespace Kakaprodo\SystemAnalytic\Lib\Data\Base;
 
 use Kakaprodo\SystemAnalytic\Utilities\Util;
 use Kakaprodo\SystemAnalytic\Http\Requests\SystemAnalyticRequest;
+use Kakaprodo\SystemAnalytic\Lib\Data\AnalyticData;
 use Kakaprodo\SystemAnalytic\Lib\Interfaces\AnalyticHandlerRegisterInterface;
 
 abstract class AnalyticHandlerRegisterBase implements AnalyticHandlerRegisterInterface
@@ -20,6 +21,17 @@ abstract class AnalyticHandlerRegisterBase implements AnalyticHandlerRegisterInt
         }
 
         return $this->$appropriateMethod(...$arguments);
+    }
+
+    /**
+     * Build the laravel form validation rules
+     */
+    public static function formValidationRules($request)
+    {
+        return array_merge(
+            AnalyticData::formValidationRules(),
+            static::requestRules($request)
+        );
     }
 
     /**

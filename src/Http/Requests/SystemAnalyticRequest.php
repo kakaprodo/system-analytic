@@ -62,7 +62,7 @@ class SystemAnalyticRequest extends FormRequest
             'selected_option' => ['nullable', 'string'],
             'should_clear_cache' => ['nullable', 'boolean'],
             'refresh_persisted_result' => ['nullable', 'boolean'],
-        ], Util::handlerRegisterClass()::requestRules($this));
+        ], Util::handlerRegisterClass()::formValidationRules($this));
     }
 
     public function messages()
