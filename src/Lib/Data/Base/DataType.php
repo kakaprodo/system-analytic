@@ -18,41 +18,11 @@ abstract class DataType extends CustomData
      */
     protected $handlerRegisterData;
 
-    protected $originalData;
-
-    protected $customDataKey;
-
+    /**
+     * Keeps the original values of provided scopes
+     * eg: if scope=today; // value will be Y-m-d: 2023-10-11
+     */
     protected $filterValueHub;
-
-    /**
-     * Collect data unique key from the fresh provided data
-     */
-    public function dataKey()
-    {
-        if ($this->customDataKey) return $this->customDataKey;
-
-        return $this->customDataKey = parent::dataKey();
-    }
-
-    /**
-     * the original data before any modification
-     */
-    public function setOriginalData()
-    {
-        $this->originalData = $this->all();
-
-        // load the original key
-        $this->dataKey();
-    }
-
-    /**
-     * get the original inputed data that came right from 
-     * the request
-     */
-    public function getOriginalData()
-    {
-        return $this->originalData;
-    }
 
     protected function expectedProperties(): array
     {
@@ -64,7 +34,7 @@ abstract class DataType extends CustomData
      */
     public static function handlerRegisterClass()
     {
-       return Util::handlerRegisterClass();
+        return Util::handlerRegisterClass();
     }
 
     /**

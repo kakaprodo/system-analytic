@@ -35,8 +35,6 @@ class AnalyticData extends AnalyticDataBase
 
     public function boot()
     {
-        // set the inputed data before modification
-        return $this->setOriginalData();
     }
 
     public function ignoreForKeyGenerator(): array

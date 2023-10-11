@@ -3,6 +3,9 @@
 namespace Kakaprodo\SystemAnalytic\Lib\BaseClasses\Traits;
 
 
+/**
+ * @property \Kakaprodo\SystemAnalytic\Lib\Data\AnalyticData $data
+ */
 trait HasMethodCallingTrait
 {
     /**

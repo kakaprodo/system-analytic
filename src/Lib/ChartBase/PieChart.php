@@ -4,7 +4,6 @@ namespace Kakaprodo\SystemAnalytic\Lib\ChartBase;
 
 use Kakaprodo\SystemAnalytic\Lib\AnalyticHandler;
 use Kakaprodo\SystemAnalytic\Lib\AnalyticResponse;
-use Kakaprodo\SystemAnalytic\Utilities\Util;
 
 abstract class PieChart extends AnalyticHandler
 {
@@ -14,9 +13,7 @@ abstract class PieChart extends AnalyticHandler
     protected $groupBy = 'name';
 
     /**
-     * the column to use when mapping data,
-     * this coulmn will have the value of 
-     * the grouped item.
+     * the column on which aggreator will be applied
      */
     protected $mappingColumnValue = null;
 
@@ -54,6 +51,9 @@ abstract class PieChart extends AnalyticHandler
         return $pieChartData;
     }
 
+    /**
+     * Format list to be grouped by the value of the $groupBy
+     */
     protected function getGroupedItems()
     {
         return $this->query->lazy()
