@@ -12,13 +12,15 @@ use Kakaprodo\SystemAnalytic\Lib\BaseClasses\Traits\HasMethodCallingTrait;
 use Kakaprodo\SystemAnalytic\Lib\BaseClasses\Traits\HasRegisteredPluginClass;
 use Kakaprodo\SystemAnalytic\Lib\Validation\HasAnalyticInterfaceValidationTrait;
 use Kakaprodo\SystemAnalytic\Lib\BaseClasses\Traits\HasGeneralHandlerHelperTrait;
+use Kakaprodo\SystemAnalytic\Lib\BaseClasses\Traits\HasInterfacePlaceholderMethods;
 
 abstract class AnalyticHandlerBase
 {
     use HasMethodCallingTrait,
         HasGeneralHandlerHelperTrait,
         HasAnalyticInterfaceValidationTrait,
-        HasRegisteredPluginClass;
+        HasRegisteredPluginClass,
+        HasInterfacePlaceholderMethods;
 
     /**
      * the analytic query

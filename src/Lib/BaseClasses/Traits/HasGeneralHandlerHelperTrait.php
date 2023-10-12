@@ -12,4 +12,15 @@ trait HasGeneralHandlerHelperTrait
     {
         return $this->data->search_value[$key] ?? null;
     }
+
+    /**
+     * replace a {placeholder} in a string
+     */
+    public function replacePlaceholders($string, $data = [], $defaultName = null)
+    {
+        return preg_replace_callback('/\{([^\}]+)\}/', function ($matches) use ($data, $defaultName) {
+            $key = $matches[1];
+            return isset($data[$key]) ? $data[$key] : $defaultName;
+        }, $string);
+    }
 }

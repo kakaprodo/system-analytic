@@ -13,9 +13,29 @@ abstract class PieChart extends AnalyticHandler
     protected $groupBy = 'name';
 
     /**
-     * the column on which aggreator will be applied
+     * the column on which aggreator will be applied,
+     * consider this as the agregation key
      */
     protected $mappingColumnValue = null;
+
+    /**
+     * Provide the way to calculate the grouped items
+     * based on your aggregation type: sum,count,min,max
+     */
+    protected $aggregator = null;
+
+    /**
+     * In case the group column's value is empty, 
+     * this value will be used
+     */
+    protected $defaultGroupingName = 'N/A';
+
+    /**
+     * Define how the group by value need to be formatted
+     * 
+     * eg: "@{name} and {age}" result in "@kakaprodo and 15"
+     */
+    protected $groupByPlaceholder = null;
 
     /**
      * define the query to use for pie chart info,
@@ -45,7 +65,7 @@ abstract class PieChart extends AnalyticHandler
         $groupedItems = $this->getGroupedItems();
 
         $pieChartData = collect($groupedItems)
-            ->map(fn ($items, $itemName) => $this->map($items, $itemName))
+            ->map(fn ($items) => $this->map($items))
             ->all();
 
         return $pieChartData;
@@ -56,11 +76,21 @@ abstract class PieChart extends AnalyticHandler
      */
     protected function getGroupedItems()
     {
+        // dd($this->query->get());
         return $this->query->lazy()
             ->groupBy(function ($item) {
-                return is_callable($this->groupBy)
+
+                if ($this->groupByPlaceholder) return $this->replacePlaceholders(
+                    $this->groupByPlaceholder,
+                    (array) $item,
+                    $this->defaultGroupingName
+                );
+
+                $value = is_callable($this->groupBy)
                     ? ($this->groupBy)($item)
                     : $item->{$this->groupBy};
+
+                return  $value ?? $this->defaultGroupingName;
             })->all();
     }
 
@@ -68,8 +98,12 @@ abstract class PieChart extends AnalyticHandler
      * THE MAP function to use after grouping the data per 
      * item
      */
-    protected function map($items, $itemName)
+    protected function map($items)
     {
+        $aggregator = $this->aggregator;
+
+        if ($aggregator) return $items->$aggregator($this->mappingColumnValue);
+
         return !$this->mappingColumnValue
             ? $items->count()
             : $items->sum($this->mappingColumnValue);

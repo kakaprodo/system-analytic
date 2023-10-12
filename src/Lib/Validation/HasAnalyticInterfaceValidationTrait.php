@@ -73,7 +73,11 @@ trait HasAnalyticInterfaceValidationTrait
 
         $searchValue = $this->data->search_value;
 
-        $expectedSearchFields = $this->expectedSearchFields();
+        $expectedSearchFields =  $this->expectedSearchFields();
+
+        $applyVirtualValidation = $expectedSearchFields == [];
+
+        if ($applyVirtualValidation) return $this->applyVirtualValidationOnGroupSearchFields();
 
         Util::whenYes($expectedSearchFields == [], "You need to register the expected search fields");
 
@@ -81,8 +85,13 @@ trait HasAnalyticInterfaceValidationTrait
 
         Util::whenNot(is_array($searchValue), $errorMsg);
 
-        $expectedSearchFields = Arr::only($searchValue, $expectedSearchFields);
+        $onlyExpectedSearchFields = Arr::only($searchValue, $expectedSearchFields);
 
-        Util::whenYes($expectedSearchFields == [], $errorMsg);
+        Util::whenYes($onlyExpectedSearchFields == [], $errorMsg);
+    }
+
+    private function applyVirtualValidationOnGroupSearchFields()
+    {
+        return true;
     }
 }

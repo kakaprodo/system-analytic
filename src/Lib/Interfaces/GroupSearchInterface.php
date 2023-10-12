@@ -2,6 +2,8 @@
 
 namespace Kakaprodo\SystemAnalytic\Lib\Interfaces;
 
+use Kakaprodo\CustomData\CustomData;
+
 interface GroupSearchInterface
 {
     /**
@@ -9,4 +11,9 @@ interface GroupSearchInterface
      * as search value
      */
     public function expectedSearchFields(): array;
+
+    /**
+     * Define expected search fields and validate them
+     */
+    public function expectedSearchFieldsWithValidation(CustomData $customData): array;
 }
