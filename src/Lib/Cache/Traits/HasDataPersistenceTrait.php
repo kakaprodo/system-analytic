@@ -54,7 +54,7 @@ trait HasDataPersistenceTrait
     private function storeResult($result, $shouldRefresh = false)
     {
         $analyticData = Arr::except(
-            $this->handler->data->getOriginalData(),
+            $this->handler->data->onlyValidated(),
             $this->handler->data->ignoreForKeyGenerator()
         );
 

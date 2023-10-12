@@ -10,17 +10,26 @@ use Kakaprodo\SystemAnalytic\Lib\Interfaces\AnalyticHandlerRegisterInterface;
 abstract class AnalyticHandlerRegisterBase implements AnalyticHandlerRegisterInterface
 {
     /**
+     * all the called macros value
+     */
+    protected $macros = [];
+
+    /**
      * Handle the macro method calling
      */
     public function __call($name, $arguments)
     {
         $appropriateMethod = "macro" . (Util::strTitle($name));
 
+        if ($this->$appropriateMethod) return $this->$appropriateMethod;
+
         if (!method_exists($this, $appropriateMethod)) {
             throw Util::fireErr("Method {$name} does not exists");
         }
 
-        return $this->$appropriateMethod(...$arguments);
+        $value = $this->$appropriateMethod(...$arguments);
+
+        return  $this->$appropriateMethod = $value;
     }
 
     /**
@@ -45,6 +54,11 @@ abstract class AnalyticHandlerRegisterBase implements AnalyticHandlerRegisterInt
 
     public function __get($name)
     {
-        return null;
+        return $this->macros[$name] ?? null;
+    }
+
+    public function __set($name, $value)
+    {
+        return $this->macros[$name] = $value;
     }
 }
