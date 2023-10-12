@@ -3,7 +3,9 @@
 namespace Kakaprodo\SystemAnalytic\Lib\Validation;
 
 use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
 use Kakaprodo\SystemAnalytic\Utilities\Util;
+use Kakaprodo\CustomData\Helpers\VirtualCustomData;
 use Kakaprodo\SystemAnalytic\Lib\Interfaces\AdminInterface;
 use Kakaprodo\SystemAnalytic\Lib\Interfaces\GroupSearchInterface;
 use Kakaprodo\SystemAnalytic\Lib\Interfaces\OptionAnalyticInterface;
@@ -92,6 +94,21 @@ trait HasAnalyticInterfaceValidationTrait
 
     private function applyVirtualValidationOnGroupSearchFields()
     {
+        Util::whenNot(is_array($this->data->search_value), "The search value should be an array");
+
+        VirtualCustomData::check(
+            fn ($customData) => $this->expectedSearchFieldsWithValidation($customData),
+            $this->data->search_value,
+            function ($errorMessage) {
+                Util::fireErr($errorMessage)->withData([
+                    'reason' => [
+                        'analytic' => basename(static::class),
+                        'hint' => 'Check the values you have provided in the request search_value'
+                    ]
+                ])->die();
+            }
+        );
+
         return true;
     }
 }

@@ -25,7 +25,7 @@ abstract class PieChart extends AnalyticHandler
     protected $aggregator = null;
 
     /**
-     * In case the group column's value is empty, 
+     * In case the grouping value is empty, 
      * this value will be used
      */
     protected $defaultGroupingName = 'N/A';
@@ -76,7 +76,6 @@ abstract class PieChart extends AnalyticHandler
      */
     protected function getGroupedItems()
     {
-        // dd($this->query->get());
         return $this->query->lazy()
             ->groupBy(function ($item) {
 
