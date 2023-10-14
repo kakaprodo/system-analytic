@@ -9,14 +9,14 @@ class RefreshPersistedAnalyticResult extends Command
 {
     protected $hidden = true;
 
-    protected $signature = 'system-analytic:refresh {analytic-type} {persistence-group?}';
+    protected $signature = 'system-analytic:refresh {analytic-type?} {--group=}';
 
     protected $description = 'A command to refresh all the persisted result for a given analytic handler by providing its type or class name';
 
     public function handle()
     {
         $analyticType = $this->argument('analytic-type');
-        $persistenceGroup = $this->argument('persistence-group');
+        $persistenceGroup = $this->option('group');
 
         $this->warn('Start refreshing...');
 
