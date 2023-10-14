@@ -122,6 +122,11 @@ abstract class AnalyticHandlerBase
     public $persistenceGroup = null;
 
     /**
+     * Persist any result regarding less the scope period
+     */
+    public $persistResultOfAnyScope = false;
+
+    /**
      * force scope type when search term is not provided
      */
     protected $shouldForceScopeType = true;

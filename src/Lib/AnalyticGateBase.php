@@ -129,24 +129,28 @@ abstract class AnalyticGateBase extends CustomActionBuilder
     }
 
     /**
-     * refresh persisted result of a given analytic handler
+     * Refresh persisted result of a given analytic handler
+     * Or of a given group persistence
      * 
      * @param 
      */
     public static function refreshPersistedResult(
-        $analyticType,
+        $analyticType = null,
         $persistenceGroup = null,
         $onSingleRefreshing = null
     ) {
-        $analyticType = is_numeric($analyticType) ? $analyticType : Util::classToKebak($analyticType);
-        $columnName = is_numeric($analyticType) ? 'id' : 'analytic_type';
+        Util::whenNot($analyticType || $persistenceGroup, "You should provide the analytic type");
 
-        $persistedResults = Util::persistModel()::where($columnName, $analyticType)
-            ->tap(function ($q) use ($persistenceGroup) {
-                if (!$persistenceGroup) return $q;
+        $persistedResults = Util::persistModel()::tap(function ($q) use ($analyticType) {
+            if (!$analyticType) return $q;
+            $analyticType = is_numeric($analyticType) ? $analyticType : Util::classToKebak($analyticType);
+            $columnName = is_numeric($analyticType) ? 'id' : 'analytic_type';
+            $q->where($columnName, $analyticType);
+        })->tap(function ($q) use ($persistenceGroup) {
+            if (!$persistenceGroup) return $q;
 
-                $q->where('group', $persistenceGroup);
-            })->get();
+            $q->where('group', $persistenceGroup);
+        })->get();
 
         foreach ($persistedResults as $analyticReport) {
             $record = array_merge($analyticReport->analytic_data, [
