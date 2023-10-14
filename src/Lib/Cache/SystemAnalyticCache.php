@@ -28,6 +28,16 @@ class SystemAnalyticCache
     public $resultCacheKey = null;
 
     /**
+     * mention that the result was fetched from cache
+     */
+    protected $resultIsFromCache = false;
+
+    /**
+     * mention that the result was fetched from persisted data
+     */
+    protected $resultIsFromPersistence = false;
+
+    /**
      * response constant lists
      */
 
@@ -100,30 +110,41 @@ class SystemAnalyticCache
     public function getCachedResultIfExists()
     {
         // get result from cache
-        if ($this->shouldRenderCaches()) return $this->getCachedResult();
+        if ($this->shouldRenderCaches()) {
+            $this->resultIsFromCache = true;
+            return $this->getCachedResult();
+        }
 
         //check result from persisted data
-        if ($result = $this->getPersistedResult()) return $result;
+        if ($result = $this->getPersistedResult()) {
+            $this->resultIsFromPersistence = true;
+            return $result;
+        }
 
         return self::NO_CACHE_RESULT;
     }
 
     /**
-     * cache the result if the system support data caching and if
-     * the result was not fetched from the existing cached data
+     * cache the result if the system support data caching and 
+     * Persist only processed result
+     * 
+     * @param bool $fromExistingCache: true when data was not processed, 
+     * means it comes from cache
      */
-    public function cacheResultIfDoesnotExists($result, $fromExistingCache = false)
+    public function cacheResultIfDoesnotExists($result)
     {
-        $cachePeriode = $this->handler->getCachedPeriod();
+        if ($this->resultIsFromCache) return;
 
-        if (
-            !$this->supportCaching
-            || $fromExistingCache
-            || !$cachePeriode
-        ) return;
+        // cache result
+        if ($this->supportCaching) {
+            $cachePeriode = $this->handler->getCachedPeriod();
 
-        Cache::put($this->getCacheKey(), $result, $cachePeriode);
+            if ($cachePeriode) Cache::put($this->getCacheKey(), $result, $cachePeriode);
+        }
 
+        if ($this->resultIsFromPersistence) return;
+
+        // persist result
         $this->persistResult($result, $this->handler->data->needToRefreshPersistedData());
     }
 }

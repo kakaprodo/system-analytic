@@ -27,7 +27,7 @@ abstract class AnalyticHandler extends AnalyticHandlerBase
 
         // return cached response if it exists
         if ($cachedResult != SystemAnalyticCache::NO_CACHE_RESULT) {
-            return $analytic->response($cachedResult, true);
+            return $analytic->response($cachedResult);
         }
 
         $analytic->validateProperties()->boot();

@@ -169,7 +169,7 @@ abstract class AnalyticDataBase extends DataType
      */
     public function needsToClearCache(): bool
     {
-        return (bool) $this->should_clear_cache;
+        return (bool) ($this->should_clear_cache || $this->refresh_persisted_result);
     }
 
     /**
@@ -177,11 +177,7 @@ abstract class AnalyticDataBase extends DataType
      */
     public function needToRefreshPersistedData()
     {
-        $shouldRefresh =  (bool) $this->refresh_persisted_result;
-
-        if ($shouldRefresh) $this->should_clear_cache = true;
-
-        return $shouldRefresh;
+        return (bool) $this->refresh_persisted_result;
     }
 
     /**

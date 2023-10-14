@@ -29,12 +29,9 @@ trait HasRegisteredPluginClass
      * 
      * @param bool $forCache : define whether the result is fetched from cache
      */
-    public function response($result, $forCache = false): AnalyticResponse
+    public function response($result): AnalyticResponse
     {
-        $this->cache()->cacheResultIfDoesnotExists(
-            $result,
-            $forCache
-        );
+        $this->cache()->cacheResultIfDoesnotExists($result);
 
         return AnalyticResponse::make($result, $this);
     }
