@@ -1,0 +1,37 @@
+{
+    "name": "kakaprodo/system-analytic",
+    "description": "A package that simplifies the development of the analytic of a laravel system based on the data the system has in database",
+    "license": "MIT",
+    "keywords": [
+        "package",
+        "system analytic",
+        "analytic",
+        "laravel analytic",
+        "php",
+        "kakaprodo"
+    ],
+    "autoload": {
+        "psr-4": {
+            "Kakaprodo\\SystemAnalytic\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "kakaprodo",
+            "email": "promskakaprodo45@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "php": ">=7.0",
+        "laravel/framework": ">=7.0",
+        "kakaprodo/custom-data":">=1.9.5 || dev-develop"
+    },
+     "extra": {
+        "laravel": {
+            "providers": [
+                "Kakaprodo\\SystemAnalytic\\SystemAnalyticServiceProvider"
+            ]
+        }
+    }
+}
