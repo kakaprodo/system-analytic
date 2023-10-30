@@ -2,6 +2,8 @@
 
 namespace Kakaprodo\SystemAnalytic\Lib\BaseClasses\Traits;
 
+use Illuminate\Support\Str;
+
 
 trait HasGeneralHandlerHelperTrait
 {
@@ -22,5 +24,14 @@ trait HasGeneralHandlerHelperTrait
             $key = $matches[1];
             return isset($data[$key]) ? $data[$key] : $defaultName;
         }, $string);
+    }
+
+    /**
+     * Check if the handler supports multiple scope 
+     * columns
+     */
+    public function supportMultipleScopeColumns()
+    {
+        return is_array($this->scopeColumn) || Str::contains($this->scopeColumn, '|');
     }
 }
