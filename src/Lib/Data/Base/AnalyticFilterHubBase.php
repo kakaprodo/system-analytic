@@ -12,6 +12,12 @@ abstract class AnalyticFilterHubBase
      */
     protected $data;
 
+    /**
+     * Keeps the original scope column value that
+     * comes in 
+     */
+    protected $initialScopeColumn;
+
     const TYPE_YEAR_AGO = 'year_ago';
     const TYPE_TODAY = 'today';
     const TYPE_MONTH_AGO = 'month_ago';
@@ -131,5 +137,23 @@ abstract class AnalyticFilterHubBase
             $filterHandlers,
             'Un-supported filter type: ' . $this->data->scope_type
         );
+    }
+
+    /**
+     * Convert the provided scope column to array,
+     * then check whether or not the handler supports
+     * multiple scope columns
+     * 
+     * @return string|array
+     */
+    public function getScopeColumns()
+    {
+        $scopeColumns = $this->data->scopeColumn;
+
+        $this->initialScopeColumn = $scopeColumns;
+
+        $scopeColumns = is_array($scopeColumns) ? $scopeColumns : explode('|', $scopeColumns);
+
+        return count($scopeColumns) == 1 ? $this->initialScopeColumn : $scopeColumns;
     }
 }

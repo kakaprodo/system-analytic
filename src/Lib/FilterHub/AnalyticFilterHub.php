@@ -11,6 +11,7 @@ use Kakaprodo\SystemAnalytic\Lib\Data\Base\AnalyticFilterHubBase;
  */
 class AnalyticFilterHub extends AnalyticFilterHubBase
 {
+
     /**
      * create the instance and filter the analytic query
      * 
@@ -24,7 +25,34 @@ class AnalyticFilterHub extends AnalyticFilterHubBase
         if (!$data->scope_type) return $query;
 
         return (new self($data))
-            ->applyFilter($query);
+            ->startFilteringProcess($query);
+    }
+
+    /**
+     * Apply multiple scope columns filtering if
+     * the handler supports that
+     */
+    public function startFilteringProcess($query)
+    {
+        $columns = $this->getScopeColumns();
+
+        if (is_string($columns)) return $this->applyFilter($query);
+
+        return $query->where(function ($q) use ($columns) {
+            $firstScopeColumn = array_shift($columns);
+
+            $this->data->setScopeColumn($firstScopeColumn);
+            $query = $this->applyFilter($q);
+
+            $remainingColumns = $columns;
+
+            foreach ($remainingColumns as $column) {
+                $this->data->setScopeColumn($column);
+                $query->orWhere(fn ($q) => $this->applyFilter($q));
+            }
+
+            $this->data->setScopeColumn($this->initialScopeColumn);
+        });
     }
 
     protected function filterByToday($query)
