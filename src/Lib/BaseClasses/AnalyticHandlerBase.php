@@ -13,6 +13,7 @@ use Kakaprodo\SystemAnalytic\Lib\BaseClasses\Traits\HasRegisteredPluginClass;
 use Kakaprodo\SystemAnalytic\Lib\Validation\HasAnalyticInterfaceValidationTrait;
 use Kakaprodo\SystemAnalytic\Lib\BaseClasses\Traits\HasGeneralHandlerHelperTrait;
 use Kakaprodo\SystemAnalytic\Lib\BaseClasses\Traits\HasInterfacePlaceholderMethods;
+use Kakaprodo\SystemAnalytic\Lib\Plugins\PluginHub;
 
 abstract class AnalyticHandlerBase
 {
@@ -168,10 +169,30 @@ abstract class AnalyticHandlerBase
         return Util::classToKebak(static::class);
     }
 
-
+    /**
+     * Validate class interfaces
+     */
     protected function validateProperties()
     {
         $this->validateHandlerInterface($this);
+
+        return $this;
+    }
+
+    /**
+     * Load global and local plugin to the current handler
+     */
+    protected function processPlugins()
+    {
+        $pluginHub = $this->plugin();
+
+        $handlerRegister = $this->data->handlerRegisterData();
+
+        if (method_exists($handlerRegister, 'loadPlugins')) {
+            $handlerRegister->loadPlugins($pluginHub);
+        }
+
+        $this->loadPlugins($pluginHub);
 
         return $this;
     }
@@ -330,5 +351,12 @@ abstract class AnalyticHandlerBase
     public function withResponse(): array
     {
         return [];
+    }
+
+    /**
+     * method in which to load plugins
+     */
+    protected function loadPlugins(PluginHub $pluginHub)
+    {
     }
 }

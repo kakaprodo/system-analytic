@@ -1,6 +1,6 @@
 <?php
 
-namespace Kakaprodo\SystemAnalytic\Lib\Data\Base;
+namespace Kakaprodo\SystemAnalytic\Lib\BaseClasses;
 
 use Kakaprodo\SystemAnalytic\Utilities\Util;
 use Kakaprodo\SystemAnalytic\Lib\Data\AnalyticData;
@@ -48,12 +48,22 @@ abstract class AnalyticFilterHubBase
 
     const TYPE_ALL = "all";
 
-    public function __construct(AnalyticData $data)
+    public function __construct(AnalyticData &$data)
     {
         $this->data = $data;
     }
 
     public function applyFilter($query)
+    {
+        $filterHandlers =  $this->getFilterHandlers($query)[$this->data->scope_type] ?? null;
+
+        return Util::callFunction(
+            $filterHandlers,
+            'Un-supported filter type: ' . $this->data->scope_type
+        );
+    }
+
+    public function getFilterHandlers($query)
     {
         $filterHandlers =  [
             self::TYPE_TODAY => function () use ($query) {
@@ -131,12 +141,11 @@ abstract class AnalyticFilterHubBase
             self::TYPE_ALL => function () use ($query) {
                 return $query;
             }
-        ][$this->data->scope_type] ?? null;
+        ];
 
-        return Util::callFunction(
-            $filterHandlers,
-            'Un-supported filter type: ' . $this->data->scope_type
-        );
+        $scopePlugins = optional($this->data->pluginHub->scopes)->load() ?? [];
+
+        return array_merge($filterHandlers, $scopePlugins);
     }
 
     /**

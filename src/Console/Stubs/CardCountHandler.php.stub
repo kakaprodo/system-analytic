@@ -22,7 +22,7 @@ class {class_name} extends CardCount
     /**
      * the column to use as argument of the aggrgate function
      */
-    protected $columnForAggregate = 'amount_column';
+    protected $columnForAggregate = null;
 
     /**
      * any task you want to be executed before any other

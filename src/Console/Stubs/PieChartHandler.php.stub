@@ -25,7 +25,7 @@ class {class_name} extends PieChart
      * this coulmn will have the value of 
      * the grouped item.
      */
-    protected $mappingColumnValue = 'column';
+    protected $mappingColumnValue = null;
 
     /**
      * any task you want to be executed before any other
