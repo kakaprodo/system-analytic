@@ -23,7 +23,7 @@ class AnalyticScopeValueHub extends AnalyticFilterHubBase
     protected $endDate = null;
 
     public static function apply(
-        AnalyticData $data,
+        AnalyticData &$data,
     ) {
         if (!$data->scope_type) return null;
 

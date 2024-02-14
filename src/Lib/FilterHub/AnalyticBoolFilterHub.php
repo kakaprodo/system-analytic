@@ -15,9 +15,9 @@ class AnalyticBoolFilterHub
     const WITH_TRASHED = 'with_trashed';
     const ONLY_TRASHED = 'only_trashed';
 
-    public function __construct(AnalyticData $data)
+    public function __construct(AnalyticData &$data)
     {
-        $this->data = $data;
+        $this->data = &$data;
     }
 
     public static function apply(AnalyticData $data, $query)

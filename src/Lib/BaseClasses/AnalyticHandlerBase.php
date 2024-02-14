@@ -132,11 +132,11 @@ abstract class AnalyticHandlerBase
      */
     protected $shouldForceScopeType = true;
 
-    public function __construct(AnalyticData $data)
+    public function __construct(AnalyticData &$data)
     {
-        $this->data = $data;
-        $this->shouldExport = $data->should_export;
-        $this->exportFile = $data->file_type;
+        $this->data = &$data;
+        $this->shouldExport = $this->data->should_export;
+        $this->exportFile = $this->data->file_type;
     }
 
     /**

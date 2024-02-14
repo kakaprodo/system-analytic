@@ -98,7 +98,9 @@ class Util
     {
         if (is_callable($myFunction)) return $myFunction(...$args);
 
-        if ($throwableMsg) self::fireErr($throwableMsg)->die();
+        if ($throwableMsg) is_callable($throwableMsg) ?
+            $throwableMsg()
+            : self::fireErr($throwableMsg)->die();
 
         return $myFunction;
     }

@@ -46,9 +46,9 @@ class SystemAnalyticCache
      */
     const NO_CACHE_RESULT = 'NO_CACHE_RESULT';
 
-    public function __construct(AnalyticHandler $handler)
+    public function __construct(AnalyticHandler &$handler)
     {
-        $this->handler = $handler;
+        $this->handler = &$handler;
 
         $this->supportCaching = config('system-analytic.should_cache_result');
 

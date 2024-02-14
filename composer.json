@@ -8,7 +8,11 @@
         "analytic",
         "laravel analytic",
         "php",
-        "kakaprodo"
+        "kakaprodo",
+        "promesse kayenga",
+        "php analytic",
+        "laravel metrics",
+        "php metrics"
     ],
     "autoload": {
         "psr-4": {
@@ -23,8 +27,8 @@
     ],
     "minimum-stability": "dev",
     "require": {
-        "php": ">=7.0",
-        "laravel/framework": ">=7.0",
+        "php": ">=8.0",
+        "laravel/framework": ">=8.0",
         "kakaprodo/custom-data":">=1.9.5 || dev-develop"
     },
      "extra": {

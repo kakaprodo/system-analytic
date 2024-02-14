@@ -45,6 +45,6 @@ trait HasRegisteredPluginClass
      */
     public function plugin(): PluginHub
     {
-        return  $this->data->pluginHub = new PluginHub();
+        return  $this->data->pluginHub = new PluginHub($this->data);
     }
 }

@@ -38,7 +38,7 @@ abstract class AnalyticHandlerRegisterBase implements AnalyticHandlerRegisterInt
     public static function formValidationRules($request)
     {
         return array_merge(
-            AnalyticData::formValidationRules(),
+            AnalyticData::formValidationRules($request),
             static::requestRules($request)
         );
     }

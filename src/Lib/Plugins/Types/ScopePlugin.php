@@ -15,13 +15,13 @@ class ScopePlugin extends AnalyticPluginBase
 
     public function load()
     {
-        [$dbQuery, $data] = func_get_args();
+        $dbQuery = func_get_args()[0];
 
         $handlerType = is_array($this->pluginHandler) ? self::HANDLER_ARRAY : self::HANDLER_CLASS;
 
         $handler = [
-            self::HANDLER_ARRAY => fn () => $this->loadFromArray($dbQuery, $data),
-            self::HANDLER_CLASS => fn () => $this->loadFromClass($dbQuery, $data),
+            self::HANDLER_ARRAY => fn () => $this->loadFromArray($dbQuery),
+            self::HANDLER_CLASS => fn () => $this->loadFromClass($dbQuery),
         ][$handlerType];
 
         return Util::callFunction($handler);
@@ -31,12 +31,12 @@ class ScopePlugin extends AnalyticPluginBase
      * inject the main analytic handler query and the inputs data
      * to the scope handler
      */
-    private function loadFromArray($dbQuery, AnalyticData $data)
+    private function loadFromArray($dbQuery)
     {
         $scopeHandlers = [];
 
         foreach ($this->pluginHandler as $scopeName => $handler) {
-            $scopeHandlers[$scopeName] = fn () => $handler($dbQuery, $data);
+            $scopeHandlers[$scopeName] = fn () => $handler($dbQuery, $this->data);
         }
 
         return $scopeHandlers;
@@ -46,7 +46,7 @@ class ScopePlugin extends AnalyticPluginBase
      * Convert class methods to modulars then inject db qeuery and the inputed data
      * to each class method
      */
-    private function loadFromClass($dbQuery, AnalyticData $data)
+    private function loadFromClass($dbQuery)
     {
         $pluginHandler = $this->pluginHandler;
 
@@ -63,7 +63,7 @@ class ScopePlugin extends AnalyticPluginBase
         $pluginHandlerClass = new $pluginHandler();
 
         foreach ($publicMethods as $method) {
-            $scopeHandlers[$method] = fn () => $pluginHandlerClass->{$method}($dbQuery, $data);
+            $scopeHandlers[$method] = fn () => $pluginHandlerClass->{$method}($dbQuery, $this->data);
         }
 
         return $scopeHandlers;
