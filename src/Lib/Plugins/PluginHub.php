@@ -27,14 +27,16 @@ class PluginHub
     }
 
     /**
-     * Register functionalities that will extend scope or
-     * query filtering feature
+     * Register functionalities that will extend or customize the 
+     * main query scopes
      * 
      * @param string|array payload : can be a class or an array
      */
-    public function scope($payload)
+    public function queryScope($payload)
     {
-        $this->registeredPlugins['scopes'] = new ScopePlugin($payload, $this->data);
+        $this->registeredPlugins['scopes'] = $this->scopes ?
+            $this->scopes->addHandler($payload)
+            : new ScopePlugin($payload, $this->data);
 
         return $this;
     }

@@ -180,7 +180,7 @@ abstract class AnalyticHandlerBase
     }
 
     /**
-     * Load global and local plugin to the current handler
+     * Load global and local plugins to the current handler
      */
     protected function processPlugins()
     {
@@ -188,9 +188,7 @@ abstract class AnalyticHandlerBase
 
         $handlerRegister = $this->data->handlerRegisterData();
 
-        if (method_exists($handlerRegister, 'loadPlugins')) {
-            $handlerRegister->loadPlugins($pluginHub);
-        }
+        $handlerRegister->loadPlugins($pluginHub);
 
         $this->loadPlugins($pluginHub);
 

@@ -30,4 +30,17 @@ abstract class AnalyticPluginBase
      * load the plugin functionality
      */
     abstract public function load();
+
+    /**
+     * to the registered handler of agiven plugin,
+     * add new one
+     * 
+     * @param string|array|null $newHandlers
+     */
+    public function addHandler($newHandler)
+    {
+        $this->pluginHandler = array_merge((array)$this->pluginHandler, (array) $newHandler);
+
+        return $this;
+    }
 }

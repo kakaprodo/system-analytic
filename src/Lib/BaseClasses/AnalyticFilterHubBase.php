@@ -69,21 +69,24 @@ abstract class AnalyticFilterHubBase
      */
     public function applyFilter($query)
     {
-        $scopes = $this->getFilterHandlers($query);
-        $filterHandlers = $scopes[$this->data->scope_type] ?? null;
+        $filterHandlers = $this->getDefaultScopes($query)[$this->data->scope_type]
+            ?? $this->getPluginScopes($query)[$this->data->scope_type]
+            ?? null;
 
         return Util::callFunction(
             $filterHandlers,
-            "The scope type is supposed to be one of: " . implode(',', array_keys($scopes))
+            "The scope type is supposed to be one of: " . implode(',', array_keys(
+                array_merge($this->defaultScopeHandlers, $this->customScopeHandlers)
+            ))
         );
     }
 
     /**
-     * combine default scopes with custom(plugin) scopes
+     * All the default scope handlers
      */
-    public function getFilterHandlers($query)
+    private function getDefaultScopes($query)
     {
-        $this->defaultScopeHandlers =  [
+        return $this->defaultScopeHandlers =  [
             self::TYPE_TODAY => fn () => $this->filterByToday($query),
             self::TYPE_WEEK_AGO => fn () => $this->filterByWeekAgo($query),
             self::TYPE_MONTH_AGO => fn () => $this->filterByMonthAgo($query),
@@ -114,10 +117,16 @@ abstract class AnalyticFilterHubBase
 
             self::TYPE_ALL => fn () => $query
         ];
+    }
 
-        $this->customScopeHandlers = $this->data->pluginHub->scopes?->load($query) ?? [];
-
-        return array_merge($this->defaultScopeHandlers, $this->customScopeHandlers);
+    /**
+     * Load all custom scopes registered in the plugin
+     */
+    private function getPluginScopes($query)
+    {
+        return $this->customScopeHandlers = $this->data->pluginHub->scopes?->load(
+            $query
+        ) ?? [];
     }
 
     /**

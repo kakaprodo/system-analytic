@@ -5,7 +5,6 @@ namespace Kakaprodo\SystemAnalytic\Lib\Plugins\Types;
 use ReflectionClass;
 use ReflectionMethod;
 use Kakaprodo\SystemAnalytic\Utilities\Util;
-use Kakaprodo\SystemAnalytic\Lib\Data\AnalyticData;
 use Kakaprodo\SystemAnalytic\Lib\BaseClasses\AnalyticPluginBase;
 
 class ScopePlugin extends AnalyticPluginBase
@@ -36,6 +35,13 @@ class ScopePlugin extends AnalyticPluginBase
         $scopeHandlers = [];
 
         foreach ($this->pluginHandler as $scopeName => $handler) {
+            if (is_string($handler)) {
+
+                $scopeHandlers = array_merge($scopeHandlers, $this->loadFromClass($dbQuery, $handler));
+
+                continue;
+            }
+
             $scopeHandlers[$scopeName] = fn () => $handler($dbQuery, $this->data);
         }
 
@@ -46,9 +52,9 @@ class ScopePlugin extends AnalyticPluginBase
      * Convert class methods to modulars then inject db qeuery and the inputed data
      * to each class method
      */
-    private function loadFromClass($dbQuery)
+    private function loadFromClass($dbQuery, $pluginHandler = null)
     {
-        $pluginHandler = $this->pluginHandler;
+        $pluginHandler = $pluginHandler ?? $this->pluginHandler;
 
         Util::whenNot(
             class_exists($pluginHandler),
@@ -62,7 +68,9 @@ class ScopePlugin extends AnalyticPluginBase
         $scopeHandlers = [];
         $pluginHandlerClass = new $pluginHandler();
 
-        foreach ($publicMethods as $method) {
+
+        foreach ($publicMethods as $reflectionMethod) {
+            $method = $reflectionMethod->name;
             $scopeHandlers[$method] = fn () => $pluginHandlerClass->{$method}($dbQuery, $this->data);
         }
 

@@ -40,12 +40,12 @@ trait HasDataPersistenceTrait
             if ($this->persistedKeyExists($this->getCacheKey())) return;
         }
 
+        if ($this->handler->persistResultOfAnyScope) $this->storeResult($result, $shouldRefresh);
+
         // the @reportScopeIsInPast sets he startDate and the endDate
         $scopeIsPastPeriod = $this->reportScopeIsInPast();
 
-        if (!$this->handler->persistResultOfAnyScope) {
-            if (!$scopeIsPastPeriod) return;
-        }
+        if (!$scopeIsPastPeriod) return;
 
         $this->storeResult($result, $shouldRefresh);
     }

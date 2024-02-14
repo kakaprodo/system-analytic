@@ -10,14 +10,6 @@ use Kakaprodo\SystemAnalytic\Lib\Data\Base\AnalyticHandlerRegisterBase;
 class AnalyticHandlerRegister extends AnalyticHandlerRegisterBase
 {
     /**
-     * The additional request rules to use in the integrated FormRequest validation
-     */
-    public static function requestRules(SystemAnalyticRequest $request): array
-    {
-        return [];
-    }
-
-    /**
      * Register data that you need to use in your
      * analytic handlers
      */
