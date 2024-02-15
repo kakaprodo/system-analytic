@@ -46,6 +46,11 @@ class SystemAnalyticCache
      */
     const NO_CACHE_RESULT = 'NO_CACHE_RESULT';
 
+    /**
+     * default statement for persiting data
+     */
+    const PERSIST_WHEN_SCOPE_IS_INPAST = 'PERSIST_WHEN_SCOPE_IS_INPAST';
+
     public function __construct(AnalyticHandler &$handler)
     {
         $this->handler = &$handler;

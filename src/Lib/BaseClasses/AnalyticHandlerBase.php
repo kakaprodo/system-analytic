@@ -6,6 +6,8 @@ use ReflectionClass;
 use Illuminate\Support\Arr;
 use Kakaprodo\SystemAnalytic\Utilities\Util;
 use Kakaprodo\SystemAnalytic\Lib\Data\AnalyticData;
+use Kakaprodo\SystemAnalytic\Lib\Plugins\PluginHub;
+use Kakaprodo\SystemAnalytic\Lib\Cache\SystemAnalyticCache;
 use Kakaprodo\SystemAnalytic\Lib\FilterHub\AnalyticFilterHub;
 use Kakaprodo\SystemAnalytic\Lib\FilterHub\AnalyticBoolFilterHub;
 use Kakaprodo\SystemAnalytic\Lib\BaseClasses\Traits\HasMethodCallingTrait;
@@ -13,7 +15,6 @@ use Kakaprodo\SystemAnalytic\Lib\BaseClasses\Traits\HasRegisteredPluginClass;
 use Kakaprodo\SystemAnalytic\Lib\Validation\HasAnalyticInterfaceValidationTrait;
 use Kakaprodo\SystemAnalytic\Lib\BaseClasses\Traits\HasGeneralHandlerHelperTrait;
 use Kakaprodo\SystemAnalytic\Lib\BaseClasses\Traits\HasInterfacePlaceholderMethods;
-use Kakaprodo\SystemAnalytic\Lib\Plugins\PluginHub;
 
 abstract class AnalyticHandlerBase
 {
@@ -356,5 +357,16 @@ abstract class AnalyticHandlerBase
      */
     protected function loadPlugins(PluginHub $pluginHub)
     {
+    }
+
+    /**
+     * Define when to persit report
+     */
+    public function persistWhen()
+    {
+        // for custom scopes, developer needs to overide this method 
+        if ($this->data->scopeHandlerIsFromPlugin) return false;
+
+        return SystemAnalyticCache::PERSIST_WHEN_SCOPE_IS_INPAST;
     }
 }

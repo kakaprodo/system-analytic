@@ -69,12 +69,15 @@ abstract class AnalyticFilterHubBase
      */
     public function applyFilter($query)
     {
-        $filterHandlers = $this->getDefaultScopes($query)[$this->data->scope_type]
-            ?? $this->getPluginScopes($query)[$this->data->scope_type]
-            ?? null;
+        $filterHandler = $this->getDefaultScopes($query)[$this->data->scope_type] ?? null;
+
+        if (!$filterHandler) {
+            $filterHandler = $this->getPluginScopes($query)[$this->data->scope_type] ?? null;
+            $this->data->scopeHandlerIsFromPlugin =  $filterHandler != null;
+        }
 
         return Util::callFunction(
-            $filterHandlers,
+            $filterHandler,
             "The scope type is supposed to be one of: " . implode(',', array_keys(
                 array_merge($this->defaultScopeHandlers, $this->customScopeHandlers)
             ))

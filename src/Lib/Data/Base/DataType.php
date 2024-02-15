@@ -31,6 +31,12 @@ abstract class DataType extends CustomData
      */
     public $pluginHub;
 
+    /**
+     * True when the scope type is a custom one defined
+     * in scope plugin
+     */
+    public $scopeHandlerIsFromPlugin = false;
+
     protected function expectedProperties(): array
     {
         return [];

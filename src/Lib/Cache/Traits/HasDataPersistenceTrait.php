@@ -5,6 +5,7 @@ namespace Kakaprodo\SystemAnalytic\Lib\Cache\Traits;
 use Illuminate\Support\Arr;
 use Kakaprodo\SystemAnalytic\Utilities\Util;
 use Kakaprodo\SystemAnalytic\Lib\AnalyticHandler;
+use Kakaprodo\SystemAnalytic\Lib\Cache\SystemAnalyticCache;
 
 /**
  * @property AnalyticHandler handler
@@ -42,10 +43,17 @@ trait HasDataPersistenceTrait
 
         if ($this->handler->persistResultOfAnyScope) $this->storeResult($result, $shouldRefresh);
 
-        // the @reportScopeIsInPast sets he startDate and the endDate
-        $scopeIsPastPeriod = $this->reportScopeIsInPast();
+        $persistWhen = $this->handler->persistWhen();
 
-        if (!$scopeIsPastPeriod) return;
+        if ($persistWhen === SystemAnalyticCache::PERSIST_WHEN_SCOPE_IS_INPAST) {
+            // the @reportScopeIsInPast sets the startDate and the endDate to the 
+            // current class
+            $scopeIsPastPeriod = $this->reportScopeIsInPast();
+
+            if (!$scopeIsPastPeriod) return;
+        }
+
+        if ($persistWhen !== true) return;
 
         $this->storeResult($result, $shouldRefresh);
     }
