@@ -7,6 +7,7 @@ use Kakaprodo\CustomData\CustomData;
 use Kakaprodo\SystemAnalytic\Utilities\Util;
 use Kakaprodo\CustomData\Exceptions\MissedRequiredPropertyException;
 use Kakaprodo\SystemAnalytic\Lib\Data\Base\AnalyticHandlerRegisterBase;
+use Kakaprodo\SystemAnalytic\Lib\Plugins\PluginHub;
 
 abstract class DataType extends CustomData
 {
@@ -23,6 +24,18 @@ abstract class DataType extends CustomData
      * eg: if scope=today; // value will be Y-m-d: 2023-10-11
      */
     protected $filterValueHub;
+
+    /**
+     * the gate to access to all registered plugins
+     * @var PluginHub 
+     */
+    public $pluginHub;
+
+    /**
+     * True when the scope type is a custom one defined
+     * in scope plugin
+     */
+    public $scopeHandlerIsFromPlugin = false;
 
     protected function expectedProperties(): array
     {

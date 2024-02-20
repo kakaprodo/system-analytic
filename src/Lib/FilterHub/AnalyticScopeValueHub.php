@@ -4,7 +4,7 @@ namespace Kakaprodo\SystemAnalytic\Lib\FilterHub;
 
 use Kakaprodo\SystemAnalytic\Utilities\Util;
 use Kakaprodo\SystemAnalytic\Lib\Data\AnalyticData;
-use Kakaprodo\SystemAnalytic\Lib\Data\Base\AnalyticFilterHubBase;
+use Kakaprodo\SystemAnalytic\Lib\BaseClasses\AnalyticFilterHubBase;
 
 /**
  * A filter class that detect the value of a named scope type
@@ -23,7 +23,7 @@ class AnalyticScopeValueHub extends AnalyticFilterHubBase
     protected $endDate = null;
 
     public static function apply(
-        AnalyticData $data,
+        AnalyticData &$data,
     ) {
         if (!$data->scope_type) return null;
 

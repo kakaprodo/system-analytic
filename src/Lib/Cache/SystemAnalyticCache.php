@@ -46,9 +46,14 @@ class SystemAnalyticCache
      */
     const NO_CACHE_RESULT = 'NO_CACHE_RESULT';
 
-    public function __construct(AnalyticHandler $handler)
+    /**
+     * default statement for persiting data
+     */
+    const PERSIST_WHEN_SCOPE_IS_INPAST = 'PERSIST_WHEN_SCOPE_IS_INPAST';
+
+    public function __construct(AnalyticHandler &$handler)
     {
-        $this->handler = $handler;
+        $this->handler = &$handler;
 
         $this->supportCaching = config('system-analytic.should_cache_result');
 

@@ -33,8 +33,7 @@ class SystemAnalyticRequest extends FormRequest
             'scope_type' => [
                 'bail',
                 Rule::requiredIf($this->isScopeTypeRequired($this->analytic_type)),
-                'string',
-                Rule::in(Util::handlerScopeTypes($this->analytic_type))
+                'string'
             ],
             'scope_value' => [
                 Rule::requiredIf($isFixedScopeType = Util::isFixedScopeType($this->scope_type)),
@@ -68,10 +67,6 @@ class SystemAnalyticRequest extends FormRequest
     public function messages()
     {
         return [
-            'scope_type.in' => 'The scope type is supposed to be one of : ' . implode(
-                ',',
-                Util::handlerScopeTypes($this->analytic_type)
-            ),
             'boolean_scope_type.in'  => 'The boolean scope type is supposed to be one of : ' . implode(
                 ',',
                 Util::getBooleanScopeTypes($this->analytic_type)

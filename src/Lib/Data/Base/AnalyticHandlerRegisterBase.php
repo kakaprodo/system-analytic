@@ -3,8 +3,9 @@
 namespace Kakaprodo\SystemAnalytic\Lib\Data\Base;
 
 use Kakaprodo\SystemAnalytic\Utilities\Util;
-use Kakaprodo\SystemAnalytic\Http\Requests\SystemAnalyticRequest;
 use Kakaprodo\SystemAnalytic\Lib\Data\AnalyticData;
+use Kakaprodo\SystemAnalytic\Lib\Plugins\PluginHub;
+use Kakaprodo\SystemAnalytic\Http\Requests\SystemAnalyticRequest;
 use Kakaprodo\SystemAnalytic\Lib\Interfaces\AnalyticHandlerRegisterInterface;
 
 abstract class AnalyticHandlerRegisterBase implements AnalyticHandlerRegisterInterface
@@ -38,7 +39,7 @@ abstract class AnalyticHandlerRegisterBase implements AnalyticHandlerRegisterInt
     public static function formValidationRules($request)
     {
         return array_merge(
-            AnalyticData::formValidationRules(),
+            AnalyticData::formValidationRules($request),
             static::requestRules($request)
         );
     }
@@ -50,6 +51,13 @@ abstract class AnalyticHandlerRegisterBase implements AnalyticHandlerRegisterInt
     public static function requestRules(SystemAnalyticRequest $request): array
     {
         return [];
+    }
+
+    /**
+     * method in which to load plugins
+     */
+    public function loadPlugins(PluginHub $pluginHub)
+    {
     }
 
     public function __get($name)

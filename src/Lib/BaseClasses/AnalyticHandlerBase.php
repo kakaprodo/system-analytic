@@ -6,6 +6,8 @@ use ReflectionClass;
 use Illuminate\Support\Arr;
 use Kakaprodo\SystemAnalytic\Utilities\Util;
 use Kakaprodo\SystemAnalytic\Lib\Data\AnalyticData;
+use Kakaprodo\SystemAnalytic\Lib\Plugins\PluginHub;
+use Kakaprodo\SystemAnalytic\Lib\Cache\SystemAnalyticCache;
 use Kakaprodo\SystemAnalytic\Lib\FilterHub\AnalyticFilterHub;
 use Kakaprodo\SystemAnalytic\Lib\FilterHub\AnalyticBoolFilterHub;
 use Kakaprodo\SystemAnalytic\Lib\BaseClasses\Traits\HasMethodCallingTrait;
@@ -131,11 +133,11 @@ abstract class AnalyticHandlerBase
      */
     protected $shouldForceScopeType = true;
 
-    public function __construct(AnalyticData $data)
+    public function __construct(AnalyticData &$data)
     {
-        $this->data = $data;
-        $this->shouldExport = $data->should_export;
-        $this->exportFile = $data->file_type;
+        $this->data = &$data;
+        $this->shouldExport = $this->data->should_export;
+        $this->exportFile = $this->data->file_type;
     }
 
     /**
@@ -168,10 +170,28 @@ abstract class AnalyticHandlerBase
         return Util::classToKebak(static::class);
     }
 
-
+    /**
+     * Validate class interfaces
+     */
     protected function validateProperties()
     {
         $this->validateHandlerInterface($this);
+
+        return $this;
+    }
+
+    /**
+     * Load global and local plugins to the current handler
+     */
+    protected function processPlugins()
+    {
+        $pluginHub = $this->plugin();
+
+        $handlerRegister = $this->data->handlerRegisterData();
+
+        $handlerRegister->loadPlugins($pluginHub);
+
+        $this->loadPlugins($pluginHub);
 
         return $this;
     }
@@ -330,5 +350,23 @@ abstract class AnalyticHandlerBase
     public function withResponse(): array
     {
         return [];
+    }
+
+    /**
+     * method in which to load plugins
+     */
+    protected function loadPlugins(PluginHub $pluginHub)
+    {
+    }
+
+    /**
+     * Define when to persit report
+     */
+    public function persistWhen()
+    {
+        // for custom scopes, developer needs to overide this method 
+        if ($this->data->scopeHandlerIsFromPlugin) return false;
+
+        return SystemAnalyticCache::PERSIST_WHEN_SCOPE_IS_INPAST;
     }
 }

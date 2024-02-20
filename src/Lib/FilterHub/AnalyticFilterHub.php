@@ -4,7 +4,7 @@ namespace Kakaprodo\SystemAnalytic\Lib\FilterHub;
 
 use Kakaprodo\SystemAnalytic\Utilities\Util;
 use Kakaprodo\SystemAnalytic\Lib\Data\AnalyticData;
-use Kakaprodo\SystemAnalytic\Lib\Data\Base\AnalyticFilterHubBase;
+use Kakaprodo\SystemAnalytic\Lib\BaseClasses\AnalyticFilterHubBase;
 
 /**
  * This class filters the query
