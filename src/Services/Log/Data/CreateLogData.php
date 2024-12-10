@@ -57,7 +57,7 @@ class CreateLogData extends BaseData
                 'array',
             ]),
             'duplicate_after?' => $this->property()->inArray(self::$strictCheckPeriods)
-                ->default('every')
+                ->default('never')
                 ->rules([
                     'nullable',
                     Rule::in(self::$strictCheckPeriods)

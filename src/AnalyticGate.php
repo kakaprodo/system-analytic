@@ -5,6 +5,9 @@ namespace Kakaprodo\SystemAnalytic;
 use Kakaprodo\SystemAnalytic\Lib\AnalyticGateBase;
 use Kakaprodo\SystemAnalytic\Lib\Data\AnalyticData;
 use Kakaprodo\SystemAnalytic\Services\Log\LogService;
+use Kakaprodo\SystemAnalytic\Http\Analytics\Handlers\Logs\AnalyticLogBarChart;
+use Kakaprodo\SystemAnalytic\Http\Analytics\Handlers\Logs\AnalyticLogPieChart;
+use Kakaprodo\SystemAnalytic\Http\Analytics\Handlers\Logs\AnalyticLogCardCount;
 
 /**
  * @property LogService log
@@ -20,7 +23,11 @@ class AnalyticGate extends AnalyticGateBase
 
     protected static function registeredHandlers(): array
     {
-        return AnalyticData::handlers();
+        return array_merge([
+            AnalyticLogBarChart::type() => AnalyticLogBarChart::class,
+            AnalyticLogPieChart::type() => AnalyticLogPieChart::class,
+            AnalyticLogCardCount::type() => AnalyticLogCardCount::class,
+        ], AnalyticData::handlers());
     }
 
     public function handle(AnalyticData $data)
