@@ -68,11 +68,15 @@ class SystemAnalyticServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__ . '/Http/Requests' => Util::validationFolder(),
         ], 'analytic-request');
+
+        $this->publishes([
+            __DIR__ . '/database/migrations' => database_path('migrations'),
+        ], 'analytic-migration');
     }
 
     protected function stackToLoad()
     {
-        if (Util::shouldRunPersistenceMigration()) {
+        if (Util::shouldRunMigration()) {
             $this->loadMigrationsFrom(__DIR__ . '/database/migrations');
         }
     }

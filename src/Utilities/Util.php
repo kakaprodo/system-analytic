@@ -6,6 +6,7 @@ use Exception;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
 use Kakaprodo\SystemAnalytic\AnalyticGate;
+use Kakaprodo\SystemAnalytic\Models\AnalyticLog;
 use Kakaprodo\SystemAnalytic\Models\SystemAnalyticReport;
 use Kakaprodo\SystemAnalytic\Lib\ExportHub\Base\ExportHubBase;
 use Kakaprodo\SystemAnalytic\Exception\SystemAnalyticException;
@@ -249,11 +250,19 @@ class Util
     }
 
     /**
-     * the model's namespace that persist the report
+     * the model's namespace that persist the report response
      */
     public static function persistModel()
     {
         return config('system-analytic.persist_report.model') ?? SystemAnalyticReport::class;
+    }
+
+    /**
+     * The model's namespace that record analytic manually
+     */
+    public static function logModel()
+    {
+        return config('system-analytic.log_report.model') ?? AnalyticLog::class;
     }
 
     public static function persistTable()
@@ -268,6 +277,16 @@ class Util
     {
         return config('system-analytic.persist_report.enabled')
             && config('system-analytic.persist_report.should_run_migration');
+    }
+
+    public static function shouldRunLogMigration()
+    {
+        return config('system-analytic.log_report.should_run_migration');
+    }
+
+    public static function shouldRunMigration()
+    {
+        return self::shouldRunPersistenceMigration() || self::shouldRunLogMigration();
     }
 
     /**
