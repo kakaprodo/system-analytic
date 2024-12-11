@@ -7,9 +7,10 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\LazyCollection;
 use Kakaprodo\SystemAnalytic\Lib\AnalyticResponse;
 use Kakaprodo\SystemAnalytic\Lib\ChartBase\BlockChart;
+use Kakaprodo\SystemAnalytic\Lib\Interfaces\GroupSearchInterface;
 use Kakaprodo\SystemAnalytic\Http\Analytics\Handlers\Logs\Traits\HasAnalyticGateHelperTrait;
 
-class AnalyticLogBarChart extends BlockChart
+class AnalyticLogBarChart extends BlockChart implements GroupSearchInterface
 {
     use HasAnalyticGateHelperTrait;
 
@@ -37,7 +38,8 @@ class AnalyticLogBarChart extends BlockChart
         return DB::table($this->logTableName())->select([
             DB::raw("SUM(value) as total_value"),
             DB::raw("DATE_FORMAT(created_at, '" . $this->data->scopeValueFormatForDb() . "') as {$this->groupBy}")
-        ])->groupBy($this->groupBy)
+        ])->tap(fn($q) => $this->applyCommonFilterToQuery($q))
+            ->groupBy($this->groupBy)
             ->orderBy('created_at', 'asc');
     }
 

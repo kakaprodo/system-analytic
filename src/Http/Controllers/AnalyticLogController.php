@@ -14,4 +14,18 @@ class AnalyticLogController extends Controller
 
         return response()->json(['added' => !!$log]);
     }
+
+    public function getGroupList($tenantId)
+    {
+        $groups = AnalyticGate::log()->getGroups($tenantId);
+
+        return response()->json($groups);
+    }
+
+    public function getTagList($tenantId)
+    {
+        $tags = AnalyticGate::log()->getTags($tenantId);
+
+        return response()->json($tags);
+    }
 }

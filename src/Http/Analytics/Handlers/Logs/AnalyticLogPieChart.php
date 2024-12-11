@@ -5,36 +5,35 @@ namespace Kakaprodo\SystemAnalytic\Http\Analytics\Handlers\Logs;
 use Illuminate\Support\Facades\DB;
 use Kakaprodo\SystemAnalytic\Lib\AnalyticResponse;
 use Kakaprodo\SystemAnalytic\Lib\ChartBase\PieChart;
+use Kakaprodo\SystemAnalytic\Lib\Interfaces\GroupSearchInterface;
 use Kakaprodo\SystemAnalytic\Http\Analytics\Handlers\Logs\Traits\HasAnalyticGateHelperTrait;
 
-class AnalyticLogPieChart extends PieChart
+class AnalyticLogPieChart extends PieChart implements GroupSearchInterface
 {
 
     use HasAnalyticGateHelperTrait;
 
     /**
-     * The column on which the scope will be applied to
-     */
-    protected $scopeColumn = "table.created_at";
-
-    /**
      * The column that will be used to group the result
      * of your query
      */
-    protected $groupBy = 'created_at';
+    protected $groupBy = 'tag';
 
     /**
      * the column to use when mapping data,
      * this coulmn will have the value of 
      * the grouped item.
      */
-    protected $mappingColumnValue = null;
+    protected $mappingColumnValue = "total_value";
 
     /**
      * any task you want to be executed before any other
      * task in your handler
      */
-    protected function boot() {}
+    protected function boot()
+    {
+        $this->scopeColumn = $this->logTableName() . '.created_at';
+    }
 
     /**
      * The query that define the data that the package
@@ -42,7 +41,13 @@ class AnalyticLogPieChart extends PieChart
      */
     protected function query()
     {
-        return DB::table('example');
+        return DB::table($this->logTableName())
+            ->select([
+                DB::raw("SUM(value) as total_value"),
+                "tag",
+            ])->tap(fn($q) => $this->applyCommonFilterToQuery($q))
+            ->orderBy('created_at', 'asc')
+            ->groupBy('tag');
     }
 
     /**

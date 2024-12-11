@@ -5,10 +5,11 @@ namespace Kakaprodo\SystemAnalytic\Http\Analytics\Handlers\Logs;
 use Illuminate\Support\Facades\DB;
 use Kakaprodo\SystemAnalytic\Lib\AnalyticResponse;
 use Kakaprodo\SystemAnalytic\Lib\ChartBase\CardCount;
+use Kakaprodo\SystemAnalytic\Lib\Interfaces\GroupSearchInterface;
 use Kakaprodo\SystemAnalytic\Http\Analytics\Handlers\Logs\Traits\HasAnalyticGateHelperTrait;
 
 
-class AnalyticLogCardCount extends CardCount
+class AnalyticLogCardCount extends CardCount implements GroupSearchInterface
 {
     use HasAnalyticGateHelperTrait;
 
@@ -39,7 +40,9 @@ class AnalyticLogCardCount extends CardCount
      */
     protected function query()
     {
-        return DB::table($this->logTableName());
+        return DB::table($this->logTableName())->tap(
+            fn($q) => $this->applyCommonFilterToQuery($q)
+        );
     }
 
     /**

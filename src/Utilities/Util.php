@@ -265,9 +265,20 @@ class Util
         return config('system-analytic.log_report.model') ?? AnalyticLog::class;
     }
 
+    /**
+     * get the table name of the analytic log model
+     */
+    public static function logTableName()
+    {
+        return (new (Util::logModel()))->getTable();
+    }
+
+    /**
+     * get the table name of the analytic report persistance model
+     */
     public static function persistTable()
     {
-        return config('system-analytic.persist_report.table_name');
+        return (new (Util::persistModel()))->getTable();
     }
 
     /**
