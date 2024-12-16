@@ -8,6 +8,7 @@ use Kakaprodo\SystemAnalytic\Services\Base\ServiceBase;
 use Kakaprodo\SystemAnalytic\Services\Log\Data\LogData;
 use Kakaprodo\SystemAnalytic\Services\Log\Actions\CreateLogAction;
 use Kakaprodo\SystemAnalytic\Http\Controllers\AnalyticLogController;
+use Kakaprodo\SystemAnalytic\Services\Log\Actions\CreateManyLogAction;
 
 
 class LogService extends ServiceBase
@@ -21,6 +22,14 @@ class LogService extends ServiceBase
     }
 
     /**
+     * Create many analytic logs at the same time
+     */
+    public function createMany(array $inputs)
+    {
+        return CreateManyLogAction::process($this->inputs($inputs));
+    }
+
+    /**
      * Load analytic logs routes
      */
     public function loadRoutes()
@@ -29,6 +38,8 @@ class LogService extends ServiceBase
             'prefix' => 'analytic-logs',
         ], function () {
             Route::post('/add', [AnalyticLogController::class, 'store']);
+
+            Route::post('/add-many', [AnalyticLogController::class, 'storeMany']);
 
             Route::get('/group-list/{tenant_id}', [
                 AnalyticLogController::class,

@@ -15,7 +15,7 @@ class AnalyticLogPieChart extends PieChart implements GroupSearchInterface
 
     /**
      * The column that will be used to group the result
-     * of your query
+     * of your querya
      */
     protected $groupBy = 'tag';
 

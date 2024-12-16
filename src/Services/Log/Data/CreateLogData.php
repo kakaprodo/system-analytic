@@ -39,6 +39,10 @@ class CreateLogData extends BaseData
                 'required',
                 'string'
             ]),
+            'action?' => $this->property()->string()->wrap('for_db')->rules([
+                'nullable',
+                'string'
+            ]),
             'group?' => $this->property()->string()->wrap('for_db')->rules([
                 'nullable',
                 'string'

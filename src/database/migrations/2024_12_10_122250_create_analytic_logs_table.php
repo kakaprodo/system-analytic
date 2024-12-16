@@ -19,6 +19,7 @@ return new class extends Migration
                 $table->id();
                 $table->string('tenant_id')->comment('the owner of the report')->index();
                 $table->string('tag')->comment('report reference');
+                $table->string('action')->comment('log action')->nullable();
                 $table->string('group')->comment('way to categorize reports')->nullable();
                 $table->integer('value')->comment('report value');
                 $table->string('identifier')->comment('can be anything to identify the action author, browser agent preferable');

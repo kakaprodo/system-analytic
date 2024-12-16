@@ -12,6 +12,7 @@ class AnalyticLog extends Model
     protected $fillable = [
         'tenant_id',
         'tag',
+        'action',
         'group',
         'value',
         'identifier',
