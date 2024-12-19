@@ -1,6 +1,10 @@
 # system-analytic
 
-A laravel package that simplifies the implementation of the analytics of your system based on the data in your DB
+A laravel package that simplifies the collection and visualization of your system analytics
+
+# [OFFICIAL DOCUMENTATION](https://yupidoc.com/projects/system-analytic/preview)
+
+Find more details about this package visit the page: [System-Analytic](https://yupidoc.com/projects/system-analytic/preview)
 
 ```php
 use Kakaprodo\SystemAnalytic\AnalyticGate;

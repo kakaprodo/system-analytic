@@ -1,6 +1,6 @@
 {
     "name": "kakaprodo/system-analytic",
-    "description": "A package that simplifies the development of the analytic of a laravel system based on the data the system has in database",
+    "description": "A laravel package that simplifies the collection and visualization of your system analytics.",
     "license": "MIT",
     "keywords": [
         "package",
@@ -29,7 +29,7 @@
     "require": {
         "php": ">=8.0",
         "laravel/framework": ">=8.0",
-        "kakaprodo/custom-data":">=1.9.5 || dev-develop"
+        "kakaprodo/custom-data":">=2.3.3 || dev-develop"
     },
      "extra": {
         "laravel": {

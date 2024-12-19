@@ -61,11 +61,10 @@ abstract class PieChart extends AnalyticHandler
 
     protected function calculateResult()
     {
-
         $groupedItems = $this->getGroupedItems();
 
         $pieChartData = collect($groupedItems)
-            ->map(fn ($items) => $this->map($items))
+            ->map(fn($items) => $this->map($items))
             ->all();
 
         return $pieChartData;
