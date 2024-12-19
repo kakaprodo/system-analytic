@@ -1,6 +1,6 @@
 {
     "name": "kakaprodo/system-analytic",
-    "description": "A laravel package that simplifies the collection of analytics of any system.",
+    "description": "A laravel package that simplifies the collection and visualization of your system analytics.",
     "license": "MIT",
     "keywords": [
         "package",
