@@ -35,6 +35,10 @@ trait HasAnalyticGateHelperTrait
                 if (!($identifier = $this->getSearchValue('identifier'))) return $q;
 
                 $q->where('identifier', $identifier);
+            })->tap(function ($q) {
+                if (!($action = $this->getSearchValue('action'))) return $q;
+
+                $q->where('action', $action);
             });
     }
 
@@ -48,6 +52,16 @@ trait HasAnalyticGateHelperTrait
 
                 if ($tagExists !== true) {
                     $validator->message("Group {$group} not found");
+                    return false;
+                }
+
+                return true;
+            }),
+            'action?' => $data->dataType()->customValidator(function ($action, DataTypeHub $validator) {
+                $tagExists = Util::logModel()::where('action', $action)->exists();
+
+                if ($tagExists !== true) {
+                    $validator->message("Action {$action} not found");
                     return false;
                 }
 
