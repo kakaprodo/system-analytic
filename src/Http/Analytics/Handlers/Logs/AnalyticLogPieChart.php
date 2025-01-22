@@ -3,6 +3,7 @@
 namespace Kakaprodo\SystemAnalytic\Http\Analytics\Handlers\Logs;
 
 use Illuminate\Support\Facades\DB;
+use Kakaprodo\SystemAnalytic\Utilities\Util;
 use Kakaprodo\SystemAnalytic\Lib\AnalyticResponse;
 use Kakaprodo\SystemAnalytic\Lib\ChartBase\PieChart;
 use Kakaprodo\SystemAnalytic\Lib\Interfaces\GroupSearchInterface;
@@ -26,6 +27,14 @@ class AnalyticLogPieChart extends PieChart implements GroupSearchInterface
      */
     protected $mappingColumnValue = "total_value";
 
+    public function beforePropertyValidation()
+    {
+        $this->logHandlerTypes = [
+            Util::logModel()::HANDLER_PIECHAT,
+            Util::logModel()::HANDLER_ALL,
+        ];
+    }
+
     /**
      * any task you want to be executed before any other
      * task in your handler
@@ -33,6 +42,10 @@ class AnalyticLogPieChart extends PieChart implements GroupSearchInterface
     protected function boot()
     {
         $this->scopeColumn = $this->logTableName() . '.created_at';
+        $this->logHandlerTypes = [
+            Util::logModel()::HANDLER_PIECHAT,
+            Util::logModel()::HANDLER_ALL,
+        ];
     }
 
     /**

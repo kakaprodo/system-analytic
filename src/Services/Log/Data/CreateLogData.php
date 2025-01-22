@@ -3,8 +3,9 @@
 namespace Kakaprodo\SystemAnalytic\Services\Log\Data;
 
 use Illuminate\Validation\Rule;
-use Kakaprodo\SystemAnalytic\Services\Base\Data\BaseData;
 use Kakaprodo\SystemAnalytic\Utilities\Util;
+use Kakaprodo\SystemAnalytic\Models\AnalyticLog;
+use Kakaprodo\SystemAnalytic\Services\Base\Data\BaseData;
 
 /**
  * @property string $tenant_id
@@ -30,6 +31,11 @@ class CreateLogData extends BaseData
 
     protected function expectedProperties(): array
     {
+        $supportedHandlerTypes = config(
+            'system-analytic.log_report.handler_types',
+            Util::logModel()::$supportedHandlerTypes
+        );
+
         return [
             'tenant_id' => $this->property()->string()->wrap('for_db')->rules([
                 'required',
@@ -60,12 +66,18 @@ class CreateLogData extends BaseData
                 'nullable',
                 'array',
             ]),
+            'handler_type?' => $this->property()->inArray($supportedHandlerTypes)
+                ->wrap('for_db')->rules([
+                    'nullable',
+                    Rule::in($supportedHandlerTypes)
+                ]),
             'duplicate_after?' => $this->property()->inArray(self::$strictCheckPeriods)
                 ->default('never')
                 ->rules([
                     'nullable',
                     Rule::in(self::$strictCheckPeriods)
-                ])
+                ]),
+
         ];
     }
 

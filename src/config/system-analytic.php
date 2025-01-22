@@ -110,5 +110,7 @@ return [
         'should_run_migration' => false,
         'table_name' => 'sa_logs',
         'model' => AnalyticLog::class,
+        // analytic handler type on which the log can be displayed
+        'handler_types' => AnalyticLog::$supportedHandlerTypes
     ]
 ];
