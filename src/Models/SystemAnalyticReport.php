@@ -2,9 +2,7 @@
 
 namespace Kakaprodo\SystemAnalytic\Models;
 
-use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
-use Kakaprodo\SystemAnalytic\Utilities\Util;
 
 class SystemAnalyticReport extends Model
 {
@@ -20,7 +18,7 @@ class SystemAnalyticReport extends Model
 
     public function getTable()
     {
-        return Util::persistTable() ?? Str::snake(Str::pluralStudly(class_basename($this)));
+        return config('system-analytic.persist_report.table_name', 'system_analytic_reports');;
     }
 
     public function setValueAttribute($value)
