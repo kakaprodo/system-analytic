@@ -9,6 +9,12 @@ use Kakaprodo\CustomData\Lib\TypeHub\DataTypeHub;
 trait HasAnalyticGateHelperTrait
 {
     /**
+     * The default logs handler types supported by
+     * the current analytic handler
+     */
+    public $logHandlerTypes = [];
+
+    /**
      * the table that save the logged repports
      */
     protected function logTableName()
@@ -23,6 +29,7 @@ trait HasAnalyticGateHelperTrait
     public function applyCommonFilterToQuery($q)
     {
         $q->where('tenant_id', $this->getSearchValue('tenant_id'))
+            ->whereIn('handler_type', $this->getSearchValue('handler_types'))
             ->tap(function ($q) {
                 if (!($group = $this->getSearchValue('group'))) return $q;
 
@@ -47,36 +54,29 @@ trait HasAnalyticGateHelperTrait
         return [
             'tenant_id' => $data->property()->string(),
             'identifier?' => $data->property()->string(),
-            'group?' => $data->dataType()->customValidator(function ($group, DataTypeHub $validator) {
-                $tagExists = Util::logModel()::where('group', $group)->exists();
+            'group?' => $data->property()->string(),
+            'action?' => $data->property()->string(),
+            'tag?' => $data->property()->string(),
+            'handler_types' => $data->property()
+                ->default($this->logHandlerTypes)
+                ->customValidator(function ($handlerTypes, DataTypeHub $validator) {
 
-                if ($tagExists !== true) {
-                    $validator->message("Group {$group} not found");
-                    return false;
-                }
+                    if (!is_array($handlerTypes)) {
+                        $validator->message("handler_types should be an array");
+                        return false;
+                    }
 
-                return true;
-            }),
-            'action?' => $data->dataType()->customValidator(function ($action, DataTypeHub $validator) {
-                $tagExists = Util::logModel()::where('action', $action)->exists();
+                    $supportedHandlers = Util::logModel()::$supportedHandlerTypes;
 
-                if ($tagExists !== true) {
-                    $validator->message("Action {$action} not found");
-                    return false;
-                }
+                    foreach ($handlerTypes as $handlerType) {
+                        if (!in_array($handlerType, $supportedHandlers, true)) {
+                            $validator->message("{$handlerType} is not supported as a handler_type. supported ones: " . implode(',', $supportedHandlers));
+                            return false;
+                        }
+                    }
 
-                return true;
-            }),
-            'tag?' => $data->property()->customValidator(function ($tag, DataTypeHub $validator) {
-                $tagExists = Util::logModel()::where('tag', $tag)->exists();
-
-                if ($tagExists !== true) {
-                    $validator->message("Tag {$tag} not found");
-                    return false;
-                }
-
-                return true;
-            })
+                    return true;
+                })
         ];
     }
 }

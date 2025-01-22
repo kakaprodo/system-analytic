@@ -50,22 +50,50 @@ class LogService extends ServiceBase
                 AnalyticLogController::class,
                 'getTagList'
             ]);
+
+            Route::get('/action-list/{tenant_id}', [
+                AnalyticLogController::class,
+                'getActionList'
+            ]);
         });
     }
 
     /**
      * Get all log tags of a given tenant
+     * with possiblity to filter by handler_type
      */
     public function getTags($tenantId): array
     {
-        return LogData::make(['tenant_id' => $tenantId])->getTags();
+        $inputs = is_array($tenantId) ?
+            $tenantId
+            : ['tenant_id' => $tenantId];
+
+        return LogData::make($inputs)->getTags();
     }
 
     /**
      * Get all log groups of a given tenant
+     * with possiblity to filter by handler_type
      */
     public function getGroups($tenantId): array
     {
-        return LogData::make(['tenant_id' => $tenantId])->getGroups();
+        $inputs = is_array($tenantId) ?
+            $tenantId
+            : ['tenant_id' => $tenantId];
+
+        return LogData::make($inputs)->getGroups();
+    }
+
+    /**
+     * Get all log actions of a given tenant
+     * with possiblity to filter by handler_type
+     */
+    public function getActions($tenantId): array
+    {
+        $inputs = is_array($tenantId) ?
+            $tenantId
+            : ['tenant_id' => $tenantId];
+
+        return LogData::make($inputs)->getActions();
     }
 }

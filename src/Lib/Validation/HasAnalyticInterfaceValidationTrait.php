@@ -96,8 +96,8 @@ trait HasAnalyticInterfaceValidationTrait
     {
         Util::whenNot(is_array($this->data->search_value), "The search value should be an array");
 
-        VirtualCustomData::check(
-            fn ($customData) => $this->expectedSearchFieldsWithValidation($customData),
+        $validatedData = VirtualCustomData::check(
+            fn($customData) => $this->expectedSearchFieldsWithValidation($customData),
             $this->data->search_value,
             function ($errorMessage) {
                 Util::fireErr($errorMessage)->withData([
@@ -108,7 +108,7 @@ trait HasAnalyticInterfaceValidationTrait
                 ])->die();
             }
         );
-
+        $this->data->search_value = $validatedData->all();
         return true;
     }
 }

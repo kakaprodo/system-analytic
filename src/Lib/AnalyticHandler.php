@@ -31,7 +31,9 @@ abstract class AnalyticHandler extends AnalyticHandlerBase
             return $analytic->response($cachedResult);
         }
 
-        $analytic->validateProperties()->boot();
+        $analytic->beforePropertyValidation();
+        $analytic->validateProperties();
+        $analytic->boot();
 
         $result = $analytic->handle();
 
@@ -41,13 +43,15 @@ abstract class AnalyticHandler extends AnalyticHandlerBase
     }
 
     /**
+     * this will come before validateProperties,boot 
+     * method are called
+     */
+    public function beforePropertyValidation() {}
+
+    /**
      * the task to call right after the creation of the instance object
      */
-    protected function boot()
-    {
-    }
+    protected function boot() {}
 
-    public function afterResult()
-    {
-    }
+    public function afterResult() {}
 }

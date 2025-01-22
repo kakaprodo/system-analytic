@@ -3,9 +3,9 @@
 namespace Kakaprodo\SystemAnalytic\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Kakaprodo\SystemAnalytic\Services\Log\Data\CreateLogData;
+use Kakaprodo\SystemAnalytic\Services\Log\Data\CreateManyLogData;
 
-class LogAnalyticRequest extends FormRequest
+class CreateManyLogAnalyticRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,13 +24,6 @@ class LogAnalyticRequest extends FormRequest
      */
     public function rules()
     {
-        return CreateLogData::formValidationRules($this);
-    }
-
-    public function messages()
-    {
-        return [
-            'duplicate_after.in' => 'duplicate after should be one of ' . implode(',', CreateLogData::$strictCheckPeriods)
-        ];
+        return CreateManyLogData::formValidationRules($this);
     }
 }

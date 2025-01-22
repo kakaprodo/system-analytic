@@ -18,6 +18,21 @@ class AnalyticLog extends Model
         'identifier',
         'key',
         'payload', // json field for additional data
+        'handler_type'
+    ];
+
+    const HANDLER_PIECHAT = 'pie-chart';
+    const HANDLER_BARCHAT = 'bar-chart';
+    const HANDLER_CARD = 'card';
+    const HANDLER_LIST = 'list';
+    const HANDLER_ALL = 'all';
+
+    static $supportedHandlerTypes = [
+        self::HANDLER_PIECHAT,
+        self::HANDLER_BARCHAT,
+        self::HANDLER_CARD,
+        self::HANDLER_LIST,
+        self::HANDLER_ALL
     ];
 
     public function getTable()
