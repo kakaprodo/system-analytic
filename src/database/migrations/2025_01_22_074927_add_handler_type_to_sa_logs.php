@@ -14,12 +14,14 @@ return new class extends Migration
      */
     public function up()
     {
-        if (!Schema::hasColumn(Util::logTableName(), 'handler_type')) {
-            Schema::table(Util::logTableName(), function (Blueprint $table) {
-                $table->string('handler_type')
-                    ->default('all')
-                    ->comment('The analytic handler type on which the log should be displayed');
-            });
+        if (Schema::hasTable(Util::logTableName())) {
+            if (!Schema::hasColumn(Util::logTableName(), 'handler_type')) {
+                Schema::table(Util::logTableName(), function (Blueprint $table) {
+                    $table->string('handler_type')
+                        ->default('all')
+                        ->comment('The analytic handler type on which the log should be displayed');
+                });
+            }
         }
     }
 
@@ -30,10 +32,12 @@ return new class extends Migration
      */
     public function down()
     {
-        if (Schema::hasColumn(Util::logTableName(), 'handler_type')) {
-            Schema::table(Util::logTableName(), function (Blueprint $table) {
-                $table->dropColumn('handler_type');
-            });
+        if (Schema::hasTable(Util::logTableName())) {
+            if (Schema::hasColumn(Util::logTableName(), 'handler_type')) {
+                Schema::table(Util::logTableName(), function (Blueprint $table) {
+                    $table->dropColumn('handler_type');
+                });
+            }
         }
     }
 };

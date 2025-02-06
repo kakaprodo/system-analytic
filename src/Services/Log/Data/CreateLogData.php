@@ -99,8 +99,11 @@ class CreateLogData extends BaseData
         $logExists = Util::logModel()::where('key', $this->dataKey())
             ->tap(function ($q) use ($allowDupsAfter) {
                 if ($allowDupsAfter === 'never') return $q;
-                $method = 'sub' . ucfirst($allowDupsAfter);
-                $q->where('created_at', '>=', now()->$method());
+                $period = ucfirst($allowDupsAfter);
+                $method = 'sub' .  $period;
+                $endOfPeriodMethod = 'endOf' .  $period;
+
+                $q->where('created_at', '>=', now()->$method()->$endOfPeriodMethod());
             })->exists();
 
         return $logExists == false;
