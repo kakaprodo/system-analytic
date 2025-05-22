@@ -21,9 +21,9 @@ class PluginHub
      */
     protected $data;
 
-    public function __construct(AnalyticData &$data)
+    public function __construct(AnalyticData $data)
     {
-        $this->data = &$data;
+        $this->data = $data;
     }
 
     /**

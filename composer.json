@@ -29,7 +29,7 @@
     "require": {
         "php": ">=8.0",
         "laravel/framework": ">=8.0",
-        "kakaprodo/custom-data":">=2.3.3 || dev-develop"
+        "kakaprodo/custom-data":">=2.3.5 || dev-develop"
     },
      "extra": {
         "laravel": {

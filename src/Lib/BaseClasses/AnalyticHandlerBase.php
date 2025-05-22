@@ -133,9 +133,9 @@ abstract class AnalyticHandlerBase
      */
     protected $shouldForceScopeType = true;
 
-    public function __construct(AnalyticData &$data)
+    public function __construct(AnalyticData $data)
     {
-        $this->data = &$data;
+        $this->data = $data;
         $this->shouldExport = $this->data->should_export;
         $this->exportFile = $this->data->file_type;
     }
@@ -355,9 +355,7 @@ abstract class AnalyticHandlerBase
     /**
      * method in which to load plugins
      */
-    protected function loadPlugins(PluginHub $pluginHub)
-    {
-    }
+    protected function loadPlugins(PluginHub $pluginHub) {}
 
     /**
      * Define when to persit report

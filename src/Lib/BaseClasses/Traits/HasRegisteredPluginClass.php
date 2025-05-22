@@ -3,9 +3,10 @@
 namespace Kakaprodo\SystemAnalytic\Lib\BaseClasses\Traits;
 
 use Kakaprodo\SystemAnalytic\Lib\AnalyticResponse;
-use Kakaprodo\SystemAnalytic\Lib\Cache\SystemAnalyticCache;
 use Kakaprodo\SystemAnalytic\Lib\Data\AnalyticData;
 use Kakaprodo\SystemAnalytic\Lib\Plugins\PluginHub;
+use Kakaprodo\SystemAnalytic\Lib\Cache\SystemAnalyticCache;
+use Kakaprodo\SystemAnalytic\Lib\Shared\HandlerInteraction\CallAnalyticHandler;
 
 /**
  * A trait where to register plugin like: cache, response ...
@@ -46,5 +47,13 @@ trait HasRegisteredPluginClass
     public function plugin(): PluginHub
     {
         return  $this->data->pluginHub = new PluginHub($this->data);
+    }
+
+    /**
+     * A gate to call the result of a handler from another one
+     */
+    public function callHandler(string $handlerName)
+    {
+        return new CallAnalyticHandler($this->data, $handlerName);
     }
 }

@@ -313,4 +313,12 @@ class Util
             $handlerRegisterClass . " not found, make sure you have resolved the namespace of the handler_register in the system-analytic.php config file"
         );
     }
+
+    /**
+     * get domaiun from a full url
+     */
+    public static function extractHost(string $url)
+    {
+        return parse_url($url, PHP_URL_HOST);
+    }
 }
