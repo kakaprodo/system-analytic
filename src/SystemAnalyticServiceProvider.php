@@ -7,6 +7,7 @@ use Illuminate\Support\ServiceProvider;
 use Kakaprodo\SystemAnalytic\Utilities\Util;
 use Kakaprodo\SystemAnalytic\Console\InstallAnalyticHub;
 use Kakaprodo\SystemAnalytic\Console\MakeExportFileGenerator;
+use Kakaprodo\SystemAnalytic\Console\ProcessAnalyticsCommand;
 use Kakaprodo\SystemAnalytic\Console\AnalyticHandlerGenerator;
 use Kakaprodo\SystemAnalytic\Console\InstallAnalyticConfigFile;
 use Kakaprodo\SystemAnalytic\Console\RefreshPersistedAnalyticResult;
@@ -49,7 +50,8 @@ class SystemAnalyticServiceProvider extends ServiceProvider
             InstallAnalyticHub::class,
             AnalyticHandlerGenerator::class,
             MakeExportFileGenerator::class,
-            RefreshPersistedAnalyticResult::class
+            RefreshPersistedAnalyticResult::class,
+            ProcessAnalyticsCommand::class
         ]);
     }
 

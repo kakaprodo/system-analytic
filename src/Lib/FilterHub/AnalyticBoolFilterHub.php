@@ -15,9 +15,9 @@ class AnalyticBoolFilterHub
     const WITH_TRASHED = 'with_trashed';
     const ONLY_TRASHED = 'only_trashed';
 
-    public function __construct(AnalyticData &$data)
+    public function __construct(AnalyticData $data)
     {
-        $this->data = &$data;
+        $this->data = $data;
     }
 
     public static function apply(AnalyticData $data, $query)
@@ -30,8 +30,8 @@ class AnalyticBoolFilterHub
     public function applyFilter($query)
     {
         $filterHandlers =  [
-            self::WITH_TRASHED => fn () => $this->filterWithTrashed($query),
-            self::ONLY_TRASHED => fn () => $this->filterOnlyTrashed($query),
+            self::WITH_TRASHED => fn() => $this->filterWithTrashed($query),
+            self::ONLY_TRASHED => fn() => $this->filterOnlyTrashed($query),
         ][$this->data->boolean_scope_type] ?? null;
 
         return Util::callFunction(

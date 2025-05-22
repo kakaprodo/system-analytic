@@ -20,10 +20,10 @@ abstract class AnalyticPluginBase
      */
     protected $data;
 
-    public function __construct($pluginHandler, AnalyticData &$data)
+    public function __construct($pluginHandler, AnalyticData $data)
     {
         $this->pluginHandler = $pluginHandler;
-        $this->data = &$data;
+        $this->data = $data;
     }
 
     /**

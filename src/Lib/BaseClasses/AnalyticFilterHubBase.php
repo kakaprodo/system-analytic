@@ -58,9 +58,9 @@ abstract class AnalyticFilterHubBase
 
     const TYPE_ALL = "all";
 
-    public function __construct(AnalyticData &$data)
+    public function __construct(AnalyticData $data)
     {
-        $this->data = &$data;
+        $this->data = $data;
     }
 
     /**
@@ -90,35 +90,35 @@ abstract class AnalyticFilterHubBase
     private function getDefaultScopes($query)
     {
         return $this->defaultScopeHandlers =  [
-            self::TYPE_TODAY => fn () => $this->filterByToday($query),
-            self::TYPE_WEEK_AGO => fn () => $this->filterByWeekAgo($query),
-            self::TYPE_MONTH_AGO => fn () => $this->filterByMonthAgo($query),
-            self::TYPE_YEAR_AGO =>  fn () => $this->filterByYearAgo($query),
+            self::TYPE_TODAY => fn() => $this->filterByToday($query),
+            self::TYPE_WEEK_AGO => fn() => $this->filterByWeekAgo($query),
+            self::TYPE_MONTH_AGO => fn() => $this->filterByMonthAgo($query),
+            self::TYPE_YEAR_AGO =>  fn() => $this->filterByYearAgo($query),
 
-            self::TYPE_THIS_WEEK => fn () =>  $this->filterByThisWeek($query),
-            self::TYPE_THIS_MONTH => fn () => $this->filterByThisMonth($query),
-            self::TYPE_THIS_YEAR => fn () => $this->filterByThisYear($query),
+            self::TYPE_THIS_WEEK => fn() =>  $this->filterByThisWeek($query),
+            self::TYPE_THIS_MONTH => fn() => $this->filterByThisMonth($query),
+            self::TYPE_THIS_YEAR => fn() => $this->filterByThisYear($query),
 
-            self::TYPE_LAST_WEEK => fn () => $this->filterByLastWeek($query),
-            self::TYPE_LAST_MONTH => fn () => $this->filterByLastMonth($query),
-            self::TYPE_LAST_YEAR => fn () => $this->filterByLastYear($query),
+            self::TYPE_LAST_WEEK => fn() => $this->filterByLastWeek($query),
+            self::TYPE_LAST_MONTH => fn() => $this->filterByLastMonth($query),
+            self::TYPE_LAST_YEAR => fn() => $this->filterByLastYear($query),
 
-            self::TYPE_FIXED_HOUR => fn () => $this->filterByFixedHour($query),
-            self::TYPE_FIXED_DATE => fn () => $this->filterByFixedDate($query),
-            self::TYPE_FIXED_MONTH => fn () => $this->filterByFixedMonth($query),
-            self::TYPE_FIXED_YEAR => fn () => $this->filterByFixedYear($query),
+            self::TYPE_FIXED_HOUR => fn() => $this->filterByFixedHour($query),
+            self::TYPE_FIXED_DATE => fn() => $this->filterByFixedDate($query),
+            self::TYPE_FIXED_MONTH => fn() => $this->filterByFixedMonth($query),
+            self::TYPE_FIXED_YEAR => fn() => $this->filterByFixedYear($query),
 
-            self::TYPE_RANGE_HOUR => fn () => $this->filterByRangeHour($query),
-            self::TYPE_RANGE_DATE => fn () => $this->filterByRangeDate($query),
-            self::TYPE_RANGE_MONTH => fn () => $this->filterByRangeMonth($query),
-            self::TYPE_RANGE_YEAR => fn () => $this->filterByRangeYear($query),
+            self::TYPE_RANGE_HOUR => fn() => $this->filterByRangeHour($query),
+            self::TYPE_RANGE_DATE => fn() => $this->filterByRangeDate($query),
+            self::TYPE_RANGE_MONTH => fn() => $this->filterByRangeMonth($query),
+            self::TYPE_RANGE_YEAR => fn() => $this->filterByRangeYear($query),
 
-            self::FIRST_QUARTER => fn () => $this->filterByFirstQuarter($query),
-            self::SECOND_QUARTER => fn () => $this->filterBySecondQuarter($query),
-            self::THIRD_QUARTER => fn () => $this->filterByThirdQuarter($query),
-            self::FOURTH_QUARTER => fn () => $this->filterByFourthQuarter($query),
+            self::FIRST_QUARTER => fn() => $this->filterByFirstQuarter($query),
+            self::SECOND_QUARTER => fn() => $this->filterBySecondQuarter($query),
+            self::THIRD_QUARTER => fn() => $this->filterByThirdQuarter($query),
+            self::FOURTH_QUARTER => fn() => $this->filterByFourthQuarter($query),
 
-            self::TYPE_ALL => fn () => $query
+            self::TYPE_ALL => fn() => $query
         ];
     }
 
