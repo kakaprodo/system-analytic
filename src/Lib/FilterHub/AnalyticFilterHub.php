@@ -48,7 +48,7 @@ class AnalyticFilterHub extends AnalyticFilterHubBase
 
             foreach ($remainingColumns as $column) {
                 $this->data->setScopeColumn($column);
-                $query->orWhere(fn ($q) => $this->applyFilter($q));
+                $query->orWhere(fn($q) => $this->applyFilter($q));
             }
 
             $this->data->setScopeColumn($this->initialScopeColumn);
@@ -62,32 +62,50 @@ class AnalyticFilterHub extends AnalyticFilterHubBase
 
     protected function filterByWeekAgo($query)
     {
-        return $query->whereDate($this->data->scopeColumn, '>=', today()->subWeek());
+        return $query->where(
+            fn($q) => $q->whereDate($this->data->scopeColumn, '>=', today()->subWeek())
+                ->whereDate($this->data->scopeColumn, '<=', today())
+        );
     }
 
     protected function filterByMonthAgo($query)
     {
-        return $query->whereDate($this->data->scopeColumn, '>=', today()->subDays(31));
+        return $query->where(
+            fn($q) => $q->whereDate($this->data->scopeColumn, '>=', today()->subMonth())
+                ->whereDate($this->data->scopeColumn, '<=', today())
+        );
     }
 
     protected function filterByYearAgo($query)
     {
-        return $query->whereDate($this->data->scopeColumn, '>=', today()->subYear());
+        return $query->where(
+            fn($q) => $q->whereDate($this->data->scopeColumn, '>=', today()->subYear())
+                ->whereDate($this->data->scopeColumn, '<=', today())
+        );
     }
 
     protected function filterByThisWeek($query)
     {
-        return $query->whereDate($this->data->scopeColumn, '>=', today()->startOfWeek());
+        return $query->where(
+            fn($q) => $q->whereDate($this->data->scopeColumn, '>=', today()->startOfWeek())
+                ->whereDate($this->data->scopeColumn, '<=', today()->endOfWeek())
+        );
     }
 
     protected function filterByThisMonth($query)
     {
-        return $query->whereDate($this->data->scopeColumn, '>=', today()->startOfMonth());
+        return $query->where(
+            fn($q) => $q->whereDate($this->data->scopeColumn, '>=', today()->startOfMonth())
+                ->whereDate($this->data->scopeColumn, '<=', today()->endOfMonth())
+        );
     }
 
     protected function filterByThisYear($query)
     {
-        return $query->whereDate($this->data->scopeColumn, '>=', today()->startOfYear());
+        return $query->where(
+            fn($q) => $q->whereDate($this->data->scopeColumn, '>=', today()->startOfYear())
+                ->whereDate($this->data->scopeColumn, '<=', today()->endOfYear())
+        );
     }
 
     protected function filterByLastWeek($query)
@@ -102,7 +120,7 @@ class AnalyticFilterHub extends AnalyticFilterHubBase
 
     protected function filterByLastMonth($query)
     {
-        $this->data->scope_value =   today()->subDays(31)->startOfMonth();
+        $this->data->scope_value =  today()->subMonth()->startOfMonth();
 
         return $this->filterByFixedMonth($query);
     }

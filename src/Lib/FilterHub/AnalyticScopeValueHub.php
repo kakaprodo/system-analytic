@@ -63,7 +63,7 @@ class AnalyticScopeValueHub extends AnalyticFilterHubBase
 
     protected function filterByMonthAgo($query)
     {
-        $this->startDate = today()->subDays(31);
+        $this->startDate = today()->subMonth();
         $this->endDate = today()->endOfDay();
     }
 
@@ -101,7 +101,7 @@ class AnalyticScopeValueHub extends AnalyticFilterHubBase
 
     protected function filterByLastMonth($query)
     {
-        $this->startDate = today()->subDays(31)->startOfMonth();
+        $this->startDate = today()->subMonth()->startOfMonth();
     }
 
     protected function filterByLastYear($query)
