@@ -112,5 +112,9 @@ return [
         'model' => AnalyticLog::class,
         // analytic handler type on which the log can be displayed
         'handler_types' => AnalyticLog::$supportedHandlerTypes
+    ],
+
+    'monitoring' => [
+        'enabled' => env('SYSTEM_ANALYTIC_ENABLE_MONITORING', false)
     ]
 ];

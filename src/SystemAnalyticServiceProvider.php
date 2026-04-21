@@ -12,7 +12,7 @@ use Kakaprodo\SystemAnalytic\Console\AnalyticHandlerGenerator;
 use Kakaprodo\SystemAnalytic\Console\InstallAnalyticConfigFile;
 use Kakaprodo\SystemAnalytic\Console\RefreshPersistedAnalyticResult;
 
-class SystemAnalyticServiceProvider extends ServiceProvider
+class SystemAnalyticServiceProvider extends SystemMonitorServiceProvider
 {
     /**
      * Register any application services.
@@ -21,7 +21,7 @@ class SystemAnalyticServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        parent::register();
     }
 
     /**
@@ -31,6 +31,8 @@ class SystemAnalyticServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        parent::boot();
+
         if (!$this->app->runningInConsole()) return;
 
         $this->registerCommands();

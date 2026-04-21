@@ -61,6 +61,7 @@ class SystemAnalyticRequest extends FormRequest
             'selected_option' => ['nullable', 'string'],
             'should_clear_cache' => ['nullable', 'boolean'],
             'refresh_persisted_result' => ['nullable', 'boolean'],
+            'scope_is_up_to' => ['nullable', 'boolean'],
         ], Util::handlerRegisterClass()::formValidationRules($this));
     }
 
