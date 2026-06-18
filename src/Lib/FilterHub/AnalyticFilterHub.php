@@ -55,6 +55,31 @@ class AnalyticFilterHub extends AnalyticFilterHubBase
         });
     }
 
+    protected function  filterBySinceOneHour($query)
+    {
+        return $query->where($this->data->scopeColumn, '>=', now()->subHour());
+    }
+
+    protected function filterBySinceTwentyFourHours($query)
+    {
+        return $query->where($this->data->scopeColumn, '>=', now()->subHours(24));
+    }
+
+    protected function filterBySinceSevenDays($query)
+    {
+        return $query->where($this->data->scopeColumn, '>=', now()->subDays(7));
+    }
+
+    protected function filterBySinceFourteenDays($query)
+    {
+        return $query->where($this->data->scopeColumn, '>=', now()->subDays(14));
+    }
+
+    protected function filterBySinceThirtyDays($query)
+    {
+        return $query->where($this->data->scopeColumn, '>=', now()->subDays(30));
+    }
+
     protected function filterByToday($query)
     {
         $operator = $this->data->scope_is_up_to ? "<=" : "=";

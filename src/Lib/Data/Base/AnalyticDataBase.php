@@ -60,9 +60,12 @@ abstract class AnalyticDataBase extends DataType
     public function scopeValueFormatForDb()
     {
         return [
-            self::SCOPE_CATEGORY_HOUR => value(fn () => [
+            self::SCOPE_CATEGORY_HOUR => value(fn() => [
                 AnalyticFilterHub::TYPE_FIXED_HOUR => '%Y-%m-%d %H:%i',
-                AnalyticFilterHub::TYPE_RANGE_HOUR => '%Y-%m-%d %H:00'
+                AnalyticFilterHub::TYPE_RANGE_HOUR => '%Y-%m-%d %H:00',
+                AnalyticFilterHub::TYPE_1H => '%Y-%m-%d %H:%i',
+                AnalyticFilterHub::TYPE_24H => '%Y-%m-%d %H:00',
+                AnalyticFilterHub::TYPE_TODAY => '%Y-%m-%d %H:00',
             ][$this->scope_type] ?? null),
             self::SCOPE_CATEGORY_DAY => '%Y-%m-%d',
             self::SCOPE_CATEGORY_MONTH => '%Y-%m-%d',
@@ -76,9 +79,12 @@ abstract class AnalyticDataBase extends DataType
     public function scopeValueFormatForCarbon()
     {
         return [
-            self::SCOPE_CATEGORY_HOUR =>  value(fn () => [
-                AnalyticFilterHub::TYPE_FIXED_HOUR => 'd M h:i A',
-                AnalyticFilterHub::TYPE_RANGE_HOUR => 'd M h A'
+            self::SCOPE_CATEGORY_HOUR =>  value(fn() => [
+                AnalyticFilterHub::TYPE_FIXED_HOUR => 'h:i A',
+                AnalyticFilterHub::TYPE_RANGE_HOUR => 'd M h A',
+                AnalyticFilterHub::TYPE_1H => 'h:i A',
+                AnalyticFilterHub::TYPE_24H => 'D,h A',
+                AnalyticFilterHub::TYPE_TODAY => 'h A',
             ][$this->scope_type] ?? null),
             self::SCOPE_CATEGORY_DAY => 'd M Y',
             self::SCOPE_CATEGORY_MONTH => 'd M Y',
@@ -109,8 +115,11 @@ abstract class AnalyticDataBase extends DataType
     public function scopeIsHour()
     {
         return in_array($this->scope_type, [
+            AnalyticFilterHub::TYPE_1H,
+            AnalyticFilterHub::TYPE_24H,
             AnalyticFilterHub::TYPE_FIXED_HOUR,
             AnalyticFilterHub::TYPE_RANGE_HOUR,
+            AnalyticFilterHub::TYPE_TODAY,
         ]);
     }
 
@@ -120,7 +129,9 @@ abstract class AnalyticDataBase extends DataType
     public function scopeIsDay()
     {
         return in_array($this->scope_type, [
-            AnalyticFilterHub::TYPE_TODAY,
+            AnalyticFilterHub::TYPE_7D,
+            AnalyticFilterHub::TYPE_14D,
+            AnalyticFilterHub::TYPE_30D,
             AnalyticFilterHub::TYPE_FIXED_DATE,
             AnalyticFilterHub::TYPE_RANGE_DATE,
             AnalyticFilterHub::TYPE_THIS_WEEK,

@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\SystemAnalytic\AnalyticHandlerRegister;
+use Kakaprodo\SystemAnalytic\Models\AnalyticComputation;
 use Kakaprodo\SystemAnalytic\Models\AnalyticLog;
 use Kakaprodo\SystemAnalytic\Models\SystemAnalyticReport;
 
@@ -14,7 +14,7 @@ return [
     | if you change the class or its location.
     |
     */
-    'handler_register' => AnalyticHandlerRegister::class,
+    'handler_register' => \App\Http\SystemAnalytic\AnalyticHandlerRegister::class,
 
     /*
     |--------------------------------------------------------------------------
@@ -112,5 +112,19 @@ return [
         'model' => AnalyticLog::class,
         // analytic handler type on which the log can be displayed
         'handler_types' => AnalyticLog::$supportedHandlerTypes
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Report Pre computation
+    |--------------------------------------------------------------------------
+    |
+    | Configuration for analytic report pre-computation
+    |
+    */
+    'pre_computation' => [
+        /** Where all the pre-computed analuytic will be stored */
+        'model' => AnalyticComputation::class,
+        'should_run_migration' => true,
     ]
 ];

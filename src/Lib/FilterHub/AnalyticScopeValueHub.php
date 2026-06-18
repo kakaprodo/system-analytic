@@ -50,6 +50,37 @@ class AnalyticScopeValueHub extends AnalyticFilterHubBase
         return $this->endDate;
     }
 
+
+    protected function  filterBySinceOneHour($query)
+    {
+        $this->startDate = now()->subHour();
+        $this->endDate = now();
+    }
+
+    protected function filterBySinceTwentyFourHours($query)
+    {
+        $this->startDate = now()->subHours(24);
+        $this->endDate = now();
+    }
+
+    protected function filterBySinceSevenDays($query)
+    {
+        $this->startDate = today()->subDays(7);
+        $this->endDate = now();
+    }
+
+    protected function filterBySinceFourteenDays($query)
+    {
+        $this->startDate = today()->subDays(14);
+        $this->endDate = now();
+    }
+
+    protected function filterBySinceThirtyDays($query)
+    {
+        $this->startDate = today()->subDays(30);
+        $this->endDate = now();
+    }
+
     protected function filterByToday($query)
     {
         $this->startDate = today()->endOfDay();

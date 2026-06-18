@@ -21,7 +21,10 @@ class SystemAnalyticServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->mergeConfigFrom(
+            __DIR__ . '/config/system-analytic.php',
+            'system-analytic'
+        );
     }
 
     /**

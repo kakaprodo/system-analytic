@@ -2,12 +2,13 @@
 
 namespace Kakaprodo\SystemAnalytic;
 
+use Kakaprodo\SystemAnalytic\Http\Analytics\Handlers\Logs\AnalyticLogBarChart;
+use Kakaprodo\SystemAnalytic\Http\Analytics\Handlers\Logs\AnalyticLogCardCount;
+use Kakaprodo\SystemAnalytic\Http\Analytics\Handlers\Logs\AnalyticLogPieChart;
 use Kakaprodo\SystemAnalytic\Lib\AnalyticGateBase;
 use Kakaprodo\SystemAnalytic\Lib\Data\AnalyticData;
+use Kakaprodo\SystemAnalytic\Services\Computation\ComputationService;
 use Kakaprodo\SystemAnalytic\Services\Log\LogService;
-use Kakaprodo\SystemAnalytic\Http\Analytics\Handlers\Logs\AnalyticLogBarChart;
-use Kakaprodo\SystemAnalytic\Http\Analytics\Handlers\Logs\AnalyticLogPieChart;
-use Kakaprodo\SystemAnalytic\Http\Analytics\Handlers\Logs\AnalyticLogCardCount;
 
 /**
  * @property LogService log
@@ -19,6 +20,7 @@ class AnalyticGate extends AnalyticGateBase
      */
     static $services = [
         'log' => LogService::class,
+        'computation' => ComputationService::class
     ];
 
     protected static function registeredHandlers(): array
@@ -43,6 +45,14 @@ class AnalyticGate extends AnalyticGateBase
     public static function log(): LogService
     {
         return (new self())->log;
+    }
+
+    /**
+     * Gate to analytic computation services
+     */
+    public static function computation(): ComputationService
+    {
+        return (new self())->computation;
     }
 
     /**
