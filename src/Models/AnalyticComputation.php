@@ -16,6 +16,11 @@ class AnalyticComputation extends Model
         'reference',
         'period',
         'computed_value',
-        'data_key'
+        'data_key',
+        'payload'
+    ];
+
+    protected $casts = [
+        'payload' => 'array',
     ];
 }

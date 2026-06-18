@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('reference')->nullable();
             $table->dateTime('period');
             $table->float('computed_value');
+            $table->json('payload')->nullable();
             $table->string('data_key');
             $table->timestamps();
 
