@@ -23,7 +23,7 @@ return new class extends Migration
             $table->dateTime('period');
             $table->float('computed_value');
             $table->json('payload')->nullable();
-            $table->string('data_key');
+            $table->text('data_key');
             $table->timestamps();
 
             $table->index(['category', 'tenant', 'period']);
