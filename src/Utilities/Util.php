@@ -2,15 +2,16 @@
 
 namespace Kakaprodo\SystemAnalytic\Utilities;
 
-use Exception;
 use Carbon\Carbon;
+use Exception;
 use Illuminate\Support\Str;
 use Kakaprodo\SystemAnalytic\AnalyticGate;
-use Kakaprodo\SystemAnalytic\Models\AnalyticLog;
-use Kakaprodo\SystemAnalytic\Models\SystemAnalyticReport;
-use Kakaprodo\SystemAnalytic\Lib\ExportHub\Base\ExportHubBase;
 use Kakaprodo\SystemAnalytic\Exception\SystemAnalyticException;
 use Kakaprodo\SystemAnalytic\Http\Rules\AnalyticDateTimeFormat;
+use Kakaprodo\SystemAnalytic\Lib\ExportHub\Base\ExportHubBase;
+use Kakaprodo\SystemAnalytic\Models\AnalyticComputation;
+use Kakaprodo\SystemAnalytic\Models\AnalyticLog;
+use Kakaprodo\SystemAnalytic\Models\SystemAnalyticReport;
 
 class Util
 {
@@ -266,6 +267,14 @@ class Util
     }
 
     /**
+     * The model's namespace that record analytic pre computation data
+     */
+    public static function computationModel()
+    {
+        return config('system-analytic.pre_computation.model', AnalyticComputation::class);
+    }
+
+    /**
      * get the table name of the analytic log model
      */
     public static function logTableName()
@@ -295,9 +304,14 @@ class Util
         return config('system-analytic.log_report.should_run_migration');
     }
 
+    public static function shouldRunComputationMigration()
+    {
+        return config('system-analytic.pre_computation.should_run_migration');
+    }
+
     public static function shouldRunMigration()
     {
-        return self::shouldRunPersistenceMigration() || self::shouldRunLogMigration();
+        return self::shouldRunPersistenceMigration() || self::shouldRunLogMigration() || self::shouldRunComputationMigration();
     }
 
     /**

@@ -28,6 +28,12 @@ abstract class AnalyticFilterHubBase
      */
     protected $customScopeHandlers = [];
 
+    const TYPE_1H = '1h';
+    const TYPE_24H = '24h';
+    const TYPE_7D = '7d';
+    const TYPE_14D = '14d';
+    const TYPE_30D = '30d';
+
     const TYPE_YEAR_AGO = 'year_ago';
     const TYPE_TODAY = 'today';
     const TYPE_MONTH_AGO = 'month_ago';
@@ -90,6 +96,12 @@ abstract class AnalyticFilterHubBase
     private function getDefaultScopes($query)
     {
         return $this->defaultScopeHandlers =  [
+            self::TYPE_1H => fn() => $this->filterBySinceOneHour($query),
+            self::TYPE_24H => fn() => $this->filterBySinceTwentyFourHours($query),
+            self::TYPE_7D => fn() => $this->filterBySinceSevenDays($query),
+            self::TYPE_14D => fn() => $this->filterBySinceFourteenDays($query),
+            self::TYPE_30D => fn() => $this->filterBySinceThirtyDays($query),
+
             self::TYPE_TODAY => fn() => $this->filterByToday($query),
             self::TYPE_WEEK_AGO => fn() => $this->filterByWeekAgo($query),
             self::TYPE_MONTH_AGO => fn() => $this->filterByMonthAgo($query),
