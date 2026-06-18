@@ -10,6 +10,8 @@ class CreateAnalyticComputationAction extends CustomActionBuilder
 {
     public function handle(CreateAnalyticComputationData $data)
     {
+        if ($data->computed_value == 0) return;
+
         return Util::computationModel()::firstOrCreate([
             'data_key' => $data->dataKey()
         ], $data->wrapper('for_db'));

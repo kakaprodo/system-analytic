@@ -14,6 +14,7 @@ use Illuminate\Support\Carbon;
  * @property string|null $reference
  * @property Carbon|string $period
  * @property float $computed_value
+ * @property array|null $payload
  */
 class CreateAnalyticComputationData extends BaseData
 {
@@ -29,7 +30,8 @@ class CreateAnalyticComputationData extends BaseData
                 ->orUseType('string')
                 ->castTo(fn($period) => Carbon::parse($period)->format('Y-m-d H:i:s'))
                 ->wrap('for_db'),
-            'computed_value' => $this->property()->number()->wrap('for_db')
+            'computed_value' => $this->property()->number()->wrap('for_db'),
+            'payload?' => $this->property()->array()->wrap('for_db')
         ];
     }
 }
