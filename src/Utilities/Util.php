@@ -238,7 +238,7 @@ class Util
         if (!app()->environment('local')) {
             return self::whenNot(
                 AnalyticGate::handlerClass($analyticType, false),
-                "The analytic type is supposed to be one of: " .  implode(',', $analyticTypes)
+                "Invalid analytic type provided: {$analyticType}"
             );
         }
 

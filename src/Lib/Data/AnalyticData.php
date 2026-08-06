@@ -3,8 +3,9 @@
 namespace Kakaprodo\SystemAnalytic\Lib\Data;
 
 use Illuminate\Support\Carbon;
-use Kakaprodo\SystemAnalytic\Utilities\Util;
 use Kakaprodo\SystemAnalytic\Lib\Data\Base\AnalyticDataBase;
+use Kakaprodo\SystemAnalytic\Lib\Shared\HandlerAccessibilityScope;
+use Kakaprodo\SystemAnalytic\Utilities\Util;
 
 /**
  * @property string $analytic_type
@@ -67,13 +68,20 @@ class AnalyticData extends AnalyticDataBase
     }
 
     /**
-     * all registerd handlers
+     * all registerd handlers + the protected ones from accessibilityScope
      */
     public static function handlers(): array
     {
-        $handlers =  self::handlerRegisterClass()::handlers();
+        $handlerRegister = self::handlerRegisterClass();
 
-        Util::whenYes($handlers == [], 'You need first to register a handler before calling it');
+        $commonHandlers =  $handlerRegister::handlers();
+
+        // register private handlers and merge them with the common ones
+        $handlerRegister::registerProtectedHandlers(new HandlerAccessibilityScope());
+
+        $handlers = array_merge($commonHandlers, HandlerAccessibilityScope::getAllProtectedHandlers());
+
+        Util::whenYes($handlers == [], 'You need first to   register a handler before calling it');
 
         return $handlers;
     }

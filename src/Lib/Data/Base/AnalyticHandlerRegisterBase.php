@@ -2,11 +2,12 @@
 
 namespace Kakaprodo\SystemAnalytic\Lib\Data\Base;
 
-use Kakaprodo\SystemAnalytic\Utilities\Util;
-use Kakaprodo\SystemAnalytic\Lib\Data\AnalyticData;
-use Kakaprodo\SystemAnalytic\Lib\Plugins\PluginHub;
 use Kakaprodo\SystemAnalytic\Http\Requests\SystemAnalyticRequest;
+use Kakaprodo\SystemAnalytic\Lib\Data\AnalyticData;
 use Kakaprodo\SystemAnalytic\Lib\Interfaces\AnalyticHandlerRegisterInterface;
+use Kakaprodo\SystemAnalytic\Lib\Plugins\PluginHub;
+use Kakaprodo\SystemAnalytic\Lib\Shared\HandlerAccessibilityScope;
+use Kakaprodo\SystemAnalytic\Utilities\Util;
 
 abstract class AnalyticHandlerRegisterBase implements AnalyticHandlerRegisterInterface
 {
@@ -45,7 +46,7 @@ abstract class AnalyticHandlerRegisterBase implements AnalyticHandlerRegisterInt
     }
 
     /**
-     * The additional request rules to use 
+     * The additional request rules to use
      * in the integrated RequestForm validation
      */
     public static function requestRules(SystemAnalyticRequest $request): array
@@ -56,9 +57,14 @@ abstract class AnalyticHandlerRegisterBase implements AnalyticHandlerRegisterInt
     /**
      * method in which to load plugins
      */
-    public function loadPlugins(PluginHub $pluginHub)
-    {
-    }
+    public function loadPlugins(PluginHub $pluginHub) {}
+
+    /**
+     * method in which to register the accessibility scope of handlers
+     * (for example, you can register a handler to be accessible only
+     * when the user is authenticated or based on a given condition)
+     */
+    public static function registerProtectedHandlers(HandlerAccessibilityScope $accessible) {}
 
     public function __get($name)
     {
