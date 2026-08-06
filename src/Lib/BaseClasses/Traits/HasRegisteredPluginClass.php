@@ -6,6 +6,7 @@ use Kakaprodo\SystemAnalytic\Lib\AnalyticResponse;
 use Kakaprodo\SystemAnalytic\Lib\Data\AnalyticData;
 use Kakaprodo\SystemAnalytic\Lib\Plugins\PluginHub;
 use Kakaprodo\SystemAnalytic\Lib\Cache\SystemAnalyticCache;
+use Kakaprodo\SystemAnalytic\Lib\Shared\HandlerAccessibilityScope;
 use Kakaprodo\SystemAnalytic\Lib\Shared\HandlerInteraction\CallAnalyticHandler;
 
 /**
@@ -47,6 +48,16 @@ trait HasRegisteredPluginClass
     public function plugin(): PluginHub
     {
         return  $this->data->pluginHub = new PluginHub($this->data);
+    }
+
+    /**
+     * The gate to register the accessibility scope of handlers
+     * (for example, you can register a handler to be accessible only
+     * when the user is authenticated or based on a given condition)
+     */
+    public function handlerAccessibilityGate(): HandlerAccessibilityScope
+    {
+        return $this->data->handlerAccessibilityGate ??= new HandlerAccessibilityScope();
     }
 
     /**

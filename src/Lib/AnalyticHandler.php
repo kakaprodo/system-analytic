@@ -22,6 +22,7 @@ abstract class AnalyticHandler extends AnalyticHandlerBase
     {
         $analytic = new static($data);
 
+        $analytic->processHandleAccessibilityScopes();
         $analytic->processPlugins();
 
         $cachedResult = $analytic->cache()->getCachedResultIfExists();

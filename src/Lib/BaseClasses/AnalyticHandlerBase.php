@@ -196,6 +196,17 @@ abstract class AnalyticHandlerBase
         return $this;
     }
 
+    /**
+     * Validate the accessibility scope of the handler, to protect it
+     * from unauthorized request|user
+     */
+    protected function processHandleAccessibilityScopes()
+    {
+        $accessibilityScope = $this->handlerAccessibilityGate();
+        $accessibilityScope->validate(static::class, $this->data);
+
+        return $this;
+    }
 
     /**
      * Define a periode in which analytic result will be cached
