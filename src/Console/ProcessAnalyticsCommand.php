@@ -14,6 +14,7 @@ class ProcessAnalyticsCommand extends Command
                             {--scope-value= : Optional scope value}
                             {--search-value= : Optional search term}
                             {--selected-option= : Optional selected option}
+                            {--scope-is-up-to= : Optional support of up to scope}
                             ';
 
 
@@ -26,6 +27,7 @@ class ProcessAnalyticsCommand extends Command
         $scopeValue = $this->option('scope-value');
         $searchValue = $this->option('search-value');
         $selectedOption = $this->option('selected-option');
+        $isUpTo = $this->option('scope-is-up-to');
 
         $result = AnalyticGate::process([
             'analytic_type' =>  $analyticType,
@@ -33,6 +35,7 @@ class ProcessAnalyticsCommand extends Command
             'scope_value' => $scopeValue,
             'search_value' => $searchValue,
             'selected_option' =>  $selectedOption,
+            'scope_is_up_to' =>  $isUpTo,
             'should_clear_cache' => true
         ]);
 
