@@ -2,9 +2,10 @@
 
 namespace Kakaprodo\SystemAnalytic\Http\Analytics\Handlers\Logs\Traits;
 
+use Illuminate\Support\Facades\Schema;
 use Kakaprodo\CustomData\CustomData;
-use Kakaprodo\SystemAnalytic\Utilities\Util;
 use Kakaprodo\CustomData\Lib\TypeHub\DataTypeHub;
+use Kakaprodo\SystemAnalytic\Utilities\Util;
 
 trait HasAnalyticGateHelperTrait
 {
@@ -20,6 +21,11 @@ trait HasAnalyticGateHelperTrait
     protected function logTableName()
     {
         return (new (Util::logModel()))->getTable();
+    }
+
+    protected function logTableExists(): bool
+    {
+        return Schema::hasTable($this->logTableName());
     }
 
     /**

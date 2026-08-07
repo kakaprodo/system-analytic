@@ -32,6 +32,8 @@ class AnalyticLogCardCount extends CardCount implements GroupSearchInterface
             Util::logModel()::HANDLER_CARD,
             Util::logModel()::HANDLER_ALL,
         ];
+
+        Util::whenNot($this->logTableExists(), 'Fetching logs is not supported.');
     }
 
     /**
