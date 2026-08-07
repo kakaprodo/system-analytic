@@ -30,6 +30,8 @@ class AnalyticLogBarChart extends BlockChart implements GroupSearchInterface
             Util::logModel()::HANDLER_BARCHAT,
             Util::logModel()::HANDLER_ALL,
         ];
+
+        Util::whenNot($this->logTableExists(), 'Fetching logs is not supported.');
     }
 
     /**
